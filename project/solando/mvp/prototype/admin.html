@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solando Warranty CRM – Admin Back-Office Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Link external stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Load shared state and controller -->
+    <script src="db.js" defer></script>
+    <script src="admin.js" defer></script>
+</head>
+<body>
+
+    <!-- MOBILE TOP BAR -->
+    <div class="mobile-top-bar">
+        <span class="mobile-logo">☀️ Solando Admin CRM</span>
+        <div class="mobile-menu-wrap">
+            <button class="mobile-menu-btn" onclick="toggleMobileKiotVietMenu()">KiotViet ⇄</button>
+            <div class="mobile-kiotviet-dropdown" id="kiotviet-dropdown">
+                <a href="#" onclick="selectKiotVietTab('invoices')">📋 Hóa Đơn Đồng Bộ</a>
+                <a href="#" onclick="selectKiotVietTab('products')">🏷️ Danh Mục SKU</a>
+                <a href="#" onclick="selectKiotVietTab('dealers')">🏢 Danh Sách Đại Lý</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. LEFT SIDEBAR NAVIGATION (CRM Admin Modules) -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">☀️</span>
+            <div class="logo-text">
+                <h1>Solando Admin</h1>
+                <p>Warranty & Back-Office Portal</p>
+            </div>
+        </div>
+
+        <div class="user-profile-mock">
+            <div class="avatar">AD</div>
+            <div class="profile-info">
+                <span class="name">Quản Trị Viên</span>
+                <span class="badge badge-info" style="font-size: 8px; padding: 1px 5px;">UAT Admin</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item" style="border: 1px dashed rgba(255,255,255,0.15); margin-bottom: 12px; background: rgba(255,255,255,0.03);">
+                <span class="nav-icon">🏠</span>
+                <div class="nav-label">
+                    <strong>Trang Chủ Gateway</strong>
+                    <span>Chọn vai trò UAT</span>
+                </div>
+            </a>
+
+            <p class="menu-title">QUẢN LÝ KHÁCH HÀNG (CRM)</p>
+            <a href="#" class="nav-item active" id="nav-end-customers" onclick="switchTab(event, 'end-customers')">
+                <span class="nav-icon">👥</span>
+                <div class="nav-label">
+                    <strong>Khách Hàng Cuối</strong>
+                    <span>Thông tin chủ đầu tư</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item" id="nav-dealers" onclick="switchTab(event, 'dealers')">
+                <span class="nav-icon">🏢</span>
+                <div class="nav-label">
+                    <strong>Đại Lý & Đối Tác</strong>
+                    <span>Đại lý phân phối CRM B2B</span>
+                </div>
+            </a>
+
+            <p class="menu-title">DỊCH VỤ & BẢO HÀNH</p>
+            <a href="#" class="nav-item" id="nav-activated-devices" onclick="switchTab(event, 'activated-devices')">
+                <span class="nav-icon">🛡️</span>
+                <div class="nav-label">
+                    <strong>Thiết Bị Bảo Hành</strong>
+                    <span>Máy & Pin đã kích hoạt</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item" id="nav-cskh" onclick="switchTab(event, 'cskh')">
+                <span class="nav-icon">🎧</span>
+                <div class="nav-label">
+                    <strong>CSKH & Hỗ Trợ</strong>
+                    <span>Tra cứu & Ticket lỗi</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item" id="nav-storekeeper" onclick="switchTab(event, 'storekeeper')">
+                <span class="nav-icon">📦</span>
+                <div class="nav-label">
+                    <strong>Thủ Kho (Nhập/Xuất)</strong>
+                    <span>Quản lý kho 2 bước</span>
+                </div>
+            </a>
+
+            <p class="menu-title">KHO & ĐƠN HÀNG (KIOTVIET)</p>
+            <a href="#" class="nav-item" id="nav-invoices" onclick="switchTab(event, 'invoices')">
+                <span class="nav-icon">📋</span>
+                <div class="nav-label">
+                    <strong>Đơn Hàng KiotViet</strong>
+                    <span>Hóa đơn đồng bộ API</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item" id="nav-products" onclick="switchTab(event, 'products')">
+                <span class="nav-icon">🏷️</span>
+                <div class="nav-label">
+                    <strong>Danh Mục SKU</strong>
+                    <span>Sản phẩm & Hạn bảo hành</span>
+                </div>
+            </a>
+
+            <p class="menu-title">CỔNG THỰC ĐỊA KỸ THUẬT</p>
+            <a href="tech.html" target="_blank" class="nav-item">
+                <span class="nav-icon">🔧</span>
+                <div class="nav-label">
+                    <strong>Cổng Kỹ Thuật Viên</strong>
+                    <span>Mở cổng Mobile quét QR ↗</span>
+                </div>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- 2. MAIN SPLIT-SCREEN WORKSPACE -->
+    <main class="app-main">
+        <!-- Top Status Bar (Desktop only) -->
+        <div class="top-breadcrumb-bar">
+            <div class="breadcrumb" id="active-view-title">Phần hệ: Danh Sách Khách Hàng Cuối</div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; color: #fbbf24; border-color: rgba(245,158,11,0.3);" onclick="resetDB()">
+                    🔄 Reset DB Giả Lập
+                </button>
+                <div style="font-size: 11px; color: var(--text-dim);">Dữ liệu đồng bộ trực tiếp qua KiotViet Client API</div>
+            </div>
+        </div>
+
+        <!-- Split Grid Workspace -->
+        <div class="dashboard-workspace">
+            <div class="control-panel-column">
+                
+                <!-- VIEW 1: STOREKEEPER VIEW -->
+                <div id="view-storekeeper" class="view-panel">
+                    <!-- Top Sub-Tab Bar -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 1.5rem; background: rgba(255,255,255,0.02); padding: 6px; border-radius: 8px; border: 1px solid var(--border);">
+                        <button id="subtab-import" class="btn btn-primary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px;" onclick="switchStorekeeperSubTab('import')">
+                            <span>📥</span> Nhập Kho Nhập Khẩu
+                        </button>
+                        <button id="subtab-export" class="btn btn-secondary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px;" onclick="switchStorekeeperSubTab('export')">
+                            <span>📤</span> Xuất Kho KiotViet
+                        </button>
+                    </div>
+
+                    <!-- 1. IMPORT PANEL -->
+                    <div id="store-import-panel">
+                        <div class="glass-card">
+                            <h2><span>📥</span> Nhập Kho Nhập Khẩu & Gán Serial Thiết Bị</h2>
+                            <p class="card-desc">
+                                Nhập mã Phiếu Nhập Kho để hiển thị danh sách thiết bị nhập khẩu, sau đó tiến hành gán hoặc quét mã Serial cho từng linh kiện chính.
+                            </p>
+
+                            <div class="search-bar-wrapper" style="margin-top: 1rem;">
+                                <input type="text" id="store-import-id" placeholder="Mã Phiếu Nhập Kho (Thử NK000101 hoặc NK000102)" value="NK000101">
+                                <button class="btn btn-primary" onclick="simFetchImport()">
+                                    <span>🔍 Đồng Bộ Phiếu</span>
+                                </button>
+                            </div>
+                            <div class="alert-hint">Mẹo: Nhập mã phiếu nhập khẩu từ đối tác nước ngoài để gán Serial hàng loạt cho lô hàng về kho.</div>
+                        </div>
+
+                        <!-- Import details results wrapper -->
+                        <div id="import-results-card" class="glass-card" style="display: none;">
+                            <div class="results-header">
+                                <div>
+                                    <h3 id="import-title">Phiếu Nhập Kho: NK000101</h3>
+                                    <p id="import-partner">Đối tác: Solando International Factory</p>
+                                </div>
+                                <span class="status-badge badge-info" id="import-status">Đang Đồng Bộ</span>
+                            </div>
+
+                            <div class="product-grid" id="import-products-grid">
+                                <!-- Products list rendering -->
+                            </div>
+
+                            <div class="actions-row">
+                                <button class="btn btn-secondary" onclick="resetImportView()">Hủy Bỏ</button>
+                                <button class="btn btn-success" onclick="saveImportSerials()">
+                                    <span>💾 Lưu Serials Nhập Kho</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. EXPORT PANEL -->
+                    <div id="store-export-panel" style="display: none;">
+                        <div class="glass-card">
+                            <h2><span>📤</span> Xuất Kho Bán Hàng & Gán Hóa Đơn KiotViet</h2>
+                            <p class="card-desc">
+                                Nhập mã Hóa Đơn KiotViet để hiển thị danh sách thiết bị xuất bán, sau đó chọn số Serial đang "Trong Kho" (InStock) để gán cho đơn hàng.
+                            </p>
+
+                            <div class="search-bar-wrapper" style="margin-top: 1rem;">
+                                <input type="text" id="store-invoice-id" placeholder="Mã Hóa Đơn KiotViet (Thử HD000111 hoặc HD000444)" value="HD000111">
+                                <button class="btn btn-primary" onclick="simFetchExportOrder()">
+                                    <span>🔍 Đồng Bộ Hóa Đơn</span>
+                                </button>
+                            </div>
+                            <div class="alert-hint">Mẹo: Chọn hóa đơn từ KiotViet để gán các số Serial trong kho chuyển sang trạng thái đã bán (Sold).</div>
+                        </div>
+
+                        <!-- Export details results wrapper -->
+                        <div id="export-results-card" class="glass-card" style="display: none;">
+                            <div class="results-header">
+                                <div>
+                                    <h3 id="export-title">Hóa Đơn: HD000111</h3>
+                                    <p id="export-dealer">Khách hàng: Công ty Cổ Phần Điện Nước Solar Miền Trung</p>
+                                </div>
+                                <span class="status-badge badge-info" id="export-status">Đang Đồng Bộ</span>
+                            </div>
+
+                            <div class="product-grid" id="export-products-grid">
+                                <!-- Products list rendering -->
+                            </div>
+
+                            <div class="actions-row">
+                                <button class="btn btn-secondary" onclick="resetExportView()">Hủy Bỏ</button>
+                                <button class="btn btn-success" onclick="saveExportSerials()">
+                                    <span>💾 Xác Nhận & Xuất Kho</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 3: CSKH VIEW -->
+                <div id="view-cskh" class="view-panel">
+                    <div class="glass-card">
+                        <h2><span>🎧</span> Tra Cứu Thông Tin Hỗ Trợ & Ticket Lỗi</h2>
+                        <p class="card-desc">
+                            Nhập số Serial của thiết bị để kiểm tra lịch sử kích hoạt bảo hành, thông tin hóa đơn gốc và quản lý nhật ký sửa chữa.
+                        </p>
+
+                        <div class="search-bar-wrapper" style="margin-top: 1rem;">
+                            <input type="text" id="cskh-search-serial" placeholder="Nhập Serial cần tra cứu (ví dụ: SLD-INV-5K-09238)" value="SLD-INV-5K-09238">
+                            <button class="btn btn-primary" onclick="searchWarrantyHistory()">
+                                <span>🔍 Tra Cứu</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CSKH query details result -->
+                    <div id="cskh-results" style="display: none;">
+                        <div class="glass-card detail-card" id="cskh-status-card">
+                            <div class="results-header">
+                                <div>
+                                    <h3 id="cskh-prod-title">Inverter Hybrid Solando 5kW</h3>
+                                    <p id="cskh-serial-title" style="font-family: 'Fira Code', monospace;">S/N: SLD-INV-5K-09238</p>
+                                </div>
+                                <span class="status-badge" id="cskh-status-badge">Đang Bảo Hành</span>
+                            </div>
+
+                            <div class="detail-row">
+                                <label>Mã Hóa Đơn Xuất Bán (KiotViet)</label>
+                                <span id="cskh-inv-code">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Ngày Bán Hàng</label>
+                                <span id="cskh-sold-date">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Khách Hàng Lắp Đặt (Cuối)</label>
+                                <span id="cskh-cust-name">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Địa Chỉ Thực Tế</label>
+                                <span id="cskh-cust-address">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Thời Hạn Bảo Hành</label>
+                                <span id="cskh-duration">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Hạn Bảo Hành Đến Ngày</label>
+                                <span id="cskh-expiry-date" style="color: #34d399;">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Support tickets section -->
+                        <div class="glass-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <h3 style="font-size: 1.05rem; font-weight: 700;">🛠️ Nhật Ký Sự Cố Bảo Trì</h3>
+                                <button class="btn btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.8rem;" onclick="openTicketModal()">
+                                    <span>➕ Tạo Ticket Hỗ Trợ</span>
+                                </button>
+                            </div>
+
+                            <div class="ticket-list" id="cskh-tickets-list">
+                                <!-- Dynamic list of tickets -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 4: THIẾT BỊ BẢO HÀNH (ACTIVATED DEVICES LIST) -->
+                <div id="view-activated-devices" class="view-panel">
+                    <div class="glass-card">
+                        <h2><span>🛡️</span> Danh Sách Thiết Bị Đang Bảo Hành Điện Tử</h2>
+                        <p class="card-desc">Danh sách toàn bộ các thiết bị (Biến tần Inverter, Pin lưu trữ LFP) đã hoàn tất kích hoạt bảo hành điện tử ngoài thực địa.</p>
+
+                        <!-- Search -->
+                        <div class="search-bar-wrapper">
+                            <input type="text" id="search-act" placeholder="Tìm theo Serial, tên thiết bị, tên hoặc SĐT khách hàng...">
+                        </div>
+
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Số Serial</th>
+                                        <th>Tên Thiết Bị</th>
+                                        <th>Khách Hàng Cuối</th>
+                                        <th>Địa Chỉ Lắp Đặt</th>
+                                        <th>Đại Lý Lắp Đặt</th>
+                                        <th style="text-align: center;">Kích Hoạt</th>
+                                        <th style="text-align: center;">Hạn Bảo Hành</th>
+                                        <th style="text-align: center;">Trạng Thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ui-activated-devices-tbody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: KHÁCH HÀNG CUỐI (END CUSTOMERS LIST) -->
+                <div id="view-end-customers" class="view-panel active">
+                    <div class="glass-card">
+                        <h2><span>👥</span> Danh Sách Khách Hàng Cuối (Chủ Đầu Tư / Người Dùng Cuối)</h2>
+                        <p class="card-desc">Danh sách cơ sở dữ liệu khách hàng cuối thu thập được khi kỹ thuật viên quét QR kích hoạt bảo hành ngoài thực địa.</p>
+
+                        <!-- Search -->
+                        <div class="search-bar-wrapper">
+                            <input type="text" id="search-end-cust" placeholder="Tìm theo tên khách hàng, số điện thoại, địa chỉ công trình...">
+                        </div>
+
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Họ & Tên</th>
+                                        <th>Số Điện Thoại</th>
+                                        <th>Địa Chỉ Thực Tế</th>
+                                        <th>Đại Lý Lắp Đặt</th>
+                                        <th>Thiết Bị Đang Sở Hữu</th>
+                                        <th style="text-align: center;">Số Lượng</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ui-end-customers-tbody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 6: SYNCD INVOICES LIST (KIOTVIET INVOICES) -->
+                <div id="view-invoices" class="view-panel">
+                    <div class="glass-card">
+                        <h2><span>📋</span> Hóa Đơn Bán Hàng Đồng Bộ (KiotViet Invoices)</h2>
+                        <p class="card-desc">Danh sách hóa đơn bán hàng đồng bộ từ KiotViet API dùng để đối chiếu & gán mã Serial trước khi xuất kho.</p>
+
+                        <!-- Search and Filter Bar -->
+                        <div class="search-bar-wrapper">
+                            <input type="text" id="search-inv" placeholder="Tìm kiếm theo mã hóa đơn, tên đại lý mua...">
+                        </div>
+                        <div class="filter-bar-wrapper">
+                            <select id="filter-inv-status">
+                                <option value="ALL">-- Tất cả trạng thái Serial --</option>
+                                <option value="PENDING">Chờ gán Serial / Chưa đủ</option>
+                                <option value="COMPLETED">Đã gán đủ</option>
+                            </select>
+                            <select id="filter-inv-dealer">
+                                <option value="ALL">-- Tất cả Đại lý mua --</option>
+                            </select>
+                        </div>
+
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã Hóa Đơn</th>
+                                        <th>Khách Hàng (Đại Lý)</th>
+                                        <th>Ngày Bán</th>
+                                        <th style="text-align: center;">Trạng Thái Serial</th>
+                                        <th style="text-align: center;">Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ui-invoices-tbody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 7: SYNCD PRODUCTS CATALOG -->
+                <div id="view-products" class="view-panel">
+                    <div class="glass-card">
+                        <h2><span>🏷️</span> Danh Mục Sản Phẩm & Thiết Bị (KiotViet SKUs)</h2>
+                        <p class="card-desc">Danh mục SKU thiết bị của hãng đồng bộ từ KiotViet. Thiết bị có Serial (Inverter, Pin) được thiết lập hạn bảo hành mặc định.</p>
+
+                        <!-- Search & Filter -->
+                        <div class="search-bar-wrapper">
+                            <input type="text" id="search-prod" placeholder="Tìm kiếm theo SKU, tên sản phẩm...">
+                        </div>
+                        <div class="filter-bar-wrapper">
+                            <select id="filter-prod-cat">
+                                <option value="ALL">-- Tất cả nhóm sản phẩm --</option>
+                                <option value="Inverter">Inverter</option>
+                                <option value="Pin Storage">Pin Storage</option>
+                                <option value="Tấm Pin Solar">Tấm Pin Solar</option>
+                                <option value="Phụ kiện">Phụ kiện</option>
+                            </select>
+                        </div>
+
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã SKU</th>
+                                        <th>Tên Sản Phẩm</th>
+                                        <th>Nhóm Thiết Bị</th>
+                                        <th style="text-align: center;">Hạn BH Mặc Định</th>
+                                        <th style="text-align: center;">Quản Lý Serial</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ui-products-tbody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 8: SYNCD DEALERS/CUSTOMERS LIST -->
+                <div id="view-dealers" class="view-panel">
+                    <div class="glass-card">
+                        <h2><span>🏢</span> Danh Sách Đại Lý & Đối Tác (KiotViet CRM)</h2>
+                        <p class="card-desc">Danh sách đại lý phân phối cấp dưới được đồng bộ từ KiotViet CRM dùng để ghi nhận đơn vị thi công lắp đặt.</p>
+
+                        <!-- Search -->
+                        <div class="search-bar-wrapper">
+                            <input type="text" id="search-dealer" placeholder="Tìm theo mã, tên đại lý hoặc khu vực...">
+                        </div>
+
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã Đại Lý</th>
+                                        <th>Tên Đối Tác / Đại Lý</th>
+                                        <th>Số Điện Thoại</th>
+                                        <th>Khu Vực Hoạt Động</th>
+                                        <th style="text-align: center;">Đơn Hàng KiotViet</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ui-dealers-tbody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Ticket Creation Modal -->
+    <div class="modal-overlay" id="ticket-modal">
+        <div class="modal-content">
+            <div class="modal-header">Tạo Yêu Cầu Bảo Hành / Bảo Trì</div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label for="ticket-phone">Số Điện Thoại Khách Hàng</label>
+                <input type="text" id="ticket-phone" placeholder="Ví dụ: 0987654321">
+            </div>
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label for="ticket-desc">Mô Tả Hiện Trạng Lỗi Thiết Bị</label>
+                <textarea id="ticket-desc" rows="4" placeholder="Ví dụ: Đèn đỏ sáng liên tục, inverter không khởi động được..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeTicketModal()">Hủy Bỏ</button>
+                <button class="btn btn-primary" onclick="submitTicket()">Khởi Tạo Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Toast Notification Banner -->
+    <div class="toast-notification" id="toast-banner">
+        <span>✓</span> <span id="toast-msg">Lưu thông tin thành công!</span>
+    </div>
+
+    <!-- MOBILE BOTTOM NAVIGATION (Reordered for CRM priorities: Customer & Warranty first) -->
+    <nav class="mobile-bottom-nav">
+        <a href="#" class="mobile-nav-item active" id="m-nav-end-customers" onclick="switchTabMobile('end-customers')">
+            <span class="m-nav-icon">👥</span>
+            <span class="m-nav-text">Khách cuối</span>
+        </a>
+        <a href="#" class="mobile-nav-item" id="m-nav-activated-devices" onclick="switchTabMobile('activated-devices')">
+            <span class="m-nav-icon">🛡️</span>
+            <span class="m-nav-text">Bảo Hành</span>
+        </a>
+        <a href="#" class="mobile-nav-item" id="m-nav-cskh" onclick="switchTabMobile('cskh')">
+            <span class="m-nav-icon">🎧</span>
+            <span class="m-nav-text">Tra cứu</span>
+        </a>
+        <a href="#" class="mobile-nav-item" id="m-nav-storekeeper" onclick="switchTabMobile('storekeeper')">
+            <span class="m-nav-icon">📥</span>
+            <span class="m-nav-text">Nhập Kho</span>
+        </a>
+    </nav>
+
+</body>
+</html>

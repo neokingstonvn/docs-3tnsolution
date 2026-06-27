@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Bảo Hành Solando – UAT Demo Gateway</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        body {
+            grid-template-columns: 1fr !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            height: 100vh;
+            background: radial-gradient(ellipse at bottom right, #1e1b4b, #0b0f19) !important;
+            padding: 1rem;
+        }
+
+        .gateway-container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .gateway-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .gateway-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f1f5f9, #a5b4fc, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .gateway-header p {
+            font-size: 1rem;
+            color: var(--text-dim);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .portal-card {
+            background: rgba(22, 28, 45, 0.45);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2.25rem 2rem;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            transition: background 0.3s;
+        }
+
+        .portal-card.admin-card::before {
+            background: linear-gradient(90deg, #6366f1, #818cf8);
+        }
+
+        .portal-card.tech-card::before {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .portal-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            background: rgba(30, 41, 59, 0.6);
+        }
+
+        .portal-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.25rem;
+            display: inline-block;
+        }
+
+        .portal-card h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+
+        .portal-card p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 2rem;
+            padding: 0;
+        }
+
+        .features-list li {
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--green);
+            font-weight: bold;
+        }
+
+        .tech-card .features-list li::before {
+            color: var(--amber);
+        }
+
+        .btn-portal {
+            width: 100%;
+            padding: 0.85rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 0.92rem;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-admin {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-admin:hover {
+            background: #5053e3;
+        }
+
+        .btn-tech {
+            background: var(--amber);
+            color: #0b0f19;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+        }
+
+        .btn-tech:hover {
+            background: #d97706;
+        }
+
+        .sync-info-box {
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            padding: 0.85rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            color: #a7f3d0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                height: auto;
+                padding: 2rem 1rem;
+            }
+            .portal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gateway-container">
+        
+        <div style="text-align: left; margin-bottom: 1.5rem; display: flex; justify-content: flex-start;">
+            <a href="../index.html" style="color: #a5b4fc; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; opacity: 0.85; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
+                <span>←</span> Quay lại Tài Liệu Đặc Tả MVP
+            </a>
+        </div>
+        
+        <div class="gateway-header">
+            <h1>☀️ Solando Warranty CRM Portal</h1>
+            <p>Hệ thống Kích Hoạt & Quản Lý Bảo Hành Điện Tử chính hãng. Vui lòng chọn cổng thông tin trải nghiệm UAT:</p>
+        </div>
+
+        <div class="portal-grid">
+            
+            <!-- Admin Portal Gateway -->
+            <div class="portal-card admin-card">
+                <div>
+                    <span class="portal-icon">🏢</span>
+                    <h2>Cổng Quản Trị CRM (Back-Office)</h2>
+                    <p>Dành cho đội ngũ bán hàng, kế toán doanh nghiệp, chăm sóc khách hàng (CSKH) và thủ kho điều phối xuất nhập hàng.</p>
+                    
+                    <ul class="features-list">
+                        <li>Đồng bộ & Đối chiếu hóa đơn từ KiotViet API</li>
+                        <li>Thủ kho gán số Serial cho thiết bị chính</li>
+                        <li>Quản lý danh sách Khách hàng cuối & Đại lý</li>
+                        <li>Theo dõi tình trạng BH & xử lý sự cố hỗ trợ</li>
+                    </ul>
+                </div>
+                
+                <a href="admin.html" class="btn btn-portal btn-admin">
+                    <span>Vào Portal Admin</span> ➔
+                </a>
+            </div>
+
+            <!-- Tech Portal Gateway -->
+            <div class="portal-card tech-card">
+                <div>
+                    <span class="portal-icon">🔧</span>
+                    <h2>Cổng Kỹ Thuật Viên (Field Tech)</h2>
+                    <p>Thiết kế di động (mobile-first) giả lập Web View trên smartphone phục vụ cho đội kỹ thuật và thi công công trình tại thực địa.</p>
+                    
+                    <ul class="features-list">
+                        <li>Quét mã QR/Barcode trên Inverter & Pin lưu trữ</li>
+                        <li>Hỗ trợ kích hoạt bảo hành hàng loạt (Multi-item)</li>
+                        <li>Tra cứu nhanh thông tin và thời hạn bảo hành</li>
+                        <li>Báo lỗi kỹ thuật & tạo ticket hỗ trợ tại chỗ</li>
+                    </ul>
+                </div>
+                
+                <a href="tech.html" target="_blank" class="btn btn-portal btn-tech">
+                    <span>Mở Portal Kỹ Thuật (Mobile View)</span> ➔
+                </a>
+            </div>
+
+        </div>
+
+        <div class="sync-info-box">
+            <span>⚡</span>
+            <span>Dữ liệu được chia sẻ và đồng bộ hóa tức thì giữa hai Portal thông qua cơ chế LocalStorage của trình duyệt.</span>
+        </div>
+
+    </div>
+
+</body>
+</html>

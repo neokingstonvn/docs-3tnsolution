@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình Chiếu Kế Hoạch — Task Kingston</title>
+    <!-- Google Fonts: Instrument Serif + JetBrains Mono + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./presentation.css">
+</head>
+<body>
+
+    <!-- Floating Top Presentation Bar -->
+    <header class="presentation-bar">
+        <div class="logo-section">
+            <span class="logo-icon">💼</span>
+            <div class="logo-content">
+                <h1>Task Kingston</h1>
+                <p>Kế hoạch triển khai & Nghiệp vụ</p>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <a href="../index.html" class="slide-link">📋 Đặc tả tổng thể</a>
+            <a href="../mvp/plan-high-level/index.html" class="slide-link">🧭 Kế hoạch MVP tổng thể</a>
+            <a href="../mvp/plan-detailed/index.html" class="slide-link">🔌 Kế hoạch MVP chi tiết</a>
+            <a href="../mmp/index.html" class="slide-link">🚀 Kế hoạch dài hạn</a>
+            <button onclick="toggleFullScreen()" class="fullscreen-btn" title="Toàn màn hình">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:18px;height:18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l-5 5m11 5v-4m0 0h-4m4 0l-5 5" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Slide Deck Scroll Snap Container -->
+    <div class="deck" id="slide-deck">
+        
+        <!-- Slide 1: Welcome & Cover -->
+        <section class="slide slide--title">
+            <div class="slide__container" style="align-items: center; text-align: center;">
+                <span class="slide-badge">Dự Án Quản Lý Văn Phòng</span>
+                <h1 class="slide__display">Task Kingston</h1>
+                <p class="slide__body" style="max-width: 600px; color: var(--text-dim);">
+                    Hệ thống quản lý công việc và dự án văn phòng chuẩn RBAC & luồng phê duyệt nhiệm vụ nghiêm ngặt.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 2: Bài toán thực tế & Giải pháp MVP -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide__label">Bài toán văn phòng</span>
+                <h2 class="slide__heading">Tối ưu quy trình quản lý dự án nội bộ</h2>
+                <div class="grid-3" style="margin-top: 1.5rem;">
+                    <div class="glass-card" style="border-top: 3px solid var(--accent);">
+                        <div class="card-num-badge">01</div>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 16px;">Nhập nhèm phân quyền</h3>
+                        <p style="font-size: 12px; color: var(--text-dim);">Giải quyết bằng ma trận phân quyền dựa trên vai trò (RBAC) chặt chẽ: Admin, PM, Staff.</p>
+                    </div>
+                    <div class="glass-card" style="border-top: 3px solid var(--green);">
+                        <div class="card-num-badge">02</div>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 16px;">Công việc trôi nổi</h3>
+                        <p style="font-size: 12px; color: var(--text-dim);">Quản lý trực quan tập trung thông qua bảng Kanban Board kéo thả linh hoạt và danh sách List View chi tiết.</p>
+                    </div>
+                    <div class="glass-card" style="border-top: 3px solid var(--amber);">
+                        <div class="card-num-badge">03</div>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 16px;">Khó kiểm duyệt kết quả</h3>
+                        <p style="font-size: 12px; color: var(--text-dim);">Quy trình phê duyệt (Approval Flow) và báo cáo công việc bắt buộc, tránh việc tự ý chuyển trạng thái Done.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Phân quyền RBAC -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide__label">Phân quyền chặt chẽ</span>
+                <h2 class="slide__heading">3 Vai trò người dùng chính trong MVP</h2>
+                <div class="grid-3" style="margin-top: 1.5rem;">
+                    <div class="glass-card">
+                        <span class="slide-badge" style="background: var(--accent-dim); color: #4f46e5; border-color: rgba(79, 70, 229, 0.2);">Admin</span>
+                        <p style="font-size: 12.5px; color: var(--text-dim); margin-top: 0.5rem; line-height: 1.6;">
+                            • Toàn quyền quản trị hệ thống<br>
+                            • Tạo dự án & chỉ định PM<br>
+                            • Quản lý nhân sự & gán vai trò<br>
+                            • Phê duyệt mọi công việc
+                        </p>
+                    </div>
+                    <div class="glass-card">
+                        <span class="slide-badge" style="background: var(--amber-dim); color: #d97706; border-color: rgba(217, 119, 6, 0.2);">Project Manager</span>
+                        <p style="font-size: 12.5px; color: var(--text-dim); margin-top: 0.5rem; line-height: 1.6;">
+                            • Quản lý dự án phụ trách<br>
+                            • Tạo task & phân công nhân viên<br>
+                            • Thiết lập deadline, priority<br>
+                            • Duyệt báo cáo & feedback của task
+                        </p>
+                    </div>
+                    <div class="glass-card">
+                        <span class="slide-badge" style="background: var(--green-dim); color: #059669; border-color: rgba(5, 150, 105, 0.2);">Staff / Member</span>
+                        <p style="font-size: 12.5px; color: var(--text-dim); margin-top: 0.5rem; line-height: 1.6;">
+                            • Nhận các công việc được giao<br>
+                            • Cập nhật progress (To Do, In Progress)<br>
+                            • Gửi báo cáo kèm link tài liệu<br>
+                            • Viết bình luận trao đổi trong task
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Luồng phê duyệt Happy Path -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide__label">Đảm bảo chất lượng</span>
+                <h2 class="slide__heading">Luồng phê duyệt công việc (Happy Path)</h2>
+                <div class="slide-horizontal-flow" style="margin-top: 2rem;">
+                    <div class="flow-step-box">
+                        <strong>1. Nhận việc & Làm việc</strong>
+                        <span style="font-size: 11px; color: var(--text-dim);">Staff chuyển task sang In Progress</span>
+                    </div>
+                    <span class="flow-step-arrow">➔</span>
+                    <div class="flow-step-box">
+                        <strong>2. Gửi yêu cầu phê duyệt</strong>
+                        <span style="font-size: 11px; color: var(--text-dim);">Staff nộp báo cáo & link. Task chuyển sang Reviewing</span>
+                    </div>
+                    <span class="flow-step-arrow">➔</span>
+                    <div class="flow-step-box">
+                        <strong>3. PM kiểm duyệt báo cáo</strong>
+                        <span style="font-size: 11px; color: var(--text-dim);">PM nhận task trong hàng chờ phê duyệt</span>
+                    </div>
+                    <span class="flow-step-arrow">➔</span>
+                    <div class="flow-step-box" style="border-top-color: var(--green);">
+                        <strong>4. Approve hoặc Reject</strong>
+                        <span style="font-size: 11px; color: var(--text-dim);">Duyệt thành Done / Trả về In Progress kèm lý do</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Modules tính năng -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide__label">Cấu trúc nghiệp vụ</span>
+                <h2 class="slide__heading">5 Mô-đun tính năng cốt lõi của MVP</h2>
+                <div class="grid-2" style="margin-top: 1rem; gap: 1rem;">
+                    <div class="glass-card" style="padding: 1rem;">
+                        <h4 style="color: var(--accent); font-size: 14px; margin-bottom: 0.25rem;">📦 1. Dashboard & Project Directory</h4>
+                        <p style="font-size: 11.5px; color: var(--text-dim);">Xem tổng quát dự án, thống kê nhanh và theo dõi tiến độ tự động dựa trên tỷ lệ % công việc Done.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 1rem;">
+                        <h4 style="color: var(--accent); font-size: 14px; margin-bottom: 0.25rem;">📦 2. Task Board (Kanban & List)</h4>
+                        <p style="font-size: 11.5px; color: var(--text-dim);">Giao diện kéo thả Kanban hoặc dạng danh sách List. Bộ lọc phân Assignee, Độ ưu tiên (High/Med/Low), cảnh báo trễ hạn chót.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 1rem;">
+                        <h4 style="color: var(--accent); font-size: 14px; margin-bottom: 0.25rem;">📦 3. Comments & Activity Logs</h4>
+                        <p style="font-size: 11.5px; color: var(--text-dim);">Cho phép viết bình luận thảo luận trong task (không cho sửa/xóa bình luận của người khác). Ghi log hệ thống tự động khi đổi trạng thái task.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 1rem;">
+                        <h4 style="color: var(--accent); font-size: 14px; margin-bottom: 0.25rem;">📦 4. Approval Queue & RBAC</h4>
+                        <p style="font-size: 11.5px; color: var(--text-dim);">Màn hình duyệt việc cho PM/Admin. Giao diện danh sách nhân sự (Employee Directory) và gán quyền RBAC (cho Admin).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Lộ trình & Kế hoạch Dài hạn (Post-MVP) -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide__label">Định hướng tương lai</span>
+                <h2 class="slide__heading">Định hướng phát triển dài hạn (Sau MVP)</h2>
+                <div class="grid-2" style="margin-top: 1.5rem; gap: 1.25rem;">
+                    <div class="glass-card" style="border-left: 4px solid var(--accent); padding: 1.25rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 15px; color: var(--text);">Tích hợp đa kênh & Tải file</h3>
+                        <p style="font-size: 12px; color: var(--text-dim);">Gửi thông báo đẩy qua Slack, Telegram, Email. Hỗ trợ tải tệp đính kèm vật lý lên dịch vụ lưu trữ đám mây AWS S3 bảo mật cao.</p>
+                    </div>
+                    <div class="glass-card" style="border-left: 4px solid var(--green); padding: 1.25rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 15px; color: var(--text);">Biểu đồ Gantt & Báo cáo KPI</h3>
+                        <p style="font-size: 12px; color: var(--text-dim);">Thiết lập Gantt chart kéo thả dependencies trực quan, đo lường khối lượng công việc và đánh giá KPI năng lực thành viên.</p>
+                    </div>
+                    <div class="glass-card" style="border-left: 4px solid var(--amber); padding: 1.25rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 15px; color: var(--text);">Bảo mật SSO & Mobile App</h3>
+                        <p style="font-size: 12px; color: var(--text-dim);">Xác thực tập trung đăng nhập SSO (Google, Active Directory) và phát triển ứng dụng di động React Native trên iOS/Android.</p>
+                    </div>
+                    <div class="glass-card" style="border-left: 4px solid var(--indigo); padding: 1.25rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 15px; color: var(--text);">Tối ưu hóa quy mô doanh nghiệp</h3>
+                        <p style="font-size: 12px; color: var(--text-dim);">Mở rộng hệ thống microservices tự động sao lưu định kỳ, bảo mật thông tin toàn vẹn cấp Enterprise.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Timeline phát triển MVP -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide__label">Roadmap phát triển</span>
+                <h2 class="slide__heading">Lộ trình triển khai MVP</h2>
+                <div class="slide-timeline" style="margin-top: 1rem;">
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">Phase 1</span>
+                        <div class="slide-timeline-text">
+                            <h4>Setup Nền tảng & Cấu trúc</h4>
+                            <p>Cài đặt Clean Architecture, tạo database DDL SQL 6 bảng, middleware RBAC.</p>
+                        </div>
+                        <span class="slide-timeline-status" style="background: var(--green-dim); color: #059669;">Done</span>
+                    </div>
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">Phase 2-3</span>
+                        <div class="slide-timeline-text">
+                            <h4>Core Kanban & Logs Engine</h4>
+                            <p>Phát triển API & UI Kanban Board, quản lý task, bình luận và trigger log hoạt động.</p>
+                        </div>
+                        <span class="slide-timeline-status animate-pulse" style="background: var(--amber-dim); color: #d97706;">In Dev</span>
+                    </div>
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">Phase 4-5</span>
+                        <div class="slide-timeline-text">
+                            <h4>Luồng Phê Duyệt & Go-live</h4>
+                            <p>Phát triển Approval Queue, kiểm thử UAT, mock localStorage và bàn giao prototype.</p>
+                        </div>
+                        <span class="slide-timeline-status" style="background: rgba(0, 0, 0, 0.02); color: var(--text-dim);">Next</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Kêu gọi hành động -->
+        <section class="slide slide--title">
+            <div class="slide__container" style="align-items: center; text-align: center;">
+                <span class="slide-badge">Kêu gọi hành động</span>
+                <h1 class="slide__display" style="font-size: 3.2rem;">Sẵn sàng cho việc UAT</h1>
+                <p class="slide__body" style="max-width: 600px; margin-bottom: 2rem;">
+                    Vui lòng bấm vào các liên kết ở thanh điều hướng trên cùng để chuyển tiếp tới Đặc tả MVP, Kế hoạch chi tiết hoặc trải nghiệm Prototype UAT.
+                </p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="../index.html" class="slide-link" style="padding: 0.6rem 1.2rem; background: var(--accent); color: white; border-color: transparent;">Đặc tả tổng thể</a>
+                    <a href="../prototype/index.html" class="slide-link" style="padding: 0.6rem 1.2rem; border-color: var(--green); color: #059669; background: var(--green-dim); text-decoration: none;">Chạy Prototype</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Slide Control Script -->
+    <script src="./presentation.js"></script>
+</body>
+</html>

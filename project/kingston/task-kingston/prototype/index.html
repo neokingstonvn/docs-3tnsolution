@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Kingston – UAT Demo Gateway</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="gateway.css">
+</head>
+<body>
+
+    <div class="gateway-container">
+        
+        <div style="text-align: left; margin-bottom: 1.5rem; display: flex; justify-content: flex-start;">
+            <a href="../index.html" style="color: var(--accent); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; font-weight: 500;">
+                <span>←</span> Quay lại Tài Liệu Đặc Tả Tổng Thể
+            </a>
+        </div>
+        
+        <div class="gateway-header">
+            <h1>☀️ Task Kingston Gateway</h1>
+            <p>Hệ thống thử nghiệm UAT Demo. Vui lòng chọn cổng thông tin trải nghiệm:</p>
+        </div>
+
+        <div class="portal-grid">
+            <!-- 1. ADMIN CARD -->
+            <div class="portal-card card-accent-1">
+                <div>
+                    <span class="portal-icon">👑</span>
+                    <h2>Admin Portal</h2>
+                    <p>Cổng thông tin tối cao dành cho Ban giám đốc hoặc Quản trị hệ thống.</p>
+                    <ul class="features-list">
+                        <li>Khởi tạo & quản lý mọi dự án</li>
+                        <li>Chỉ định PM chịu trách nhiệm</li>
+                        <li>Cấu hình vai trò nhân viên (RBAC)</li>
+                        <li>Quyền phê duyệt tối cao</li>
+                    </ul>
+                </div>
+                <a href="admin.html" class="btn-portal btn-accent-1">Vào cổng Admin ➔</a>
+            </div>
+
+            <!-- 2. PM CARD -->
+            <div class="portal-card card-accent-2">
+                <div>
+                    <span class="portal-icon">👔</span>
+                    <h2>Project Manager Portal</h2>
+                    <p>Cổng thông tin dành cho Quản lý dự án (PM) để lập kế hoạch và giao việc.</p>
+                    <ul class="features-list">
+                        <li>Xem các dự án được chỉ định</li>
+                        <li>Tạo & giao task cho Staff</li>
+                        <li>Đặt mức ưu tiên và deadline</li>
+                        <li>Hàng đợi phê duyệt (Approval Queue)</li>
+                    </ul>
+                </div>
+                <a href="pm.html" class="btn-portal btn-accent-2">Vào cổng PM ➔</a>
+            </div>
+
+            <!-- 3. STAFF CARD -->
+            <div class="portal-card card-accent-3">
+                <div>
+                    <span class="portal-icon">👨‍💻</span>
+                    <h2>Staff / Member Portal</h2>
+                    <p>Cổng thông tin dành cho thành viên thực hiện nhiệm vụ và báo cáo.</p>
+                    <ul class="features-list">
+                        <li>Xem danh sách task cá nhân</li>
+                        <li>Cập nhật tiến trình công việc</li>
+                        <li>Gửi báo cáo kèm link tài liệu</li>
+                        <li>Bình luận trao đổi trong task</li>
+                    </ul>
+                </div>
+                <a href="staff.html" class="btn-portal btn-accent-3">Vào cổng Staff ➔</a>
+            </div>
+        </div>
+
+        <div class="sync-info-box">
+            <span>⚡</span>
+            <span>Dữ liệu được chia sẻ và đồng bộ hóa tức thì giữa các Portal thông qua cơ chế LocalStorage của trình duyệt.</span>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặc Tả Tổng Thể — Task Kingston</title>
+    <!-- Google Fonts: JetBrains Mono + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">💼</span>
+            <div class="logo-text">
+                <h1>Task Kingston</h1>
+                <p>Đặc Tả Tổng Thể</p>
+            </div>
+        </div>
+        <div class="sidebar-nav">
+            <p class="menu-title">Đặc tả tổng thể</p>
+            <a class="nav-item active" onclick="scrollToSec('intro')">📌 Giới Thiệu Chung</a>
+            <a class="nav-item" onclick="scrollToSec('scope')">📊 Phạm Vi Nghiệp Vụ</a>
+            <a class="nav-item" onclick="scrollToSec('roles')">👥 Vai Trò Người Dùng</a>
+            <a class="nav-item" onclick="scrollToSec('modules')">📦 Module Chức Năng</a>
+            <a class="nav-item" onclick="scrollToSec('testing')">🏁 Luồng Kiểm Thử</a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+        <div class="top-bar">
+            <span class="breadcrumb">Đặc Tả Tổng Thể / Task Kingston</span>
+            <div class="quick-links">
+                <a href="presentation/index.html" class="btn-link">📺 Trình chiếu Slide</a>
+                <a href="mvp/plan-high-level/index.html" class="btn-link">🧭 Kế hoạch MVP tổng thể</a>
+                <a href="mvp/plan-detailed/index.html" class="btn-link">🔌 Kế hoạch MVP chi tiết</a>
+                <a href="mmp/index.html" class="btn-link">🚀 Kế hoạch dài hạn (Sau MVP)</a>
+                <a href="prototype/index.html" class="btn-link highlight">🖥️ Trải nghiệm UAT Prototype</a>
+            </div>
+        </div>
+
+        <div class="content-area">
+            
+            <!-- SECTION 1: INTRO -->
+            <section id="intro">
+                <div class="glass-card intro-title">
+                    <span class="status-badge badge-indigo" style="margin-bottom: 0.75rem;">Đặc tả MVP chính thức</span>
+                    <h1>Task Kingston</h1>
+                    <p>Hệ thống quản lý dự án nội bộ văn phòng tối giản nhưng chuyên nghiệp, phân quyền theo vai trò (RBAC) chặt chẽ, hỗ trợ Kanban/List quản lý công việc, luồng phê duyệt trạng thái nhiệm vụ và theo dõi lịch sử chỉnh sửa.</p>
+                </div>
+            </section>
+
+            <!-- SECTION 2: SCOPE -->
+            <section id="scope">
+                <div class="glass-card">
+                    <h2>📊 1. Phạm Vi MVP (In-scope vs Out-of-scope)</h2>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40%;">Nhóm tính năng</th>
+                                    <th style="width: 20%; text-align: center;">MVP?</th>
+                                    <th>Ghi chú / Quy mô triển khai</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Quản lý dự án (Project Management)</strong></td>
+                                    <td style="text-align: center;"><span class="in-scope">✅ MVP</span></td>
+                                    <td>Tạo mới dự án, gán Project Manager, theo dõi trạng thái dự án (Active/Completed/On Hold).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Quản lý công việc (Task Management)</strong></td>
+                                    <td style="text-align: center;"><span class="in-scope">✅ MVP</span></td>
+                                    <td>Xem dưới dạng Kanban Board và danh sách List. Hỗ trợ lọc theo trạng thái, người thực hiện, độ ưu tiên.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Luồng phê duyệt (Task Approval Flow)</strong></td>
+                                    <td style="text-align: center;"><span class="in-scope">✅ MVP</span></td>
+                                    <td>Luồng chuyển trạng thái: To Do -> In Progress -> Reviewing -> Done hoặc Rejected. Staff gửi link báo cáo, PM/Admin nhấn duyệt hoặc trả về.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Lịch sử hoạt động & Bình luận (Activity Log & Comments)</strong></td>
+                                    <td style="text-align: center;"><span class="in-scope">✅ MVP</span></td>
+                                    <td>Ghi lại lịch sử chỉnh sửa cơ bản (ai chuyển trạng thái công việc, vào lúc nào) và lưu trữ bình luận (Comments) trong chi tiết công việc.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Phân quyền RBAC & Quản lý nhân viên</strong></td>
+                                    <td style="text-align: center;"><span class="in-scope">✅ MVP</span></td>
+                                    <td>Quản lý danh sách nhân viên nội bộ và gán vai trò: Admin, PM, Staff. Mỗi vai trò có quyền truy cập hạn chế tương ứng.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Đính kèm tài liệu trực tiếp</strong></td>
+                                    <td style="text-align: center;"><span class="out-scope">❌ Sau MVP</span></td>
+                                    <td>Không hỗ trợ tải trực tiếp file vật lý lên hệ thống. Người dùng sẽ dán link tài liệu từ Google Drive/OneDrive.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hệ thống thông báo Realtime</strong></td>
+                                    <td style="text-align: center;"><span class="out-scope">❌ Sau MVP</span></td>
+                                    <td>Không gửi email hoặc tin nhắn Slack thật. Chỉ thông báo giả lập trên giao diện người dùng (App Notification Bell).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Biểu đồ Gantt & Phân tích nâng cao</strong></td>
+                                    <td style="text-align: center;"><span class="out-scope">❌ Sau MVP</span></td>
+                                    <td>Không có biểu đồ Gantt hay báo cáo phân tích năng suất nâng cao.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: ROLES -->
+            <section id="roles">
+                <div class="glass-card">
+                    <h2>👥 2. Vai Trò & Phân Quyền Người Dùng (RBAC)</h2>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">Vai trò (Role)</th>
+                                    <th>Quyền hạn & Phạm vi thao tác chính</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="status-badge badge-indigo">Admin</span></td>
+                                    <td>
+                                        <ul>
+                                            <li>Toàn quyền tạo mới, chỉnh sửa, thay đổi trạng thái của tất cả các dự án trong văn phòng.</li>
+                                            <li>Xem và chỉnh sửa danh sách nhân viên, gán vai trò hệ thống (RBAC Management).</li>
+                                            <li>Có quyền phê duyệt (Approve) hoặc từ chối (Reject) bất kỳ công việc nào trong hệ thống.</li>
+                                            <li>Xem toàn bộ logs lịch sử của hệ thống.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status-badge badge-amber">Project Manager (PM)</span></td>
+                                    <td>
+                                        <ul>
+                                            <li>Xem danh sách các dự án mình được phân công làm PM.</li>
+                                            <li>Quản lý công việc (thêm, sửa, xóa, phân công task) trong phạm vi dự án phụ trách.</li>
+                                            <li>Phê duyệt (Approve) hoặc từ chối (Reject) báo cáo công việc của Staff trong dự án phụ trách.</li>
+                                            <li>Xem logs lịch sử hoạt động và bình luận trong dự án phụ trách.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status-badge badge-green">Staff / Member</span></td>
+                                    <td>
+                                        <ul>
+                                            <li>Xem danh sách công việc cá nhân được giao trên Dashboard hoặc Kanban Board.</li>
+                                            <li>Chuyển trạng thái công việc từ To Do sang In Progress.</li>
+                                            <li>Khi hoàn thành, gửi yêu cầu duyệt (Reviewing) kèm nội dung báo cáo và link tài liệu đính kèm.</li>
+                                            <li>Viết bình luận trao đổi thông tin trong các task được quyền truy cập.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: MODULES -->
+            <section id="modules">
+                <div class="glass-card">
+                    <h2>📦 3. Đặc Tả Chi Tiết Module Nghiệp Vụ</h2>
+                    <div class="modules-container">
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 1: Dashboard & Project Directory</div>
+                            <div class="module-desc">Cung cấp cái nhìn tổng quát về tiến độ và danh sách tất cả các dự án trong văn phòng.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules</strong>: Chỉ có Admin mới được tạo dự án mới và gán PM. Dự án có 3 trạng thái: Active, On Hold, Completed. Khi dự án Completed, toàn bộ công việc chưa xong sẽ bị đóng băng.</li>
+                                <li><strong>System Features</strong>: Tự động tính toán tiến độ dự án theo tỷ lệ % số task hoàn thành (Done / Tổng số task). Thống kê nhanh số dự án đang chạy và số task trễ hạn (overdue).</li>
+                                <li><strong>User Features</strong>: Giao diện Project Directory Card. Bộ lọc dự án theo trạng thái. Nút tạo dự án mới (chỉ hiện cho Admin).</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 2: Project Detail & Task Management (Kanban / List)</div>
+                            <div class="module-desc">Nơi quản lý công việc chi tiết của từng dự án theo dạng bảng Kanban hoặc danh sách List.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules</strong>: PM chỉ được thêm, sửa, xóa, phân công task trong dự án được chỉ định. Mỗi task bắt buộc có tiêu đề, độ ưu tiên (High/Medium/Low), deadline (Due date) và tối đa 1 người thực hiện (Assignee).</li>
+                                <li><strong>System Features</strong>: Tự động đánh dấu màu đỏ hoặc cảnh báo đối với các task quá hạn (Overdue) chưa hoàn thành. Sắp xếp danh sách công việc theo mức độ ưu tiên hoặc hạn chót.</li>
+                                <li><strong>User Features</strong>: Chế độ xem linh hoạt Kanban Board (kéo thả trạng thái) và List View. Bộ lọc công việc nhanh theo Assignee, Độ ưu tiên, Trạng thái.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 3: Task Detail & Activity Log / Comments</div>
+                            <div class="module-desc">Hiển thị thông tin chi tiết của từng đầu việc, cho phép lưu vết hoạt động và trao đổi thảo luận.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules</strong>: Mọi người dùng đều có quyền bình luận trong task mình được xem. Không ai được sửa hoặc xóa bình luận của người khác (kể cả Admin) để đảm bảo tính minh bạch. Mọi thay đổi trạng thái và Assignee phải ghi log tự động.</li>
+                                <li><strong>System Features</strong>: Tự động tạo bản ghi log trong Task: "[Thời gian] - [Tên User] đã chuyển trạng thái từ [Trạng thái cũ] sang [Trạng thái mới]".</li>
+                                <li><strong>User Features</strong>: Modal xem chi tiết task khi click vào Task Card. Hiển thị bình luận theo trình tự thời gian. Tab lịch sử hoạt động (Activity Log).</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 4: Approval Flow (Luồng phê duyệt công việc)</div>
+                            <div class="module-desc">Kiểm soát chặt chẽ việc hoàn thành công việc thông qua việc phê duyệt của quản lý.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules</strong>: Staff không thể tự ý chuyển task sang Done. Staff phải bấm "Gửi duyệt" (chuyển sang Reviewing) kèm báo cáo và link tài liệu. Chỉ PM phụ trách dự án hoặc Admin mới có quyền Approve (chuyển sang Done) hoặc Reject (chuyển lại In Progress kèm lý do bắt buộc).</li>
+                                <li><strong>System Features</strong>: Ghi nhận chi tiết lịch sử phê duyệt (người duyệt, thời gian, lý do từ chối nếu có) vào Activity Log của task.</li>
+                                <li><strong>User Features</strong>: Hộp thoại phê duyệt dành cho PM/Admin. Danh sách "Công việc chờ duyệt" (Approval Queue) hiển thị trên màn hình Dashboard của PM và Admin.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 5: RBAC & Employee Management</div>
+                            <div class="module-desc">Phân chia quyền hạn hệ thống cho từng tài khoản nhân sự trong văn phòng.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules</strong>: Admin có quyền thay đổi vai trò hệ thống của bất kỳ ai ngoại trừ chính bản thân. Danh sách nhân viên và phân quyền hiển thị công khai để đảm bảo minh bạch.</li>
+                                <li><strong>System Features</strong>: Chặn truy cập hoặc từ chối hành động ở client-side nếu vai trò của user hiện tại không khớp với quyền hạn hành động.</li>
+                                <li><strong>User Features</strong>: Giao diện Danh bạ nhân viên (Employee Directory). Màn hình gán vai trò người dùng (chỉ Admin truy cập).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: TESTING -->
+            <section id="testing">
+                <div class="glass-card">
+                    <h2>🏁 4. Luồng Nghiệp Vụ Happy Path & Kiểm Thử</h2>
+                    <div class="happy-paths-container">
+                        <div class="happy-path-box">
+                            <h4>🎯 Luồng 1: Admin khởi tạo dự án & Chỉ định PM</h4>
+                            <div class="happy-path-flow">
+                                <div class="flow-node">Admin đăng nhập</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Click "Tạo dự án mới"</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Nhập tên dự án & Chỉ định PM phụ trách</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Bấm "Lưu" (Lưu vào localStorage)</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Dự án hiển thị ở danh sách & PM nhận thông báo</div>
+                            </div>
+                        </div>
+                        
+                        <div class="happy-path-box">
+                            <h4>🎯 Luồng 2: PM tạo nhiệm vụ & Giao việc cho Staff</h4>
+                            <div class="happy-path-flow">
+                                <div class="flow-node">PM đăng nhập & Vào chi tiết dự án</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Click "Thêm công việc"</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Nhập thông tin (Tên task, deadline, độ ưu tiên)</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Chọn Assignee là Staff</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Lưu task ở cột "To Do" & Staff nhận thông báo</div>
+                            </div>
+                        </div>
+                        
+                        <div class="happy-path-box">
+                            <h4>🎯 Luồng 3: Staff thực hiện nhiệm vụ & Gửi yêu cầu duyệt</h4>
+                            <div class="happy-path-flow">
+                                <div class="flow-node">Staff đăng nhập & Vào Dashboard</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Chuyển trạng thái task sang "In Progress" để làm việc</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Hoàn thành, bấm "Gửi yêu cầu duyệt"</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Nhập báo cáo & Dán link tài liệu</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Task chuyển sang "Reviewing" (Khóa kéo thả)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="happy-path-box">
+                            <h4>🎯 Luồng 4: PM Phê duyệt hoặc Từ chối yêu cầu hoàn thành</h4>
+                            <div class="happy-path-flow">
+                                <div class="flow-node">PM vào Approval Queue</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Xem chi tiết báo cáo & Link đính kèm của Staff</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">PM đánh giá báo cáo</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Approve (Task chuyển sang "Done") HOẶC Reject (Nhập phản hồi & Task quay lại "In Progress")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="index.js"></script>
+</body>
+</html>

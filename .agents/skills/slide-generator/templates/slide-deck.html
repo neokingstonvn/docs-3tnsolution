@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình Chiếu Kế Hoạch — {{PROJECT_NAME}}</title>
+    <!-- Google Fonts: Instrument Serif + JetBrains Mono + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./presentation.css">
+</head>
+<body>
+
+    <!-- Floating Top Presentation Bar -->
+    <header class="presentation-bar">
+        <div class="logo-section">
+            <span class="logo-icon">☀️</span>
+            <div class="logo-content">
+                <h1>{{PROJECT_NAME}}</h1>
+                <p>Kế hoạch triển khai & Nghiệp vụ</p>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <a href="../spec/index.html" class="slide-link">📋 Đặc tả MVP</a>
+            <a href="../plan-detailed/index.html" class="slide-link">🔌 Kế hoạch MVP & Triển khai chi tiết</a>
+            <a href="../plan-high-level/index.html" class="slide-link">🚀 Kế hoạch dài hạn (Sau MVP)</a>
+            <button onclick="toggleFullScreen()" class="fullscreen-btn" title="Toàn màn hình">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:18px;height:18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l-5 5m11 5v-4m0 0h-4m4 0l-5 5" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Slide Deck Scroll Snap Container -->
+    <div class="deck" id="slide-deck">
+        {{SLIDES_HTML}}
+    </div>
+
+    <!-- Slide Control Script -->
+    <script>
+        // Full screen toggle helper
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error enabling full-screen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Keyboard navigation (Arrow keys, Space, Backspace)
+        const deck = document.getElementById('slide-deck');
+        
+        window.addEventListener('keydown', (e) => {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlideIndex = 0;
+            
+            // Determine current active slide by scroll position
+            const scrollPos = deck.scrollTop;
+            const slideHeight = window.innerHeight;
+            currentSlideIndex = Math.round(scrollPos / slideHeight);
+
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                if (currentSlideIndex < slides.length - 1) {
+                    slides[currentSlideIndex + 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+                e.preventDefault();
+                if (currentSlideIndex > 0) {
+                    slides[currentSlideIndex - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

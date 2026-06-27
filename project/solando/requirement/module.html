@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phác Thảo Clean Architecture & Timeline - Solando Solar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcfbf7;
+            background-image: 
+                radial-gradient(rgba(30, 41, 59, 0.05) 1px, transparent 0),
+                radial-gradient(rgba(30, 41, 59, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+            color: #1e293b;
+        }
+
+        .sketch-font {
+            font-family: 'Architects Daughter', cursive;
+        }
+
+        /* Sketchy Borders */
+        .sketch-box {
+            border: 2.5px solid #1e293b;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            background: #ffffff;
+            box-shadow: 4px 5px 0px #1e293b;
+            transition: all 0.2s ease;
+        }
+
+        .sketch-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 8px 0px #1e293b;
+        }
+
+        .sketch-card-inner {
+            border: 2px solid #1e293b;
+            border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
+        }
+
+        .sketch-btn {
+            border: 2px solid #1e293b;
+            border-radius: 120px 20px 100px 20px/20px 100px 20px 120px;
+            box-shadow: 2px 3px 0px #1e293b;
+            transition: all 0.15s ease;
+        }
+
+        .sketch-btn:active {
+            transform: translate(2px, 3px);
+            box-shadow: 0px 0px 0px #1e293b;
+        }
+
+        /* Marker highlighter effects */
+        .marker-yellow {
+            background: rgba(253, 224, 71, 0.35);
+            border-radius: 4px 12px 4px 10px;
+        }
+
+        .marker-blue {
+            background: rgba(14, 165, 233, 0.2);
+            border-radius: 10px 4px 12px 4px;
+        }
+
+        .marker-green {
+            background: rgba(34, 197, 94, 0.2);
+            border-radius: 8px 10px 4px 12px;
+        }
+
+        .marker-purple {
+            background: rgba(168, 85, 247, 0.18);
+            border-radius: 12px 4px 10px 6px;
+        }
+
+        .marker-rose {
+            background: rgba(244, 63, 94, 0.18);
+            border-radius: 4px 10px 8px 4px;
+        }
+
+        .marker-orange {
+            background: rgba(249, 115, 22, 0.15);
+            border-radius: 10px 8px 6px 12px;
+        }
+
+        /* Clean Arch concentric circles (rough borders) */
+        .circle-layer {
+            border: 2.5px dashed #475569;
+            border-radius: 48% 52% 49% 51% / 51% 48% 52% 49%;
+            transition: all 0.3s ease;
+        }
+
+        .circle-layer.active {
+            border: 3px solid #1e293b;
+            box-shadow: 0 0 15px rgba(30, 41, 59, 0.1);
+        }
+
+        /* Pulse animation for active simulation steps */
+        @keyframes pulse-border {
+            0% { border-color: #1e293b; box-shadow: 0 0 0 0px rgba(30, 41, 59, 0.4); }
+            70% { border-color: #f43f5e; box-shadow: 0 0 0 6px rgba(244, 63, 94, 0); }
+            100% { border-color: #1e293b; box-shadow: 0 0 0 0px rgba(30, 41, 59, 0); }
+        }
+
+        .step-highlight {
+            animation: pulse-border 1.5s infinite;
+            border-color: #f43f5e !important;
+            border-style: solid !important;
+        }
+
+        /* Hand drawn timeline visual styling */
+        .timeline-row {
+            transition: background-color 0.2s ease;
+        }
+        
+        .timeline-row:hover {
+            background-color: rgba(253, 224, 71, 0.1);
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8 min-h-screen">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Quay lại README -->
+        <div class="mb-4">
+            <a href="../solutions/README.md" class="text-sm font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1">
+                ✏️ Back to README
+            </a>
+        </div>
+
+        <!-- Tiêu đề phác thảo -->
+        <header class="mb-8 text-center relative">
+            <h1 class="text-3xl md:text-5xl font-bold sketch-font text-slate-800 tracking-tight inline-block transform -rotate-1">
+                Bản Phác Thảo Clean Architecture & Timeline 📝
+            </h1>
+            <p class="text-slate-600 mt-3 sketch-font text-lg">
+                Hệ thống ERP Solar Solando - Phiên bản giản lược nghiệp vụ (Tự xây, không KiotViet)
+            </p>
+            <div class="absolute -right-4 top-0 hidden lg:block transform rotate-12 bg-yellow-100 border-2 border-slate-800 p-2 text-xs sketch-font font-bold">
+                100% Tự xây! 🚀
+            </div>
+        </header>
+
+        <!-- Layout chính: Sơ đồ + Giả lập -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-12">
+            
+            <!-- Cột trái: Sơ đồ Clean Architecture vẽ tay -->
+            <div class="lg:col-span-6 space-y-6">
+                <div class="sketch-box p-6 relative">
+                    <h2 class="text-xl font-bold sketch-font mb-4 flex justify-between items-center">
+                        <span>🎯 4 Tầng Clean Architecture</span>
+                        <span class="text-xs text-slate-500 font-normal">Click vào mỗi tầng để xem vai trò</span>
+                    </h2>
+
+                    <!-- Concentric Circles Diagram -->
+                    <div class="relative w-full max-w-[400px] mx-auto aspect-square flex items-center justify-center p-4">
+                        
+                        <!-- Layer 4: Infrastructure (Ngoài cùng) -->
+                        <div id="layer-infra" onclick="selectLayer('infra')" class="circle-layer active w-full h-full flex items-center justify-center cursor-pointer p-4 bg-slate-100/40 relative">
+                            <span class="absolute top-2 left-1/2 transform -translate-x-1/2 sketch-font text-xs font-bold text-slate-500 uppercase tracking-wider">Infrastructure</span>
+                            
+                            <!-- Layer 3: Presentation -->
+                            <div id="layer-presentation" onclick="event.stopPropagation(); selectLayer('presentation')" class="circle-layer w-[80%] h-[80%] flex items-center justify-center cursor-pointer p-4 bg-blue-50/50 relative">
+                                <span class="absolute top-2 left-1/2 transform -translate-x-1/2 sketch-font text-xs font-bold text-blue-600 uppercase tracking-wider">Presentation</span>
+                                
+                                <!-- Layer 2: Use Cases -->
+                                <div id="layer-usecase" onclick="event.stopPropagation(); selectLayer('usecase')" class="circle-layer w-[75%] h-[75%] flex items-center justify-center cursor-pointer p-4 bg-green-50/50 relative">
+                                    <span class="absolute top-2 left-1/2 transform -translate-x-1/2 sketch-font text-xs font-bold text-green-600 uppercase tracking-wider">Use Cases</span>
+                                    
+                                    <!-- Layer 1: Domain (Trong cùng) -->
+                                    <div id="layer-domain" onclick="event.stopPropagation(); selectLayer('domain')" class="circle-layer w-[70%] h-[70%] flex flex-col items-center justify-center cursor-pointer bg-amber-50 relative border-2 border-amber-800">
+                                        <span class="sketch-font text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">Domain</span>
+                                        <span class="text-[10px] text-amber-700 text-center font-bold font-mono">Entities<br>& Rules</span>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel chi tiết tầng được chọn -->
+                    <div class="mt-6 p-4 bg-slate-50 border-2 border-dashed border-slate-400 rounded-lg relative min-h-[140px]">
+                        <h3 id="layer-title" class="font-bold text-sm sketch-font text-slate-800 mb-2">💡 Clean Architecture</h3>
+                        <div id="layer-desc" class="text-xs text-slate-600 space-y-2">
+                            Hãy click vào một tầng trên sơ đồ (vòng tròn) để khám phá vai trò, cấu trúc thư mục và các file thành phần cụ thể.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột thư mục Clean Arch -->
+                <div class="sketch-box p-6">
+                    <h2 class="text-lg font-bold sketch-font mb-3">📁 Cấu Trúc Thư Mục src/</h2>
+                    <pre class="bg-slate-900 text-slate-200 p-4 rounded-lg text-xs font-mono overflow-x-auto border-2 border-slate-800">
+src/
+├── <span class="text-amber-300">domain/</span>                    <span class="text-slate-500">// Thực thể cốt lõi</span>
+│   ├── entities/              <span class="text-slate-400">// Dealer, Product, Order,...</span>
+│   └── repositories/          <span class="text-slate-400">// Interface cổng kết nối CSDL</span>
+├── <span class="text-green-300">use-cases/</span>                 <span class="text-slate-500">// Logic nghiệp vụ chi tiết</span>
+│   ├── authentication/        <span class="text-slate-400">// LoginUseCase.ts</span>
+│   ├── master-data/           <span class="text-slate-400">// ManageSettingsUseCase.ts</span>
+│   ├── dealer/                <span class="text-slate-400">// CheckCreditLimitUseCase.ts</span>
+│   ├── quotation/             <span class="text-slate-400">// CalculateMarginUseCase.ts</span>
+│   ├── billing/               <span class="text-slate-400">// ProcessVietQRPaymentUseCase.ts</span>
+│   └── warranty/              <span class="text-slate-400">// ActivateWarrantyViaQRUseCase.ts</span>
+├── <span class="text-blue-300">infrastructure/</span>            <span class="text-slate-500">// Framework, CSDL, Webhook ngoài</span>
+│   ├── database/              <span class="text-slate-400">// Prisma ORM, Repo implementation</span>
+│   ├── http/                  <span class="text-slate-400">// NestJS Controllers</span>
+│   └── payment/               <span class="text-slate-400">// VietQR webhook receiver</span></pre>
+                </div>
+            </div>
+
+            <!-- Cột phải: Trình giả lập luồng chạy Use Case vẽ tay -->
+            <div class="lg:col-span-6 space-y-6">
+                <div class="sketch-box p-6 relative">
+                    <h2 class="text-xl font-bold sketch-font mb-2">🏃 Trình Giả Lập Luồng Sử Dụng</h2>
+                    <p class="text-xs text-slate-500 mb-4">Click chọn một Use Case bên dưới để xem đường đi trực quan của dữ liệu qua các tầng kiến trúc.</p>
+
+                    <!-- Chọn Use case -->
+                    <div class="grid grid-cols-3 gap-2 mb-6">
+                        <button onclick="startSimulation('warranty')" class="sketch-btn py-2 px-1 text-xs font-bold bg-amber-100 hover:bg-amber-200 text-slate-800 border-2 border-slate-800">
+                            🛡️ Kích Hoạt BH
+                        </button>
+                        <button onclick="startSimulation('credit')" class="sketch-btn py-2 px-1 text-xs font-bold bg-rose-100 hover:bg-rose-200 text-slate-800 border-2 border-slate-800">
+                            💳 Check Công Nợ
+                        </button>
+                        <button onclick="startSimulation('vietqr')" class="sketch-btn py-2 px-1 text-xs font-bold bg-emerald-100 hover:bg-emerald-200 text-slate-800 border-2 border-slate-800">
+                            🏦 Gạch Nợ VietQR
+                        </button>
+                    </div>
+
+                    <!-- Flow Diagram Steps -->
+                    <div class="space-y-4 mb-6">
+                        <!-- Step 1: Presentation -->
+                        <div id="step-pres" class="p-3 bg-white border-2 border-slate-800 rounded-lg flex items-start gap-3 transition-all duration-300">
+                            <span class="px-2 py-0.5 bg-blue-100 text-blue-800 border border-blue-400 text-[10px] font-bold rounded mt-0.5">API</span>
+                            <div>
+                                <h4 class="font-bold text-xs sketch-font text-slate-800">Lớp Presentation (API Controller)</h4>
+                                <p id="text-pres" class="text-[11px] text-slate-500">Chờ lệnh kích hoạt...</p>
+                            </div>
+                        </div>
+
+                        <!-- Arrow Down -->
+                        <div class="text-center text-slate-400 text-sm font-bold">⬇️</div>
+
+                        <!-- Step 2: Use Cases -->
+                        <div id="step-usecase" class="p-3 bg-white border-2 border-slate-800 rounded-lg flex items-start gap-3 transition-all duration-300">
+                            <span class="px-2 py-0.5 bg-green-100 text-green-800 border border-green-400 text-[10px] font-bold rounded mt-0.5">USE CASE</span>
+                            <div>
+                                <h4 class="font-bold text-xs sketch-font text-slate-800">Lớp Use Cases (Logic Nghiệp Vụ)</h4>
+                                <p id="text-usecase" class="text-[11px] text-slate-500">Chờ lệnh kích hoạt...</p>
+                            </div>
+                        </div>
+
+                        <!-- Arrow Down -->
+                        <div class="text-center text-slate-400 text-sm font-bold">⬇️</div>
+
+                        <!-- Step 3: Domain -->
+                        <div id="step-domain" class="p-3 bg-white border-2 border-slate-800 rounded-lg flex items-start gap-3 transition-all duration-300">
+                            <span class="px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-400 text-[10px] font-bold rounded mt-0.5">DOMAIN</span>
+                            <div>
+                                <h4 class="font-bold text-xs sketch-font text-slate-800">Lớp Domain (Thực Thể & Quy Tắc Lõi)</h4>
+                                <p id="text-domain" class="text-[11px] text-slate-500">Chờ lệnh kích hoạt...</p>
+                            </div>
+                        </div>
+
+                        <!-- Arrow Down -->
+                        <div class="text-center text-slate-400 text-sm font-bold">⬇️</div>
+
+                        <!-- Step 4: Infrastructure -->
+                        <div id="step-infra" class="p-3 bg-white border-2 border-slate-800 rounded-lg flex items-start gap-3 transition-all duration-300">
+                            <span class="px-2 py-0.5 bg-slate-100 text-slate-800 border border-slate-400 text-[10px] font-bold rounded mt-0.5">INFRA</span>
+                            <div>
+                                <h4 class="font-bold text-xs sketch-font text-slate-800">Lớp Infrastructure (Cơ Sở Dữ Liệu/Webhook)</h4>
+                                <p id="text-infra" class="text-[11px] text-slate-500">Chờ lệnh kích hoạt...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Console logs -->
+                    <div class="border-t-2 border-dashed border-slate-300 pt-4">
+                        <span class="text-xs text-slate-500 sketch-font block mb-1">Nhật ký hệ thống (Console Logs):</span>
+                        <div id="sim-console" class="bg-slate-900 border-2 border-slate-800 rounded-lg p-3 text-[10px] font-mono text-emerald-400 h-28 overflow-y-auto">
+                            [Hệ thống] Nhấn nút Use Case để chạy mô phỏng...
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Section: CHI TIẾT CÁC MODULE CẦN PHÁT TRIỂN (THEO CLEAN ARCHITECTURE) -->
+        <div class="sketch-box p-6 md:p-8 mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold sketch-font mb-6 text-slate-800 border-b-2 border-dashed border-slate-300 pb-3 flex items-center gap-2">
+                📦 9 Module Thực Tế Cần Phát Triển 🛠️
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 1. Authentication -->
+                <div class="border-2 border-slate-800 rounded-xl p-4 bg-[#fffefe] hover:shadow-md transition-all">
+                    <span class="px-2 py-0.5 bg-rose-100 text-rose-800 text-[10px] font-bold border border-rose-300 rounded uppercase tracking-wider sketch-font">Tech Module 1</span>
+                    <h3 class="font-bold text-base mt-2 flex items-center gap-2 text-rose-700">🔑 Xác Thực & Phân Quyền</h3>
+                    <p class="text-xs text-slate-500 mt-1">Đăng nhập phân quyền Admin, Kinh doanh, Kho & Đại lý.</p>
+                    
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-200">
+                            <span class="font-semibold text-amber-800 block mb-0.5">Entities (Domain)</span>
+                            <p class="text-[11px] text-slate-600">User, Role, Permission, UserSession</p>
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <span class="font-semibold text-green-800 block mb-0.5">Use Cases</span>
+                            <p class="text-[11px] text-slate-600">LoginUseCase, ValidateUserSession, AssignRBACPermissions</p>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <span class="font-semibold text-blue-800 block mb-0.5">Infra</span>
+                            <p class="text-[11px] text-slate-600">Bcrypt mã hóa, Passport JWT, NestJS Guards.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Master Data -->
+                <div class="border-2 border-slate-800 rounded-xl p-4 bg-[#fffefe] hover:shadow-md transition-all">
+                    <span class="px-2 py-0.5 bg-slate-100 text-slate-800 text-[10px] font-bold border border-slate-300 rounded uppercase tracking-wider sketch-font">Tech Module 2</span>
+                    <h3 class="font-bold text-base mt-2 flex items-center gap-2 text-slate-700">⚙️ Dữ Liệu Dùng Chung</h3>
+                    <p class="text-xs text-slate-500 mt-1">Danh mục dùng chung hệ thống, cài đặt cấu hình.</p>
+                    
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-200">
+                            <span class="font-semibold text-amber-800 block mb-0.5">Entities (Domain)</span>
+                            <p class="text-[11px] text-slate-600">Branch (kho), Currency (tiền tệ), SystemConfig</p>
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <span class="font-semibold text-green-800 block mb-0.5">Use Cases</span>
+                            <p class="text-[11px] text-slate-600">GetCategoriesList, UpdateSystemConfigParameter</p>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <span class="font-semibold text-blue-800 block mb-0.5">Infra</span>
+                            <p class="text-[11px] text-slate-600">Prisma database client, global config cache.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Dealer & CRM -->
+                <div class="border-2 border-slate-800 rounded-xl p-4 bg-[#fffefe] hover:shadow-md transition-all">
+                    <span class="px-2 py-0.5 bg-indigo-100 text-indigo-800 text-[10px] font-bold border border-indigo-300 rounded uppercase tracking-wider sketch-font">Biz Module 1</span>
+                    <h3 class="font-bold text-base mt-2 flex items-center gap-2 text-indigo-700">🏢 Đại Lý & Công Nợ</h3>
+                    <p class="text-xs text-slate-500 mt-1">Quản lý hạn mức công nợ & phân hạng Đại lý.</p>
+                    
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-200">
+                            <span class="font-semibold text-amber-800 block mb-0.5">Entities (Domain)</span>
+                            <p class="text-[11px] text-slate-600">Dealer (Tier 1/2/Lẻ), EndUser (Khách cuối)</p>
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <span class="font-semibold text-green-800 block mb-0.5">Use Cases</span>
+                            <p class="text-[11px] text-slate-600">CheckCreditLimitUseCase, CreateDealerUseCase</p>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <span class="font-semibold text-blue-800 block mb-0.5">Infra & Rules</span>
+                            <p class="text-[11px] text-slate-600"><strong>Rule:</strong> Chặn cứng (Hard Block) tạo đơn mới khi nợ + đơn mới vượt hạn mức.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Product Module -->
+                <div class="border-2 border-slate-800 rounded-xl p-4 bg-[#fffefe] hover:shadow-md transition-all">
+                    <span class="px-2 py-0.5 bg-teal-100 text-teal-800 text-[10px] font-bold border border-teal-300 rounded uppercase tracking-wider sketch-font">Biz Module 2</span>
+                    <h3 class="font-bold text-base mt-2 flex items-center gap-2 text-teal-700">🏷️ Sản Phẩm & BOM</h3>
+                    <p class="text-xs text-slate-500 mt-1">Danh mục SKU và combo kỹ thuật Solar.</p>
+                    
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-200">
+                            <span class="font-semibold text-amber-800 block mb-0.5">Entities (Domain)</span>
+                            <p class="text-[11px] text-slate-600">Product (SKU, bảo hành SKU), SolutionKit (Kit BOM)</p>
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <span class="font-semibold text-green-800 block mb-0.5">Use Cases</span>
+                            <p class="text-[11px] text-slate-600">RegisterProductUseCase, CreateSolutionKitUseCase</p>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <span class="font-semibold text-blue-800 block mb-0.5">Infra</span>
+                            <p class="text-[11px] text-slate-600">AWS S3 file lưu CO/CQ, Catalog tài liệu kỹ thuật.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Quotation Module -->
+                <div class="border-2 border-slate-800 rounded-xl p-4 bg-[#fffefe] hover:shadow-md transition-all">
+                    <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-bold border border-blue-300 rounded uppercase tracking-wider sketch-font">Biz Module 3</span>
+                    <h3 class="font-bold text-base mt-2 flex items-center gap-2 text-blue-700">📋 Báo Giá & Pricing</h3>
+                    <p class="text-xs text-slate-500 mt-1">Pricing engine theo Tier và tính margin theo giá lô.</p>
+                    
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-200">
+                            <span class="font-semibold text-amber-800 block mb-0.5">Entities (Domain)</span>
+                            <p class="text-[11px] text-slate-600">Quotation, QuotationItem, PricingPolicy</p>
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <span class="font-semibold text-green-800 block mb-0.5">Use Cases</span>
+                            <p class="text-[11px] text-slate-600">CalculateMarginUseCase, ApproveQuotationUseCase</p>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <span class="font-semibold text-blue-800 block mb-0.5">Infra & Rules</span>
+                            <p class="text-[11px] text-slate-600"><strong>Rule:</strong> Kích hoạt workflow duyệt giá lên Admin khi Margin % &lt; 10%.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Sales Module -->
+                <div class="border-2 border-slate-800 rounded-xl p-4 bg-[#fffefe] hover:shadow-md transition-all">
+                    <span class="px-2 py-0.5 bg-green-100 text-green-800 text-[10px] font-bold border border-green-300 rounded uppercase tracking-wider sketch-font">Biz Module 4</span>
+                    <h3 class="font-bold text-base mt-2 flex items-center gap-2 text-green-700">🤝 Đơn Hàng (Orders)</h3>
+                    <p class="text-xs text-slate-500 mt-1">Quản lý vòng đời đơn hàng bán cho đại lý.</p>
+                    
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-200">
+                            <span class="font-semibold text-amber-800 block mb-0.5">Entities (Domain)</span>
+                            <p class="text-[11px] text-slate-600">Order, OrderItem, OrderStatusHistory</p>
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <span class="font-semibold text-green-800 block mb-0.5">Use Cases</span>
+                            <p class="text-[11px] text-slate-600">CreateOrderFromQuotationUseCase, UpdateOrderStatus</p>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <span class="font-semibold text-blue-800 block mb-0.5">Infra</span>
+                            <p class="text-[11px] text-slate-600">Cơ chế giao dịch an toàn (DB Transactions) của Prisma.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. Billing & Payment -->
+                <div class="border-2 border-slate-800 rounded-xl p-4 bg-[#fffefe] hover:shadow-md transition-all">
+                    <span class="px-2 py-0.5 bg-orange-100 text-orange-800 text-[10px] font-bold border border-orange-300 rounded uppercase tracking-wider sketch-font">Biz Module 5</span>
+                    <h3 class="font-bold text-base mt-2 flex items-center gap-2 text-orange-700">💳 Hóa Đơn & VietQR</h3>
+                    <p class="text-xs text-slate-500 mt-1">Xuất hóa đơn, sinh VietQR động & gạch nợ tự động.</p>
+                    
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-200">
+                            <span class="font-semibold text-amber-800 block mb-0.5">Entities (Domain)</span>
+                            <p class="text-[11px] text-slate-600">Invoice, PaymentTransaction</p>
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <span class="font-semibold text-green-800 block mb-0.5">Use Cases</span>
+                            <p class="text-[11px] text-slate-600">GenerateVietQRPayload, ProcessVietQRPaymentWebhook</p>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <span class="font-semibold text-blue-800 block mb-0.5">Infra & Rules</span>
+                            <p class="text-[11px] text-slate-600"><strong>Infra:</strong> SePay/Casso Webhook. <strong>Rule:</strong> Gạch nợ công nợ đại lý tức thì trong 3 giây.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. Inventory Module -->
+                <div class="border-2 border-slate-800 rounded-xl p-4 bg-[#fffefe] hover:shadow-md transition-all">
+                    <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-bold border border-amber-300 rounded uppercase tracking-wider sketch-font">Biz Module 6</span>
+                    <h3 class="font-bold text-base mt-2 flex items-center gap-2 text-amber-700">📦 Kho & Quét Serial</h3>
+                    <p class="text-xs text-slate-500 mt-1">Lô hàng (Batch), giá vốn COGS và quét Serial Number.</p>
+                    
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-200">
+                            <span class="font-semibold text-amber-800 block mb-0.5">Entities (Domain)</span>
+                            <p class="text-[11px] text-slate-600">Batch (Lot), Serial (In Stock, Shipped, Activated)</p>
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <span class="font-semibold text-green-800 block mb-0.5">Use Cases</span>
+                            <p class="text-[11px] text-slate-600">ImportBatchUseCase, ScanSerialExportUseCase</p>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <span class="font-semibold text-blue-800 block mb-0.5">Infra</span>
+                            <p class="text-[11px] text-slate-600">Ứng dụng quét camera HTML5 PWA trên điện thoại.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. Warranty Module -->
+                <div class="border-2 border-slate-800 rounded-xl p-4 bg-[#fffefe] hover:shadow-md transition-all">
+                    <span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-[10px] font-bold border border-purple-300 rounded uppercase tracking-wider sketch-font">Biz Module 7</span>
+                    <h3 class="font-bold text-base mt-2 flex items-center gap-2 text-purple-700">🛠️ Bảo Hành & Sự Cố</h3>
+                    <p class="text-xs text-slate-500 mt-1">Kích hoạt bảo hành qua QR công cộng và quản lý Ticket.</p>
+                    
+                    <div class="mt-4 space-y-2 text-xs">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-200">
+                            <span class="font-semibold text-amber-800 block mb-0.5">Entities (Domain)</span>
+                            <p class="text-[11px] text-slate-600">ActivatedAsset, SupportTicket</p>
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <span class="font-semibold text-green-800 block mb-0.5">Use Cases</span>
+                            <p class="text-[11px] text-slate-600">ActivateWarrantyViaQRUseCase, CreateSupportTicket</p>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <span class="font-semibold text-blue-800 block mb-0.5">Infra</span>
+                            <p class="text-[11px] text-slate-600">Zalo ZNS / SMS API thông báo kích hoạt thành công.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: BẢNG TIMELINE PHÁT TRIỂN VẼ TAY -->
+        <div class="sketch-box p-6 md:p-8 mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold sketch-font mb-6 text-slate-800 border-b-2 border-dashed border-slate-300 pb-3 flex items-center gap-2">
+                📅 Lộ Trình Phát Triển & Timeline (10 Tuần) ⏱️
+            </h2>
+            
+            <!-- Timeline Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs md:text-sm">
+                    <thead>
+                        <tr class="border-b-2 border-slate-800">
+                            <th class="py-3 px-2 font-bold sketch-font text-slate-700">Giai Đoạn</th>
+                            <th class="py-3 px-2 font-bold sketch-font text-slate-700">Thời Gian</th>
+                            <th class="py-3 px-2 font-bold sketch-font text-slate-700">Các Module Triển Khai</th>
+                            <th class="py-3 px-2 font-bold sketch-font text-slate-700">Nghiệp Vụ & Use Cases Trọng Tâm</th>
+                            <th class="py-3 px-2 font-bold sketch-font text-slate-700 text-center">Ưu Tiên</th>
+                            <th class="py-3 px-2 font-bold sketch-font text-slate-700">Phụ Thuộc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="timeline-row border-b border-dashed border-slate-300">
+                            <td class="py-4 px-2 font-bold text-slate-800">Giai Đoạn 1:<br>Khởi Tạo</td>
+                            <td class="py-4 px-2 font-mono text-slate-600">Tuần 1 - 2</td>
+                            <td class="py-4 px-2">
+                                <span class="px-1.5 py-0.5 bg-rose-50 text-rose-700 rounded border border-rose-200">🔑 1. Auth & RBAC</span><br>
+                                <span class="px-1.5 py-0.5 bg-slate-50 text-slate-700 rounded border border-slate-200 mt-1 inline-block">⚙️ 2. Master Data</span><br>
+                                <span class="px-1.5 py-0.5 bg-teal-50 text-teal-700 rounded border border-teal-200 mt-1 inline-block">🏷️ 4. Product & PIM</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-600">
+                                - Khung sườn Clean Arch (NestJS + Prisma).<br>
+                                - Tạo tài khoản & login phân quyền người dùng/đại lý.<br>
+                                - Định nghĩa danh mục SKU, cấu hình ngày bảo hành mặc định.
+                            </td>
+                            <td class="py-4 px-2 text-center">
+                                <span class="px-2 py-0.5 marker-rose text-rose-800 font-bold text-xs">CAO</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-400">Không có</td>
+                        </tr>
+                        <tr class="timeline-row border-b border-dashed border-slate-300">
+                            <td class="py-4 px-2 font-bold text-slate-800">Giai Đoạn 2:<br>CSDL & Kho</td>
+                            <td class="py-4 px-2 font-mono text-slate-600">Tuần 3 - 5</td>
+                            <td class="py-4 px-2">
+                                <span class="px-1.5 py-0.5 bg-indigo-50 text-indigo-700 rounded border border-indigo-200">🏢 3. Dealer & CRM</span><br>
+                                <span class="px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded border border-amber-200 mt-1 inline-block">📦 8. Inventory & Serial</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-600">
+                                - Thiết lập hạn mức công nợ đại lý.<br>
+                                - Quản lý nhập/xuất kho theo lô và lưu Serial Number.<br>
+                                - Phát triển app quét Serial camera trên web (PWA).
+                            </td>
+                            <td class="py-4 px-2 text-center">
+                                <span class="px-2 py-0.5 marker-rose text-rose-800 font-bold text-xs">CAO</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-600 font-semibold">Giai đoạn 1</td>
+                        </tr>
+                        <tr class="timeline-row border-b border-dashed border-slate-300">
+                            <td class="py-4 px-2 font-bold text-slate-800">Giai Đoạn 3:<br>Kinh Doanh</td>
+                            <td class="py-4 px-2 font-mono text-slate-600">Tuần 6 - 7</td>
+                            <td class="py-4 px-2">
+                                <span class="px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-200">📋 5. Quotation & Price</span><br>
+                                <span class="px-1.5 py-0.5 bg-green-50 text-green-700 rounded border border-green-200 mt-1 inline-block">🤝 6. Order</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-600">
+                                - Pricing engine tự áp giá bán theo Tier đại lý.<br>
+                                - Lập báo giá, tự động tính Margin % theo lô xuất.<br>
+                                - Đơn hàng, check nợ tự động (Hard credit block).
+                            </td>
+                            <td class="py-4 px-2 text-center">
+                                <span class="px-2 py-0.5 marker-yellow text-amber-800 font-bold text-xs">TRUNG BÌNH</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-600 font-semibold">Giai đoạn 2</td>
+                        </tr>
+                        <tr class="timeline-row border-b border-dashed border-slate-300">
+                            <td class="py-4 px-2 font-bold text-slate-800">Giai Đoạn 4:<br>Thanh Toán</td>
+                            <td class="py-4 px-2 font-mono text-slate-600">Tuần 8 - 9</td>
+                            <td class="py-4 px-2">
+                                <span class="px-1.5 py-0.5 bg-orange-50 text-orange-700 rounded border border-orange-200">💳 7. Billing & VietQR</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-600">
+                                - Tạo mã thanh toán VietQR động cho hóa đơn.<br>
+                                - Webhook gạch nợ tự động SePay/Casso.<br>
+                                - Giải phóng hạn mức công nợ tức thời trong 3 giây.
+                            </td>
+                            <td class="py-4 px-2 text-center">
+                                <span class="px-2 py-0.5 marker-yellow text-amber-800 font-bold text-xs">TRUNG BÌNH</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-600 font-semibold">Giai đoạn 3</td>
+                        </tr>
+                        <tr class="timeline-row">
+                            <td class="py-4 px-2 font-bold text-slate-800">Giai Đoạn 5:<br>Bảo Hành</td>
+                            <td class="py-4 px-2 font-mono text-slate-600">Tuần 10</td>
+                            <td class="py-4 px-2">
+                                <span class="px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded border border-purple-200">🛠️ 9. Warranty & Services</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-600">
+                                - Form QR kích hoạt bảo hành công cộng (không cần login).<br>
+                                - Quét máy -> Auto gợi ý đại lý thi công -> Tính ngày hết hạn.<br>
+                                - Tích hợp Zalo ZNS thông báo kích hoạt thành công.
+                            </td>
+                            <td class="py-4 px-2 text-center">
+                                <span class="px-2 py-0.5 marker-rose text-rose-800 font-bold text-xs">CAO</span>
+                            </td>
+                            <td class="py-4 px-2 text-slate-600 font-semibold">Giai đoạn 2 & 4</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const layerDetails = {
+            domain: {
+                title: "👑 Domain Layer (Thực Thể & Quy Tắc Nghiệp Vụ Cốt Lõi)",
+                desc: `
+                    <p class="marker-yellow p-1"><strong>Vị trí:</strong> Nằm ở trung tâm kiến trúc, không phụ thuộc vào bất kỳ tầng nào bên ngoài.</p>
+                    <p class="mt-2"><strong>Chứa gì:</strong> các Entities lõi như <code class="bg-amber-100 text-amber-800 px-1 rounded">Dealer</code>, <code class="bg-amber-100 text-amber-800 px-1 rounded">Product</code>, <code class="bg-amber-100 text-amber-800 px-1 rounded">Order</code> và các quy tắc nghiệp vụ bất biến không phụ thuộc vào kỹ thuật (ví dụ: công thức tính biên lợi nhuận).</p>
+                    <p class="mt-2"><strong>Ý nghĩa:</strong> Đảm bảo nếu bạn đổi từ cơ sở dữ liệu PostgreSQL sang MongoDB, hay đổi framework từ NestJS sang Express, thì logic domain vẫn giữ nguyên 100% không đổi.</p>
+                `
+            },
+            usecase: {
+                title: "⚙️ Use Cases Layer (Luồng Nghiệp Vụ Ứng Dụng)",
+                desc: `
+                    <p class="marker-green p-1"><strong>Vị trí:</strong> Nằm bên ngoài Domain, chỉ phụ thuộc vào lớp Domain.</p>
+                    <p class="mt-2"><strong>Chứa gì:</strong> Các kịch bản sử dụng hệ thống như <code class="bg-green-100 text-green-800 px-1 rounded">ActivateWarrantyViaQRUseCase</code> hay <code class="bg-green-100 text-green-800 px-1 rounded">CheckCreditLimitUseCase</code>.</p>
+                    <p class="mt-2"><strong>Vai trò:</strong> Điều phối dòng chảy dữ liệu đi vào và ra khỏi Domain. Lớp này định nghĩa các interface của các repository (ví dụ: IDealerRepository) để lớp ngoài cài đặt.</p>
+                `
+            },
+            presentation: {
+                title: "📞 Presentation Layer (API Controllers & DTOs)",
+                desc: `
+                    <p class="marker-blue p-1"><strong>Vị trí:</strong> Nằm ở lớp trung gian kết nối bên ngoài vào Use Cases.</p>
+                    <p class="mt-2"><strong>Chứa gì:</strong> Các NestJS Controllers đón nhận request HTTP, validate dữ liệu đầu vào bằng DTOs (Class Validator) và gọi Use Case tương ứng để thực hiện.</p>
+                    <p class="mt-2"><strong>Vai trò:</strong> Chuyển đổi dữ liệu từ dạng JSON/HTTP của client thành định dạng chuẩn để Use Case có thể xử lý.</p>
+                `
+            },
+            infra: {
+                title: "🔌 Infrastructure Layer (Hạ Tầng, Database & Tích Hợp)",
+                desc: `
+                    <p class="marker-rose p-1"><strong>Vị trí:</strong> Lớp ngoài cùng, chứa các cài đặt công nghệ cụ thể.</p>
+                    <p class="mt-2"><strong>Chứa gì:</strong> Triển khai thực tế các cổng kết nối dữ liệu (Prisma Repository), Webhook nhận diện biến động VietQR của ngân hàng, driver gửi email, v.v.</p>
+                    <p class="mt-2"><strong>Quy tắc:</strong> Tuyệt đối không để code nghiệp vụ lọt xuống lớp này. Lớp này chỉ cài đặt dựa trên Interface mà lớp Use Case/Domain yêu cầu.</p>
+                `
+            }
+        };
+
+        function selectLayer(layerKey) {
+            // Remove active classes
+            ['domain', 'usecase', 'presentation', 'infra'].forEach(k => {
+                document.getElementById('layer-' + k).classList.remove('active', 'border-slate-900', 'border-3');
+                if (k === 'domain') {
+                    document.getElementById('layer-' + k).className = "circle-layer w-[70%] h-[70%] flex flex-col items-center justify-center cursor-pointer bg-amber-50 relative border-2 border-amber-800";
+                } else {
+                    document.getElementById('layer-' + k).classList.add('border-dashed');
+                }
+            });
+
+            // Set active class
+            const el = document.getElementById('layer-' + layerKey);
+            el.classList.add('active');
+            if (layerKey === 'domain') {
+                el.className = "circle-layer w-[70%] h-[70%] flex flex-col items-center justify-center cursor-pointer bg-amber-100 relative border-3 border-slate-900 shadow-md";
+            } else {
+                el.classList.remove('border-dashed');
+                el.classList.add('border-slate-900');
+            }
+
+            // Render details
+            const detail = layerDetails[layerKey];
+            document.getElementById('layer-title').innerHTML = detail.title;
+            document.getElementById('layer-desc').innerHTML = detail.desc;
+        }
+
+        // Simulating flow
+        let simTimeout = null;
+
+        function logSim(text, color = 'emerald') {
+            const consoleEl = document.getElementById('sim-console');
+            let colorClass = 'text-emerald-400';
+            if (color === 'red') colorClass = 'text-rose-400';
+            if (color === 'sky') colorClass = 'text-sky-400';
+            if (color === 'purple') colorClass = 'text-violet-400';
+            
+            consoleEl.innerHTML += `<div class="${colorClass} mt-1">${text}</div>`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function resetSimSteps() {
+            if (simTimeout) clearTimeout(simTimeout);
+            ['step-pres', 'step-usecase', 'step-domain', 'step-infra'].forEach(id => {
+                document.getElementById(id).className = "p-3 bg-white border-2 border-slate-800 rounded-lg flex items-start gap-3 transition-all duration-300";
+            });
+            document.getElementById('text-pres').innerText = "Chờ lệnh...";
+            document.getElementById('text-usecase').innerText = "Chờ lệnh...";
+            document.getElementById('text-domain').innerText = "Chờ lệnh...";
+            document.getElementById('text-infra').innerText = "Chờ lệnh...";
+        }
+
+        function startSimulation(type) {
+            resetSimSteps();
+            const consoleEl = document.getElementById('sim-console');
+            consoleEl.innerHTML = ""; // Clear console
+
+            if (type === 'warranty') {
+                logSim("[Bắt đầu] Người dùng quét QR trên Pin Mặt Trời để Kích hoạt bảo hành.", 'sky');
+                
+                // Step 1: Presentation Layer
+                document.getElementById('step-pres').classList.add('step-highlight', 'marker-blue');
+                document.getElementById('text-pres').innerHTML = "<strong>POST /api/warranty/activate</strong><br>Body: { serialNumber: 'SLD-12345', customerPhone: '0987654321', installDate: '2026-06-24' }";
+                logSim("[Presentation] Nhận request HTTP POST, Validate DTO thành công. Gọi ActivateWarrantyViaQRUseCase...", 'sky');
+
+                simTimeout = setTimeout(() => {
+                    document.getElementById('step-pres').classList.remove('step-highlight');
+                    
+                    // Step 2: Use Case Layer
+                    document.getElementById('step-usecase').classList.add('step-highlight', 'marker-green');
+                    document.getElementById('text-usecase').innerHTML = "<strong>ActivateWarrantyViaQRUseCase</strong><br>1. Check Serial trong DB.<br>2. Lấy thời gian bảo hành từ SKU Product.<br>3. Tính ngày hết hạn.";
+                    logSim("[Use Case] Bắt đầu xử lý nghiệp vụ: Tính hạn BH = Ngày lắp + Số tháng bảo hành của SKU.", 'sky');
+
+                    simTimeout = setTimeout(() => {
+                        document.getElementById('step-usecase').classList.remove('step-highlight');
+
+                        // Step 3: Domain Layer
+                        document.getElementById('step-domain').classList.add('step-highlight', 'marker-yellow');
+                        document.getElementById('text-domain').innerHTML = "<strong>Product Entity</strong><br>SKU: 'PIN-10KW' -> warrantyMonths = 120 (10 năm).<br>Tính hạn bảo hành: 2026-06-24 + 10 năm = 2036-06-24.";
+                        logSim("[Domain] Thực thể Product trả về thời hạn 120 tháng. Tính toán ngày hết hạn thành công.", 'purple');
+
+                        simTimeout = setTimeout(() => {
+                            document.getElementById('step-domain').classList.remove('step-highlight');
+
+                            // Step 4: Infra Layer
+                            document.getElementById('step-infra').classList.add('step-highlight', 'marker-rose');
+                            document.getElementById('text-infra').innerHTML = "<strong>Prisma & PostgreSQL</strong><br>1. Cập nhật Serial status = 'ACTIVATED'.<br>2. Insert record ActivatedAsset mới vào Database.";
+                            logSim("[Infrastructure] Kết nối CSDL thông qua Prisma, lưu thông tin kích hoạt thành công! Gửi phản hồi HTTP 201 cho Client. ✅", 'emerald');
+
+                        }, 1200);
+                    }, 1200);
+                }, 1200);
+
+            } else if (type === 'credit') {
+                logSim("[Bắt đầu] Đại lý 'Solar Miền Trung' bấm tạo Đơn hàng mới trị giá 200,000,000đ.", 'sky');
+                
+                // Step 1: Presentation Layer
+                document.getElementById('step-pres').classList.add('step-highlight', 'marker-blue');
+                document.getElementById('text-pres').innerHTML = "<strong>POST /api/orders</strong><br>Body: { dealerId: 'DEALER-01', amount: 200000000 }";
+                logSim("[Presentation] Nhận yêu cầu tạo đơn từ Portal. Gọi CreateOrderFromQuotationUseCase...", 'sky');
+
+                simTimeout = setTimeout(() => {
+                    document.getElementById('step-pres').classList.remove('step-highlight');
+                    
+                    // Step 2: Use Case Layer
+                    document.getElementById('step-usecase').classList.add('step-highlight', 'marker-green');
+                    document.getElementById('text-usecase').innerHTML = "<strong>CreateOrderFromQuotationUseCase</strong><br>Kiểm tra công nợ đại lý bằng cách gọi checkCreditLimit().";
+                    logSim("[Use Case] Truy vấn dư nợ hiện tại và hạn mức từ Dealer Entity.", 'sky');
+
+                    simTimeout = setTimeout(() => {
+                        document.getElementById('step-usecase').classList.remove('step-highlight');
+
+                        // Step 3: Domain Layer
+                        document.getElementById('step-domain').classList.add('step-highlight', 'marker-yellow');
+                        document.getElementById('text-domain').innerHTML = "<strong>Dealer Entity Business Rule</strong><br>Dư nợ (300M) + Đơn mới (200M) = 500M.<br>Hạn mức nợ (500M) -> Bằng hạn mức. Kết quả: Cho phép duyệt.";
+                        logSim("[Domain] Tính toán: 300 triệu + 200 triệu = 500 triệu (Bằng đúng hạn mức). Hợp lệ!", 'purple');
+
+                        simTimeout = setTimeout(() => {
+                            document.getElementById('step-domain').classList.remove('step-highlight');
+
+                            // Step 4: Infra Layer
+                            document.getElementById('step-infra').classList.add('step-highlight', 'marker-rose');
+                            document.getElementById('text-infra').innerHTML = "<strong>Prisma & PostgreSQL</strong><br>1. Lưu Order status = 'APPROVED'.<br>2. Cập nhật Dealer currentDebt = 500,000,000đ.";
+                            logSim("[Infrastructure] Cập nhật CSDL thành công. Đơn hàng được phê duyệt xuất kho! ✅", 'emerald');
+
+                        }, 1200);
+                    }, 1200);
+                }, 1200);
+
+            } else if (type === 'vietqr') {
+                logSim("[Bắt đầu] Khách hàng quét mã VietQR và chuyển tiền thành công 150,000,000đ.", 'sky');
+                
+                // Step 1: Presentation Layer
+                document.getElementById('step-pres').classList.add('step-highlight', 'marker-blue');
+                document.getElementById('text-pres').innerHTML = "<strong>POST /api/payment/webhook</strong><br>Nhận callback biến động số dư chuyển khoản ngân hàng.";
+                logSim("[Presentation] Webhook của SePay/Casso nhận payload chuyển khoản. Gọi ProcessVietQRPaymentUseCase...", 'sky');
+
+                simTimeout = setTimeout(() => {
+                    document.getElementById('step-pres').classList.remove('step-highlight');
+                    
+                    // Step 2: Use Case Layer
+                    document.getElementById('step-usecase').classList.add('step-highlight', 'marker-green');
+                    document.getElementById('text-usecase').innerHTML = "<strong>ProcessVietQRPaymentUseCase</strong><br>1. Phân tích nội dung chuyển khoản.<br>2. Tìm hóa đơn chưa thanh toán tương ứng.";
+                    logSim("[Use Case] Khớp mã đơn hàng từ nội dung chuyển khoản để xác định hóa đơn cần gạch nợ.", 'sky');
+
+                    simTimeout = setTimeout(() => {
+                        document.getElementById('step-usecase').classList.remove('step-highlight');
+
+                        // Step 3: Domain Layer
+                        document.getElementById('step-domain').classList.add('step-highlight', 'marker-yellow');
+                        document.getElementById('text-domain').innerHTML = "<strong>Dealer & Invoice Entities</strong><br>Invoice status = PAID.<br>Dealer currentDebt giảm đi 150 triệu đồng.";
+                        logSim("[Domain] Thực thể Invoice được chuyển sang trạng thái đã trả. Dư nợ của Dealer được giảm trừ.", 'purple');
+
+                        simTimeout = setTimeout(() => {
+                            document.getElementById('step-domain').classList.remove('step-highlight');
+
+                            // Step 4: Infra Layer
+                            document.getElementById('step-infra').classList.add('step-highlight', 'marker-rose');
+                            document.getElementById('text-infra').innerHTML = "<strong>Prisma & PostgreSQL</strong><br>1. Update Invoice isPaid = true.<br>2. Update Dealer currentDebt trong CSDL.<br>3. Gửi tin nhắn ZNS báo Khách hàng.";
+                            logSim("[Infrastructure] Ghi nhận giao dịch thanh toán trong DB. Công nợ được giải phóng tức thì! ✅", 'emerald');
+
+                        }, 1200);
+                    }, 1200);
+                }, 1200);
+            }
+        }
+    </script>
+</body>
+
+</html>

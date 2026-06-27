@@ -1,0 +1,59 @@
+/* CSS specifically for PM board styling (tách biệt/phụ trợ) */
+.kanban-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.kanban-column {
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.kanban-column-header {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.kanban-task-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.4rem;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.kanban-task-card:hover {
+    border-color: var(--border-bright);
+    transform: translateY(-2px);
+}
+.task-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+}
+.task-card-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text);
+}
+@media (max-width: 768px) {
+    .kanban-container {
+        grid-template-columns: 1fr;
+    }
+}

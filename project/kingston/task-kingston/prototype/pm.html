@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Manager Console — Task Kingston</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="pm.css">
+</head>
+<body>
+
+    <!-- Left Sidebar Layout -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">👔</span>
+            <div class="logo-text">
+                <h1>Task Kingston</h1>
+                <p>PM Portal</p>
+            </div>
+        </div>
+        
+        <div class="user-profile-mock">
+            <div class="avatar" id="pm-avatar">PV</div>
+            <div class="profile-info">
+                <span class="name" id="pm-name">Phan Văn PM</span>
+                <span style="font-size: 0.65rem; color: var(--text-dim);">Project Manager</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav">
+            <p class="menu-title">Chức năng chính</p>
+            <a class="nav-item active" id="menu-pm-dashboard">
+                <span class="nav-icon">📊</span>
+                <div class="nav-label"><strong>Dashboard PM</strong><span>Dự án đang phụ trách</span></div>
+            </a>
+            <a class="nav-item" id="menu-pm-kanban">
+                <span class="nav-icon">📋</span>
+                <div class="nav-label"><strong>Bảng công việc</strong><span>Kanban & Giao việc</span></div>
+            </a>
+            <a class="nav-item" id="menu-pm-approvals">
+                <span class="nav-icon">⏳</span>
+                <div class="nav-label"><strong>Duyệt báo cáo</strong><span>Yêu cầu từ nhân viên</span></div>
+            </a>
+            
+            <p class="menu-title" style="margin-top: auto;">Cổng UAT</p>
+            <a href="index.html" class="nav-item">
+                <span class="nav-icon">🚪</span>
+                <div class="nav-label"><strong>Thoát Portal</strong><span>Về UAT Gateway</span></div>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Workspace -->
+    <main class="app-main">
+        
+        <div class="top-breadcrumb-bar">
+            <span class="breadcrumb" id="top-title">Dashboard quản lý của PM</span>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">
+                UAT Mode • Vai trò: Project Manager
+            </div>
+        </div>
+
+        <div class="dashboard-workspace">
+            <div class="control-panel-column">
+                
+                <!-- TAB 1: DASHBOARD PM -->
+                <div id="view-pm-dashboard" class="view-panel active">
+                    <!-- Widget Thống kê dự án phụ trách -->
+                    <div class="glass-card">
+                        <h2>📂 Các dự án đang quản lý</h2>
+                        <p class="card-desc">Danh sách dự án do bạn làm PM được Admin phân công.</p>
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tên dự án</th>
+                                        <th>Mô tả</th>
+                                        <th>Tiến độ</th>
+                                        <th>Trạng thái dự án</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-pm-projects"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: TASK BOARD & KANBAN -->
+                <div id="view-pm-kanban" class="view-panel">
+                    <!-- Giao diện Chọn dự án & Thêm việc -->
+                    <div class="glass-card">
+                        <h2>➕ Giao công việc mới</h2>
+                        <p class="card-desc">Tạo nhiệm vụ mới cho các thành viên trong dự án phụ trách.</p>
+                        <form id="form-create-task">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="task-project">Dự án</label>
+                                    <select id="task-project" required></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="task-assignee">Người thực hiện (Staff)</label>
+                                    <select id="task-assignee" required></select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="task-title">Tiêu đề công việc</label>
+                                    <input type="text" id="task-title" placeholder="Nhập tiêu đề nhiệm vụ..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="task-priority">Độ ưu tiên</label>
+                                    <select id="task-priority" required>
+                                        <option value="High">Cao (High)</option>
+                                        <option value="Medium" selected>Trung bình (Medium)</option>
+                                        <option value="Low">Thấp (Low)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="task-due-date">Hạn chót (Due date)</label>
+                                    <input type="date" id="task-due-date" required>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="task-desc">Mô tả công việc</label>
+                                <textarea id="task-desc" rows="2" placeholder="Mô tả cụ thể yêu cầu công việc..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">Tạo & Giao việc</button>
+                        </form>
+                    </div>
+
+                    <!-- Bảng Kanban Board -->
+                    <div class="glass-card" style="background: transparent; border: none; padding: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <h2>📋 Kanban Board nhiệm vụ</h2>
+                            <div>
+                                <select id="filter-kanban-project" style="background: #ffffff; border: 1px solid var(--border); padding: 0.4rem 0.75rem; border-radius: 0.4rem; color: var(--text); font-size: 0.8rem; outline: none; cursor: pointer;"></select>
+                            </div>
+                        </div>
+                        <div class="kanban-container">
+                            <!-- Column To Do -->
+                            <div class="kanban-column">
+                                <div class="kanban-column-header">
+                                    <span>To Do</span>
+                                    <span class="status-badge badge-info" id="count-todo">0</span>
+                                </div>
+                                <div id="kanban-todo-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1;"></div>
+                            </div>
+                            <!-- Column In Progress -->
+                            <div class="kanban-column">
+                                <div class="kanban-column-header">
+                                    <span>In Progress</span>
+                                    <span class="status-badge badge-warning" id="count-inprogress">0</span>
+                                </div>
+                                <div id="kanban-inprogress-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1;"></div>
+                            </div>
+                            <!-- Column Reviewing -->
+                            <div class="kanban-column" style="border-color: rgba(99, 102, 241, 0.3);">
+                                <div class="kanban-column-header">
+                                    <span>Reviewing</span>
+                                    <span class="status-badge badge-indigo" id="count-reviewing">0</span>
+                                </div>
+                                <div id="kanban-reviewing-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1;"></div>
+                            </div>
+                            <!-- Column Done -->
+                            <div class="kanban-column" style="border-color: rgba(16, 185, 129, 0.3);">
+                                <div class="kanban-column-header">
+                                    <span>Done</span>
+                                    <span class="status-badge badge-success" id="count-done">0</span>
+                                </div>
+                                <div id="kanban-done-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: PM APPROVAL QUEUE -->
+                <div id="view-pm-approvals" class="view-panel">
+                    <div class="glass-card">
+                        <h2>⏳ Hàng đợi phê duyệt (Dành riêng cho PM)</h2>
+                        <p class="card-desc">Kiểm duyệt các task thuộc dự án mà bạn phụ trách do Staff nộp báo cáo.</p>
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nhiệm vụ</th>
+                                        <th>Dự án</th>
+                                        <th>Người thực hiện</th>
+                                        <th>Nội dung báo cáo</th>
+                                        <th>Tài liệu đính kèm</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-pm-approvals"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Xem & Đánh giá công việc -->
+    <div class="modal-overlay" id="pm-approval-modal">
+        <div class="modal-content">
+            <div class="modal-header">📝 Đánh giá kết quả công việc</div>
+            <div class="form-group" style="margin-bottom: 0.75rem;">
+                <label>Tên nhiệm vụ</label>
+                <span id="modal-pm-task-title" style="font-weight: 700;">-</span>
+            </div>
+            <div class="form-group" style="margin-bottom: 0.75rem;">
+                <label>Báo cáo của nhân viên</label>
+                <p id="modal-pm-report-text" style="font-size: 0.85rem; color: var(--text-dim); background: rgba(0,0,0,0.02); padding: 0.5rem; border-radius: 4px;">-</p>
+            </div>
+            <div class="form-group" style="margin-bottom: 0.75rem;">
+                <label>Link tài liệu đính kèm</label>
+                <a id="modal-pm-report-link" href="#" target="_blank" class="clickable-item" style="font-size: 0.85rem;">-</a>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label for="pm-review-feedback">Phản hồi / Lý do (Bắt buộc nếu Reject)</label>
+                <textarea id="pm-review-feedback" rows="2" placeholder="Nhập lý do phản hồi cho nhân viên..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="btn-pm-modal-cancel">Hủy</button>
+                <button type="button" class="btn btn-success" id="btn-pm-modal-approve">Approve (Duyệt)</button>
+                <button type="button" class="btn btn-primary" id="btn-pm-modal-reject" style="background: var(--red);">Reject (Từ chối)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Chi tiết Task & Comments & Logs -->
+    <div class="modal-overlay" id="task-detail-modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <div class="modal-header" id="td-modal-title">Chi tiết nhiệm vụ</div>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.82rem;">
+                    <div><span style="color: var(--text-dim);">Dự án:</span> <strong id="td-modal-project">-</strong></div>
+                    <div><span style="color: var(--text-dim);">Người giao:</span> <strong id="td-modal-creator">-</strong></div>
+                    <div><span style="color: var(--text-dim);">Người làm:</span> <strong id="td-modal-assignee">-</strong></div>
+                    <div><span style="color: var(--text-dim);">Hạn chót:</span> <strong id="td-modal-due-date">-</strong></div>
+                    <div><span style="color: var(--text-dim);">Độ ưu tiên:</span> <strong id="td-modal-priority">-</strong></div>
+                    <div><span style="color: var(--text-dim);">Trạng thái:</span> <strong id="td-modal-status">-</strong></div>
+                </div>
+                <div style="border-top: 1px solid var(--border); padding-top: 0.5rem;">
+                    <span style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.25rem;">Mô tả chi tiết:</span>
+                    <p id="td-modal-desc" style="font-size: 0.82rem; color: var(--text); line-height: 1.5; background: rgba(0,0,0,0.01); padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border);"></p>
+                </div>
+            </div>
+
+            <!-- Tab bình luận & activity logs -->
+            <div style="border-top: 1px solid var(--border); padding-top: 0.75rem;">
+                <div style="display: flex; gap: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.5rem; padding-bottom: 0.25rem;">
+                    <span id="tab-btn-comments" style="font-size: 0.8rem; font-weight: 700; cursor: pointer; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 4px;">💬 Bình luận</span>
+                    <span id="tab-btn-logs" style="font-size: 0.8rem; font-weight: 700; cursor: pointer; color: var(--text-dim); padding-bottom: 4px;">📜 Lịch sử hoạt động</span>
+                </div>
+                
+                <!-- Comments Panel -->
+                <div id="td-panel-comments" style="display: block;">
+                    <div id="td-comments-list" style="max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; margin-bottom: 0.75rem; padding-right: 4px;"></div>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" id="td-new-comment-text" placeholder="Nhập bình luận thảo luận..." style="flex-grow: 1; background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem; color: var(--text); font-size: 0.8rem; outline: none;">
+                        <button type="button" class="btn btn-primary" id="btn-td-submit-comment" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Gửi</button>
+                    </div>
+                </div>
+
+                <!-- Logs Panel -->
+                <div id="td-panel-logs" style="display: none;">
+                    <div id="td-logs-list" style="max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem; color: var(--text-dim); padding-right: 4px;"></div>
+                </div>
+            </div>
+
+            <div class="modal-actions" style="margin-top: 1.25rem;">
+                <button type="button" class="btn btn-secondary" id="btn-td-close">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toast-notify">
+        <span id="toast-icon">✅</span>
+        <span id="toast-message">Thao tác thành công!</span>
+    </div>
+
+    <!-- Scripts mock DB & logic -->
+    <script src="db.js"></script>
+    <script src="pm.js"></script>
+</body>
+</html>

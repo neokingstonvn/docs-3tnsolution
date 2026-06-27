@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặc Tả MVP — Solando ERP</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&family=Architects+Daughter&display=swap" rel="stylesheet">
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+
+    <!-- Top header -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span>☀️</span>
+            <div class="logo-text">
+                <h1>Solando ERP</h1>
+                <p class="sketch-font">Đặc Tả MVP — Hệ Thống Nội Bộ</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <div style="display: flex; gap: 8px; margin-right: 12px;">
+                <span class="badge badge--green">✅ MVP In-Scope</span>
+                <span class="badge badge--red">❌ Sau MVP</span>
+            </div>
+            <a href="./presentation/index.html" class="btn btn-amber">
+                <span>📺 Slide trình chiếu</span>
+            </a>
+            <a href="./short-term-plan/index.html" class="btn btn-emerald">
+                <span>🔌 Kế hoạch ngắn hạn (KiotViet)</span>
+            </a>
+            <a href="./long-term-plan/index.html" class="btn btn-purple">
+                <span>🚀 Kế hoạch dài hạn</span>
+                <span>→</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="main-layout">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <p class="sidebar-title">Mục Lục</p>
+            <nav>
+                <a class="nav-link active" onclick="navTo(event, 'scope')">1. Phạm vi MVP</a>
+                <a class="nav-link" onclick="navTo(event, 'roles')">2. Vai trò người dùng</a>
+                <a class="nav-link" onclick="navTo(event, 'architecture')">3. Kiến trúc hệ thống</a>
+                <a class="nav-link" onclick="navTo(event, 'modules')">4. Đặc tả tính năng</a>
+                <div class="nav-sub-list">
+                    <a class="nav-link" onclick="navTo(event, 'mod1')">🔑 Auth & RBAC</a>
+                    <a class="nav-link" onclick="navTo(event, 'mod2')">📦 Sản Phẩm</a>
+                    <a class="nav-link" onclick="navTo(event, 'mod3')">🏢 Đại Lý</a>
+                    <a class="nav-link" onclick="navTo(event, 'mod4')">📋 Báo Giá</a>
+                    <a class="nav-link" onclick="navTo(event, 'mod5')">📝 Đơn Hàng</a>
+                    <a class="nav-link" onclick="navTo(event, 'mod6')">📦 Kho & Serial</a>
+                    <a class="nav-link" onclick="navTo(event, 'mod7')">🛠️ Bảo Hành QR</a>
+                    <a class="nav-link" onclick="navTo(event, 'mod8')">📊 Báo Cáo</a>
+                    <a class="nav-link" onclick="navTo(event, 'mod9')">🔔 Thông Báo</a>
+                </div>
+                <a class="nav-link" onclick="navTo(event, 'flows')">5. Happy Path Flows</a>
+                <a class="nav-link" onclick="navTo(event, 'unknowns')">6. Cần Làm Rõ</a>
+            </nav>
+
+            <p class="sidebar-title">Tài Liệu Khác</p>
+            <nav>
+                <a href="./presentation/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>📺 Slide trình chiếu</span>
+                    <span style="color: var(--accent-gold); font-weight: bold;">→</span>
+                </a>
+                <a href="./short-term-plan/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🔌 Kế hoạch ngắn hạn</span>
+                    <span style="color: var(--green); font-weight: bold;">→</span>
+                </a>
+                <a href="./long-term-plan/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🚀 Kế hoạch dài hạn</span>
+                    <span style="color: var(--indigo); font-weight: bold;">→</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+
+            <!-- Goal callout -->
+            <div class="alert-box alert-box--yellow">
+                <strong>🎯 Mục tiêu MVP:</strong>
+                Ra nhanh hệ thống nội bộ để nhân viên Solando vận hành được ngay — quản lý sản phẩm, báo giá, kho, đại lý và kích hoạt bảo hành. <strong>Không build portal đại lý</strong> trong MVP đầu tiên.
+            </div>
+
+            <!-- 1. PHẠM VI MVP -->
+            <section id="scope" style="--i:1">
+                <h2 class="section-heading sketch-font">1. Phạm Vi MVP</h2>
+                <div class="ve-card">
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nhóm Tính Năng</th>
+                                        <th style="width: 120px; text-align: center;">MVP?</th>
+                                        <th>Ghi Chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600;">🔑 Đăng nhập & Phân quyền (RBAC)</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">✅ Có</span></td>
+                                        <td class="muted-cell">Bắt buộc — Admin, Sale, Thủ kho, CSKH</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">📦 Quản lý Sản phẩm (SKU, tài liệu)</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">✅ Có</span></td>
+                                        <td class="muted-cell">Bắt buộc</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">🏢 Quản lý Đại lý & Khách hàng</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">✅ Có</span></td>
+                                        <td class="muted-cell">Bắt buộc</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">📋 Báo giá & Pricing Engine</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">✅ Có</span></td>
+                                        <td class="muted-cell">Bắt buộc — xuất PDF</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">📝 Đơn hàng (tạo từ báo giá, theo dõi)</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">✅ Có</span></td>
+                                        <td class="muted-cell">Bắt buộc</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">📦 Nhập kho / Quản lý Lô hàng & Serial</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">✅ Có</span></td>
+                                        <td class="muted-cell">Bắt buộc</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">🛠️ Kích hoạt Bảo hành (QR public + nội bộ)</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">✅ Có</span></td>
+                                        <td class="muted-cell">Bắt buộc</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">📊 Báo cáo Doanh số, Tồn kho, Lịch sử Serial</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">✅ Có</span></td>
+                                        <td class="muted-cell">Bắt buộc</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">🔔 In-App Notification</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">✅ Có</span></td>
+                                        <td class="muted-cell">Bắt buộc</td>
+                                    </tr>
+                                    <tr style="opacity: 0.6;">
+                                        <td style="font-weight: 600;">🌐 Portal Đại lý (tự đăng nhập, đặt hàng)</td>
+                                        <td style="text-align: center;"><span class="badge badge--red">❌ Sau</span></td>
+                                        <td class="muted-cell">Sau MVP</td>
+                                    </tr>
+                                    <tr style="opacity: 0.6;">
+                                        <td style="font-weight: 600;">💬 Zalo / Email Notification</td>
+                                        <td style="text-align: center;"><span class="badge badge--red">❌ Sau</span></td>
+                                        <td class="muted-cell">Sau MVP</td>
+                                    </tr>
+                                    <tr style="opacity: 0.6;">
+                                        <td style="font-weight: 600;">🎫 Quản lý Ticket sự cố</td>
+                                        <td style="text-align: center;"><span class="badge badge--red">❌ Sau</span></td>
+                                        <td class="muted-cell">Sau MVP</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. VAI TRÒ -->
+            <section id="roles" style="--i:2">
+                <h2 class="section-heading sketch-font">2. Vai Trò Người Dùng Trong MVP</h2>
+                <div class="grid-cols-2">
+                    <div class="ve-card ve-card--elevated" style="border-left: 4px solid var(--red);">
+                        <div class="ve-card__label" style="color: var(--red);">👑 Admin</div>
+                        <p style="font-size: 14px; color: var(--text-dim);">Toàn quyền — cấu hình hệ thống, duyệt báo giá, quản lý tài khoản nhân viên.</p>
+                    </div>
+                    <div class="ve-card ve-card--elevated" style="border-left: 4px solid var(--accent);">
+                        <div class="ve-card__label" style="color: var(--accent);">💼 Kinh Doanh (Sale)</div>
+                        <p style="font-size: 14px; color: var(--text-dim);">Quản lý đại lý, lập báo giá xuất PDF, tạo và theo dõi đơn hàng.</p>
+                    </div>
+                    <div class="ve-card ve-card--elevated" style="border-left: 4px solid var(--accent-gold);">
+                        <div class="ve-card__label" style="color: var(--accent-gold);">📦 Thủ Kho</div>
+                        <p style="font-size: 14px; color: var(--text-dim);">Nhập kho, quản lý lô hàng & serial, xác nhận xuất kho, kích hoạt bảo hành nội bộ.</p>
+                    </div>
+                    <div class="ve-card ve-card--elevated" style="border-left: 4px solid var(--green);">
+                        <div class="ve-card__label" style="color: var(--green);">🎧 CSKH</div>
+                        <p style="font-size: 14px; color: var(--text-dim);">Tra cứu lịch sử serial, kích hoạt bảo hành nội bộ, xem thông tin đại lý & End-User.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. KIẾN TRÚC HỆ THỐNG -->
+            <section id="architecture" style="--i:3">
+                <h2 class="section-heading sketch-font">3. Kiến Trúc Hệ Thống (Architecture)</h2>
+                
+                <div class="ve-card">
+                    <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 24px;">
+                        Kiến trúc tổng quan thể hiện tương tác giữa các nhóm người dùng (Actors), cổng giao diện (Clients), tầng xử lý logic và cơ sở dữ liệu. Nhấp đúp chuột để căn vừa hoặc dùng chuột để thu phóng/rê sơ đồ tương tác bên dưới:
+                    </p>
+
+                    <!-- Mermaid Shell for Interactive Diagram -->
+                    <div class="diagram-shell">
+                        <div class="diagram-shell__hint">
+                            <span>SƠ ĐỒ KIẾN TRÚC TƯƠNG TÁC (MERMAID)</span>
+                            <span>Cuộn/Rê chuột để phóng to, di chuyển • Kích đúp để đặt lại</span>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="zoom-controls">
+                                <button type="button" data-action="zoom-in" title="Phóng to">+</button>
+                                <button type="button" data-action="zoom-out" title="Thu nhỏ">&minus;</button>
+                                <button type="button" data-action="zoom-fit" title="Căn vừa">&#8634;</button>
+                                <button type="button" data-action="zoom-one" title="Tỷ lệ 1:1">1:1</button>
+                                <button type="button" data-action="zoom-expand" title="Mở tab mới">&#x26F6;</button>
+                                <span class="zoom-label">Đang tải...</span>
+                            </div>
+                            <div class="mermaid-viewport">
+                                <div class="mermaid mermaid-canvas"></div>
+                            </div>
+                        </div>
+                        <script type="text/plain" class="diagram-source">
+                            graph TD
+                                %% Actors
+                                subgraph Users ["👤 Nhóm Người Dùng"]
+                                    Admin["👑 Admin<br/>Quản trị & Duyệt báo giá"]
+                                    Sale["💼 Kinh Doanh<br/>Lập báo giá & Đơn hàng"]
+                                    Storekeeper["📦 Thủ Kho<br/>Nhập/Xuất & Quét Serial"]
+                                    CSKH["🎧 CSKH<br/>Tra cứu & Hỗ trợ BH"]
+                                    EndUser["🧑‍💻 Kỹ thuật viên / Khách<br/>Quét QR thực địa"]
+                                end
+
+                                %% Client interface
+                                subgraph UI ["🌐 Tầng Giao Diện - React (Vite) Client"]
+                                    Portal["🖥️ Portal Nhân Viên Nội Bộ<br/>(Cần Đăng Nhập)<br/>Quản lý SKU, Đại lý, Báo giá, Kho"]
+                                    PublicForm["📱 Cổng Kích Hoạt QR Công Cộng<br/>(Không Đăng Nhập)<br/>Kích hoạt bảo hành nhanh"]
+                                end
+
+                                %% Services
+                                subgraph Services ["⚙️ Tầng Xử Lý & Dịch Vụ"]
+                                    AppEngine["⚙️ NestJS Backend Gateway<br/>Docker Container trên VPS<br/>- Xử lý logic nghiệp vụ (Margin, Tier)<br/>- Sinh PDF báo giá & Kích hoạt bảo hành"]
+                                    Storage["📂 Object Storage (S3 / MinIO)<br/>Lưu tài liệu SKU (CO/CQ, Datasheet)"]
+                                end
+
+                                %% Database
+                                subgraph DB ["🗄️ Tầng Cơ Sở Dữ Liệu"]
+                                    Postgres["🐘 PostgreSQL 16 Database<br/>Lưu trữ dữ liệu ERP quan hệ<br/>Bcrypt password & Triggers"]
+                                end
+
+                                %% Connections
+                                Admin --> Portal
+                                Sale --> Portal
+                                Storekeeper --> Portal
+                                CSKH --> Portal
+                                EndUser --> PublicForm
+
+                                Portal -->|HTTPS / REST API| AppEngine
+                                PublicForm -->|HTTPS / REST API| AppEngine
+                                
+                                AppEngine -->|Lưu & Tải file tài liệu| Storage
+                                AppEngine -->|SQL Client Cổng 5432| Postgres
+                        </script>
+                    </div>
+
+                    <!-- Custom Card Layout of Layers -->
+                    <div class="arch-layers">
+                        <div class="arch-layer">
+                            <div class="arch-layer-title">👤 Nhóm Người Dùng (Users)</div>
+                            <div class="arch-cards-grid">
+                                <div class="arch-subcard">
+                                    <div class="arch-subcard-header"><span>👑</span> Admin</div>
+                                    <div class="arch-subcard-desc">Cấu hình margin, phê duyệt báo giá thấp, quản lý tài khoản.</div>
+                                </div>
+                                <div class="arch-subcard">
+                                    <div class="arch-subcard-header"><span>💼</span> Sale</div>
+                                    <div class="arch-subcard-desc">Quản lý đại lý, tính toán margin realtime, lập báo giá xuất PDF.</div>
+                                </div>
+                                <div class="arch-subcard">
+                                    <div class="arch-subcard-header"><span>📦</span> Thủ Kho</div>
+                                    <div class="arch-subcard-desc">Import mã Serial NSX, xuất kho gán Serial đích danh.</div>
+                                </div>
+                                <div class="arch-subcard">
+                                    <div class="arch-subcard-header"><span>🎧</span> CSKH</div>
+                                    <div class="arch-subcard-desc">Tra cứu vòng đời Serial, hỗ trợ kích hoạt bảo hành thủ công.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="arch-connector">
+                            <svg viewBox="0 0 24 24"><path d="M12 4v16m-4-4l4 4 4-4"/></svg>
+                        </div>
+
+                        <div class="arch-layer">
+                            <div class="arch-layer-title">🖥️ Tầng Giao Diện (React (Vite) Client)</div>
+                            <div class="arch-cards-grid" style="grid-template-columns: 1fr 1fr;">
+                                <div class="arch-subcard" style="border-left: 3px solid var(--accent);">
+                                    <div class="arch-subcard-header">🖥️ Portal Nhân Viên Nội Bộ</div>
+                                    <div class="arch-subcard-desc">Giao diện đăng nhập bảo mật quản lý hàng hóa, lập đơn, nhập xuất và phê duyệt.</div>
+                                </div>
+                                <div class="arch-subcard" style="border-left: 3px solid var(--green);">
+                                    <div class="arch-subcard-header">📱 Public QR Web Page</div>
+                                    <div class="arch-subcard-desc">Trang public cho phép quét QR thiết bị, tự điền Serial và điền thông tin kích hoạt nhanh.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="arch-connector">
+                            <svg viewBox="0 0 24 24"><path d="M12 4v16m-4-4l4 4 4-4"/></svg>
+                        </div>
+
+                        <div class="arch-layer">
+                            <div class="arch-layer-title">⚙️ Tầng Xử Lý & Dịch Vụ (NestJS Backend & Storage)</div>
+                            <div class="arch-cards-grid" style="grid-template-columns: 1fr 1fr;">
+                                <div class="arch-subcard">
+                                    <div class="arch-subcard-header">⚙️ NestJS Backend API</div>
+                                    <div class="arch-subcard-desc">Quản lý logic nghiệp vụ, phân quyền JWT/RBAC và thực thi tích hợp KiotViet API.</div>
+                                </div>
+                                <div class="arch-subcard">
+                                    <div class="arch-subcard-header">📂 Object Storage (S3 / MinIO)</div>
+                                    <div class="arch-subcard-desc">Lưu trữ dữ liệu file tài liệu đính kèm (Datasheet, CO/CQ) tải về trực tiếp.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="arch-connector">
+                            <svg viewBox="0 0 24 24"><path d="M12 4v16m-4-4l4 4 4-4"/></svg>
+                        </div>
+
+                        <div class="arch-layer">
+                            <div class="arch-layer-title">🗄️ Tầng Cơ Sở Dữ Liệu (PostgreSQL Server)</div>
+                            <div class="arch-subcard" style="max-width: 400px; margin: 0 auto; text-align: center;">
+                                <div class="arch-subcard-header" style="justify-content: center;"><span>🐘</span> PostgreSQL 16</div>
+                                <div class="arch-subcard-desc">Cơ sở dữ liệu quan hệ tối ưu hóa. Thiết kế chuẩn cho giải pháp tự code React (Vite) + NestJS.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 4. ĐẶC TẢ MODULE -->
+            <section id="modules" style="--i:4">
+                <h2 class="section-heading sketch-font">4. Đặc Tả Tính Năng MVP</h2>
+                <div>
+
+                    <!-- MODULE 1 -->
+                    <div id="mod1" class="ve-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="font-size: 24px;">🔑</span>
+                            <div>
+                                <span class="badge badge--red" style="font-size: 9px; padding: 2px 6px;">Module 1</span>
+                                <h3 style="font-size: 16px; margin-top: 2px;">Xác Thực & Phân Quyền (Auth & RBAC)</h3>
+                            </div>
+                        </div>
+                        <div class="grid-cols-2">
+                            <div class="feature-box" style="border-left: 3px solid var(--accent-gold);">
+                                <p style="font-weight: 700; color: var(--accent-gold); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">⚙️ System Features</p>
+                                <ul>
+                                    <li>Đăng nhập Email + Password, mã hóa Bcrypt</li>
+                                    <li>Cấp JWT Token kèm thông tin Role</li>
+                                    <li>RBAC: Chặn truy cập API theo Role ở tầng middleware</li>
+                                    <li>Ghi nhận Audit Log (ai, làm gì, lúc nào)</li>
+                                </ul>
+                            </div>
+                            <div class="feature-box" style="border-left: 3px solid var(--accent);">
+                                <p style="font-weight: 700; color: var(--accent); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">👤 User Features</p>
+                                <ul>
+                                    <li>Trang đăng nhập chung cho nhân viên nội bộ</li>
+                                    <li>Admin: Tạo, sửa, khóa tài khoản nhân viên + gán Role</li>
+                                    <li>Trang đổi mật khẩu cá nhân</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 2 -->
+                    <div id="mod2" class="ve-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="font-size: 24px;">📦</span>
+                            <div>
+                                <span class="badge badge--indigo" style="font-size: 9px; padding: 2px 6px;">Module 2</span>
+                                <h3 style="font-size: 16px; margin-top: 2px;">Quản Lý Sản Phẩm (SKU)</h3>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="feature-box" style="background: var(--surface-recessed); border-left: 3px solid var(--text-dim);">
+                                <p style="font-weight: 700; color: var(--text-dim); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">📐 Business Rules</p>
+                                <ul style="margin-top: 4px;">
+                                    <li>Mỗi SKU có: Tên, Mã SKU, Hãng, Nhóm (Inverter / Pin / Tấm pin / Phụ kiện), Thời hạn bảo hành (tháng), MSRP</li>
+                                    <li>SKU gắn liền với file tài liệu: Datasheet, CO/CQ, Catalog</li>
+                                    <li>Thiết bị chính (Inverter, Pin Lithium): bắt buộc quản lý Serial Number. Phụ kiện: quản lý theo số lượng</li>
+                                    <li>Thời hạn bảo hành mặc định cấu hình trên từng SKU (ví dụ: Inverter 60 tháng, Pin Lithium 120 tháng)</li>
+                                </ul>
+                            </div>
+                            <div class="grid-cols-2">
+                                <div class="feature-box" style="border-left: 3px solid var(--accent-gold);">
+                                    <p style="font-weight: 700; color: var(--accent-gold); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">⚙️ System Features</p>
+                                    <ul>
+                                        <li>Phân loại sản phẩm tự động theo nhóm</li>
+                                        <li>Lưu trữ và quản lý phiên bản file tài liệu kỹ thuật</li>
+                                    </ul>
+                                </div>
+                                <div class="feature-box" style="border-left: 3px solid var(--accent);">
+                                    <p style="font-weight: 700; color: var(--accent); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">👤 User Features (Admin / Sale)</p>
+                                    <ul>
+                                        <li>Danh sách SKU: Tìm kiếm, lọc theo nhóm, hãng</li>
+                                        <li>Form tạo/sửa SKU: thông số kỹ thuật, upload CO/CQ, Datasheet</li>
+                                        <li>Cấu hình bảng giá theo Tier (Tier 1 / Tier 2 / Bán lẻ) cho từng SKU</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 3 -->
+                    <div id="mod3" class="ve-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="font-size: 24px;">🏢</span>
+                            <div>
+                                <span class="badge badge--blue" style="font-size: 9px; padding: 2px 6px;">Module 3</span>
+                                <h3 style="font-size: 16px; margin-top: 2px;">Quản Lý Đại Lý & Khách Hàng</h3>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="feature-box" style="background: var(--surface-recessed); border-left: 3px solid var(--text-dim);">
+                                <p style="font-weight: 700; color: var(--text-dim); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">📐 Business Rules</p>
+                                <ul style="margin-top: 4px;">
+                                    <li>Đại lý được phân hạng: Tier 1, Tier 2, Khách lẻ</li>
+                                    <li>Mỗi đại lý được gán cho một nhân viên Kinh doanh (Sale) phụ trách chăm sóc</li>
+                                    <li>End-User lưu kèm Đại lý phụ trách (liên kết qua kích hoạt QR)</li>
+                                </ul>
+                            </div>
+                            <div class="grid-cols-2">
+                                <div class="feature-box" style="border-left: 3px solid var(--accent-gold);">
+                                    <p style="font-weight: 700; color: var(--accent-gold); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">⚙️ System Features</p>
+                                    <ul>
+                                        <li>Phân loại và tự động phân bổ thông tin đại lý theo khu vực hoặc sale phụ trách</li>
+                                    </ul>
+                                </div>
+                                <div class="feature-box" style="border-left: 3px solid var(--accent);">
+                                    <p style="font-weight: 700; color: var(--accent); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">👤 User Features (Sale / Admin)</p>
+                                    <ul>
+                                        <li>Danh sách Đại lý: Tier, Sale phụ trách, thông tin liên hệ</li>
+                                        <li>Form tạo/sửa Đại lý: Tên, MST, Địa chỉ, SĐT, Email, Tier</li>
+                                        <li>Chi tiết Đại lý: Lịch sử đơn hàng, thông tin liên hệ chi tiết</li>
+                                        <li>Danh sách End-User: Tra cứu theo tên, SĐT hoặc Đại lý</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 4 -->
+                    <div id="mod4" class="ve-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="font-size: 24px;">📋</span>
+                            <div>
+                                <span class="badge badge--yellow" style="font-size: 9px; padding: 2px 6px;">Module 4</span>
+                                <h3 style="font-size: 16px; margin-top: 2px;">Báo Giá & Pricing Engine</h3>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="feature-box" style="background: var(--surface-recessed); border-left: 3px solid var(--text-dim);">
+                                <p style="font-weight: 700; color: var(--text-dim); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">📐 Business Rules</p>
+                                <ul style="margin-top: 4px;">
+                                    <li>Khi Sale chọn Đại lý → hệ thống tự áp bảng giá theo Tier</li>
+                                    <li>Sale có thể nhập thêm chiết khấu % trên từng dòng sản phẩm</li>
+                                    <li>Margin % tính dựa trên giá vốn lô hàng gần nhất đang có trong kho</li>
+                                    <li>Margin dưới ngưỡng → Báo giá bị khóa "Chờ duyệt" → Admin nhận In-App notification</li>
+                                    <li style="color: var(--accent-gold); font-weight: 600;">⚠ Ngưỡng Margin cụ thể sẽ cấu hình trong System Config — chưa xác định</li>
+                                    <li>Luồng: Báo giá → Đại lý đồng ý miệng → Sale chuyển thành Đơn hàng</li>
+                                </ul>
+                            </div>
+                            <div class="grid-cols-3">
+                                <div class="feature-box" style="border-left: 3px solid var(--accent-gold);">
+                                    <p style="font-weight: 700; color: var(--accent-gold); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">⚙️ System Features</p>
+                                    <ul>
+                                        <li>Pricing Engine: tự điền giá Tier</li>
+                                        <li>Margin Evaluator: tính realtime từng dòng & tổng</li>
+                                        <li>PDF Generator: xuất file báo giá chuyên nghiệp</li>
+                                    </ul>
+                                </div>
+                                <div class="feature-box" style="border-left: 3px solid var(--accent);">
+                                    <p style="font-weight: 700; color: var(--accent); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">👤 Sale Features</p>
+                                    <ul>
+                                        <li>Giao diện lập báo giá + Margin realtime</li>
+                                        <li>Nút "Xuất PDF" gửi Zalo/Email</li>
+                                        <li>Nút "Chuyển thành Đơn hàng"</li>
+                                        <li>Danh sách báo giá + trạng thái</li>
+                                    </ul>
+                                </div>
+                                <div class="feature-box" style="border-left: 3px solid var(--red);">
+                                    <p style="font-weight: 700; color: var(--red); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">👤 Admin Features</p>
+                                    <ul>
+                                        <li>Danh sách báo giá "Chờ duyệt"</li>
+                                        <li>Xem chi tiết Margin, giá vốn, chiết khấu</li>
+                                        <li>Nút Phê duyệt / Từ chối + lý do</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 5 -->
+                    <div id="mod5" class="ve-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="font-size: 24px;">📝</span>
+                            <div>
+                                <span class="badge badge--green" style="font-size: 9px; padding: 2px 6px;">Module 5</span>
+                                <h3 style="font-size: 16px; margin-top: 2px;">Đơn Hàng (Orders)</h3>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="feature-box" style="background: var(--surface-recessed); border-left: 3px solid var(--text-dim);">
+                                <p style="font-weight: 700; color: var(--text-dim); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">📐 Business Rules</p>
+                                <p style="font-size: 13.5px; margin-top: 4px;">Đơn hàng chỉ được tạo từ Báo giá đã được duyệt. <strong>Vòng đời trạng thái đơn hàng:</strong></p>
+                                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0;">
+                                    <span class="badge badge--blue" style="border-radius: 4px;">Draft</span>
+                                    <span style="color: var(--text-dim);">→</span>
+                                    <span class="badge badge--indigo" style="border-radius: 4px;">Đã xác nhận</span>
+                                    <span style="color: var(--text-dim);">→</span>
+                                    <span class="badge badge--yellow" style="border-radius: 4px;">Đang chuẩn bị hàng</span>
+                                    <span style="color: var(--text-dim);">→</span>
+                                    <span class="badge badge--blue" style="border-radius: 4px;">Đã xuất kho</span>
+                                    <span style="color: var(--text-dim);">→</span>
+                                    <span class="badge badge--green" style="border-radius: 4px;">Hoàn thành</span>
+                                </div>
+                                <p style="font-size: 11px; color: var(--text-dim);">Mỗi chuyển trạng thái ghi nhận: Ai thực hiện, lúc mấy giờ.</p>
+                            </div>
+                            <div class="grid-cols-2">
+                                <div class="feature-box" style="border-left: 3px solid var(--accent-gold);">
+                                    <p style="font-weight: 700; color: var(--accent-gold); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">⚙️ System Features</p>
+                                    <ul>
+                                        <li>Sao chép toàn bộ thông tin từ Báo giá sang Đơn hàng khi chuyển đổi</li>
+                                    </ul>
+                                </div>
+                                <div class="feature-box" style="border-left: 3px solid var(--accent);">
+                                    <p style="font-weight: 700; color: var(--accent); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">👤 User Features</p>
+                                    <ul>
+                                        <li>Danh sách đơn hàng: Lọc theo trạng thái, Đại lý, khoảng thời gian</li>
+                                        <li>Chi tiết đơn hàng: SKU, giá trị, lịch sử trạng thái</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 6 -->
+                    <div id="mod6" class="ve-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="font-size: 24px;">📦</span>
+                            <div>
+                                <span class="badge badge--green" style="font-size: 9px; padding: 2px 6px;">Module 6</span>
+                                <h3 style="font-size: 16px; margin-top: 2px;">Nhập Kho & Quản Lý Serial</h3>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="feature-box" style="background: var(--surface-recessed); border-left: 3px solid var(--text-dim);">
+                                <p style="font-weight: 700; color: var(--text-dim); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">📐 Business Rules</p>
+                                <ul style="margin-top: 4px;">
+                                    <li>Mỗi đợt nhập hàng tạo một Lô (Batch): Mã lô, ngày nhập, nhà cung cấp, giá vốn nhập</li>
+                                    <li>Thiết bị có Serial (Inverter, Pin): bắt buộc đăng ký số Serial khi nhập kho</li>
+                                    <li>Phụ kiện không có Serial: quản lý theo số lượng đơn thuần</li>
+                                    <li>Trạng thái Serial: <code style="font-family: var(--font-mono); background: var(--border); padding: 1px 4px; border-radius: 4px;">In Stock</code> →
+                                        <code style="font-family: var(--font-mono); background: var(--accent-dim); color: var(--accent); padding: 1px 4px; border-radius: 4px;">Shipped</code> → <code style="font-family: var(--font-mono); background: var(--green-dim); color: var(--green); padding: 1px 4px; border-radius: 4px;">Activated</code>
+                                    </li>
+                                    <li><strong>Giá vốn Đích danh:</strong> Giá vốn thiết bị = Giá nhập của Lô hàng chứa chính xác Serial đó</li>
+                                    <li style="color: var(--green); font-weight: 600;">✓ Quy trình xuất & nhập kho: Sử dụng số Serial sẵn có của nhà sản xuất. Nhập kho: import Excel/quét. Xuất kho: quét (súng quét/camera PWA) hoặc nhập tay.</li>
+                                </ul>
+                            </div>
+                            <div class="grid-cols-2">
+                                <div class="feature-box" style="border-left: 3px solid var(--accent-gold);">
+                                    <p style="font-weight: 700; color: var(--accent-gold); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">⚙️ System Features</p>
+                                    <ul>
+                                        <li>Serial Validator: Kiểm tra tồn tại, đúng SKU, không trùng phiếu</li>
+                                        <li>Serial-COGS Mapper: Tra Lô gốc → giá vốn chính xác</li>
+                                        <li>Traceability Logger: Ghi log toàn bộ vòng đời Serial</li>
+                                    </ul>
+                                </div>
+                                <div class="feature-box" style="border-left: 3px solid var(--accent);">
+                                    <p style="font-weight: 700; color: var(--accent); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">👤 User Features (Thủ kho)</p>
+                                    <ul>
+                                        <li>Nhập Kho: Tạo phiếu → Gắn Lô → Nhập giá vốn → Import Excel Serial</li>
+                                        <li>Tồn Kho: Xem số lượng theo SKU, phân tách theo Lô</li>
+                                        <li>Xuất Kho: Gắn phiếu vào Đơn hàng → Chọn dòng chi tiết đơn hàng (Order Line) → Nhập/Quét Serial xuất đi</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 7 -->
+                    <div id="mod7" class="ve-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="font-size: 24px;">🛠️</span>
+                            <div>
+                                <span class="badge badge--purple" style="font-size: 9px; padding: 2px 6px;">Module 7</span>
+                                <h3 style="font-size: 16px; margin-top: 2px;">Kích Hoạt Bảo Hành (QR Warranty)</h3>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="feature-box" style="background: var(--surface-recessed); border-left: 3px solid var(--text-dim);">
+                                <p style="font-weight: 700; color: var(--text-dim); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">📐 Business Rules</p>
+                                <ul style="margin-top: 4px;">
+                                    <li>Ngày hết hạn BH = Ngày kích hoạt + Thời hạn bảo hành chuẩn của SKU</li>
+                                    <li>Khi kích hoạt: Liên kết <strong>Serial ↔ Dòng đơn hàng (Order Line) ↔ Đại lý ↔ End-User</strong></li>
+                                    <li>Nhân viên Solando quét QR thực địa để xác thực nguồn gốc thiết bị</li>
+                                    <li>Đại lý gốc đã <span class="badge badge--red" style="font-size: 10px; padding: 1px 6px;">Inactive</span> → Hệ thống cảnh báo, CSKH Solando xử lý trực tiếp</li>
+                                </ul>
+                            </div>
+                            <div class="grid-cols-2">
+                                <div class="feature-box" style="border-left: 3px solid var(--accent-gold);">
+                                    <p style="font-weight: 700; color: var(--accent-gold); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">⚙️ System Features</p>
+                                    <ul>
+                                        <li>QR Mapping Engine: Serial → Dòng đơn hàng (Order Line) → Đơn hàng gốc → Đại lý</li>
+                                        <li>Tính toán và lưu ngày hết hạn bảo hành</li>
+                                        <li>Xác thực Serial thuộc hệ thống Solando</li>
+                                    </ul>
+                                </div>
+                                <div class="feature-box" style="border-left: 3px solid var(--accent);">
+                                    <p style="font-weight: 700; color: var(--accent); font-size: 11px; font-family: var(--font-mono); text-transform: uppercase;">👤 User Features</p>
+                                    <ul>
+                                        <li><strong>Public QR Form (không cần login):</strong> Quét Serial → Điền End-User → Chọn Đại lý → Kích hoạt</li>
+                                        <li><strong>Kích hoạt nội bộ (Thủ kho/CSKH):</strong> Tìm Serial → Điền End-User → Gán Đại lý → Kích hoạt thủ công</li>
+                                        <li><strong>Tra cứu BH (Public):</strong> Nhập Serial → Xem trạng thái, ngày hết hạn</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 8 -->
+                    <div id="mod8" class="ve-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="font-size: 24px;">📊</span>
+                            <div>
+                                <span class="badge badge--blue" style="font-size: 9px; padding: 2px 6px;">Module 8</span>
+                                <h3 style="font-size: 16px; margin-top: 2px;">Báo Cáo</h3>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <div class="table-scroll">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Báo Cáo</th>
+                                            <th>Bộ Lọc</th>
+                                            <th>Người Dùng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-weight: 600;">📈 Doanh số<br><span style="font-size: 11px; color: var(--text-dim); font-weight: normal;">Tổng giá trị đơn hàng hoàn thành</span></td>
+                                            <td style="font-size: 12px; color: var(--text-dim);">Theo tháng / Đại lý / Sale</td>
+                                            <td>
+                                                <span class="badge badge--red" style="margin-right: 4px;">Admin</span>
+                                                <span class="badge badge--blue">Sale</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 600;">🗄️ Tồn Kho Hiện Tại<br><span style="font-size: 11px; color: var(--text-dim); font-weight: normal;">Số lượng theo SKU, phân tách theo Lô, giá vốn từng lô</span></td>
+                                            <td style="font-size: 12px; color: var(--text-dim);">Theo SKU / Theo Lô</td>
+                                            <td>
+                                                <span class="badge badge--red" style="margin-right: 4px;">Admin</span>
+                                                <span class="badge badge--amber">Thủ kho</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 600;">🔍 Lịch Sử Serial<br><span style="font-size: 11px; color: var(--text-dim); font-weight: normal;">Tra cứu toàn bộ vòng đời một Serial</span></td>
+                                            <td style="font-size: 12px; color: var(--text-dim);">Nhập số Serial</td>
+                                            <td>
+                                                <span class="badge badge--red" style="margin-right: 4px;">Admin</span>
+                                                <span class="badge badge--blue" style="margin-right: 4px;">Sale</span>
+                                                <span class="badge badge--green">CSKH</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 9 -->
+                    <div id="mod9" class="ve-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="font-size: 24px;">🔔</span>
+                            <div>
+                                <span class="badge badge--indigo" style="font-size: 9px; padding: 2px 6px;">Module 9</span>
+                                <h3 style="font-size: 16px; margin-top: 2px;">Thông Báo Nội Bộ (In-App Notification)</h3>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <div class="table-scroll">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Sự Kiện Kích Hoạt</th>
+                                            <th>Người Nhận</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Báo giá có Margin thấp → Chờ duyệt</td>
+                                            <td><span class="badge badge--red">Admin</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Đơn hàng được duyệt</td>
+                                            <td><span class="badge badge--blue">Sale phụ trách</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Báo giá bị từ chối</td>
+                                            <td><span class="badge badge--blue">Sale tạo báo giá</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-dim); margin-top: 12px;">🔔 Icon notification bell ở góc trên màn hình → Click xem danh sách → Click từng thông báo để navigate đến đối tượng liên quan.</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 5. HAPPY PATH FLOWS -->
+            <section id="flows" style="--i:5">
+                <h2 class="section-heading sketch-font">5. Luồng Chính Cần Kiểm Thử (Happy Path)</h2>
+                <div class="grid-cols-3">
+
+                    <div class="ve-card ve-card--elevated">
+                        <h3 style="font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 24px; height: 24px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">1</span>
+                            Sale lập báo giá & đơn hàng
+                        </h3>
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--text-dim);">
+                            <div>• Sale chọn Đại lý</div>
+                            <div>• Hệ thống tự áp giá Tier</div>
+                            <div>• Sale thêm SKU, chỉnh chiết khấu</div>
+                            <div>• Hệ thống tính Margin realtime</div>
+                            <div style="background: var(--accent-gold-dim); border-radius: 4px; padding: 6px; color: var(--accent-gold); font-weight: 500;">⚠ [Nếu Margin thấp] Admin nhận thông báo và phê duyệt</div>
+                            <div>• Sale xuất PDF gửi Đại lý</div>
+                            <div>• Đại lý đồng ý (miệng)</div>
+                            <div>• Sale nhấn "Chuyển thành đơn hàng"</div>
+                            <div style="background: var(--green-dim); border-radius: 4px; padding: 6px; color: var(--green); font-weight: 500;">✓ Đơn hàng → "Đang chuẩn bị hàng"</div>
+                        </div>
+                    </div>
+
+                    <div class="ve-card ve-card--elevated">
+                        <h3 style="font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 24px; height: 24px; background: var(--accent-gold); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">2</span>
+                            Nhập kho & gắn Serial
+                        </h3>
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--text-dim);">
+                            <div>• Thủ kho tạo phiếu nhập kho</div>
+                            <div>• Tạo mã Lô mới (ngày nhập, giá vốn)</div>
+                            <div>• Import file Excel Serial từ NSX</div>
+                            <div style="background: var(--green-dim); border-radius: 4px; padding: 6px; color: var(--green); font-weight: 500;">✓ Hệ thống lưu từng Serial vào Lô, trạng thái "In Stock"</div>
+                        </div>
+                    </div>
+
+                    <div class="ve-card ve-card--elevated">
+                        <h3 style="font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 24px; height: 24px; background: var(--indigo); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">3</span>
+                            Kích hoạt bảo hành QR
+                        </h3>
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--text-dim);">
+                            <div>• KTV quét QR trên Inverter</div>
+                            <div>• Mở trang kích hoạt (không login)</div>
+                            <div>• Serial tự động điền</div>
+                            <div>• Điền thông tin End-User + Đại lý</div>
+                            <div>• Xác nhận kích hoạt</div>
+                            <div style="background: var(--green-dim); border-radius: 4px; padding: 6px; color: var(--green); font-weight: 500;">✓ Hệ thống liên kết: Serial ↔ Đại lý ↔ End-User, tính hạn BH</div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 6. UNKNOWNS -->
+            <section id="unknowns" style="--i:6">
+                <h2 class="section-heading sketch-font">6. Những Điều Chưa Xác Định — Cần Làm Rõ</h2>
+                <div class="ve-card">
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Hạng Mục Cần Xác Nhận</th>
+                                        <th style="width: 150px; text-align: center;">Trạng Thái</th>
+                                        <th>Ghi Chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600;">Ngưỡng Margin % kích hoạt quy trình duyệt chiết khấu</td>
+                                        <td style="text-align: center;"><span class="badge badge--red">🔴 Chưa rõ</span></td>
+                                        <td class="muted-cell">Hỏi bộ phận Kinh doanh Solando</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Quy trình quét Serial xuất kho thực tế (quét tay / camera / nhập file)</td>
+                                        <td style="text-align: center;"><span class="badge badge--green">🟢 Đã xác nhận</span></td>
+                                        <td class="muted-cell">Sử dụng mã Serial gốc của hãng. Nhập: Import Excel/Quét. Xuất: Quét máy/Nhập tay.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Mẫu PDF báo giá (Logo, bố cục, điều khoản)</td>
+                                        <td style="text-align: center;"><span class="badge badge--yellow">🟡 Cần thiết kế</span></td>
+                                        <td class="muted-cell">Cần lấy mẫu / template hiện tại từ Solando</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Khả năng mở rộng kết nối các hệ thống khác trong tương lai</td>
+                                        <td style="text-align: center;"><span class="badge badge--yellow">🟡 Chưa rõ</span></td>
+                                        <td class="muted-cell">Cần thiết kế kiến trúc mở để dễ tích hợp sau này</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Load Mermaid from CDN and mount it globally -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        window.mermaid = mermaid;
+        if (typeof initAllDiagrams === 'function') {
+            initAllDiagrams();
+        }
+    </script>
+    <script src="./index.js"></script>
+
+</body>
+
+</html>

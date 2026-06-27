@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch Triển Khai Chi Tiết & Database Schema — Task Kingston</title>
+    <!-- Google Fonts: Plus Jakarta Sans + Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="plan-detailed.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span style="color: var(--indigo); font-size: 1.5rem;">🔌</span>
+            <div class="logo-text">
+                <h1>Task Kingston</h1>
+                <p>Kế Hoạch Triển Khai Chi Tiết & Database Schema</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="../../presentation/index.html" class="btn">📺 Slide Trình Chiếu</a>
+            <a href="../../index.html" class="btn">📋 Đặc Tả Tổng Thể</a>
+            <a href="../plan-high-level/index.html" class="btn">🧭 Kế hoạch MVP tổng thể</a>
+            <a href="../../mmp/index.html" class="btn btn-purple">🚀 Kế hoạch dài hạn (Sau MVP)</a>
+            <a href="../../prototype/index.html" class="btn btn-emerald">🖥️ Chạy Prototype UAT</a>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+        <p class="sidebar-title">Kế hoạch chi tiết</p>
+        <nav>
+            <a class="nav-link active" onclick="navTo('why')">1. Phân Tích Kỹ Thuật</a>
+            <a class="nav-link" onclick="navTo('arch')">2. Kiến Trúc Clean Architecture</a>
+            <a class="nav-link" onclick="navTo('db')">3. Database Schema (PostgreSQL DDL)</a>
+            <a class="nav-link" onclick="navTo('timeline')">4. Timeline Phân Kỳ Chi Tiết</a>
+            <a class="nav-link" onclick="navTo('techstack')">5. Chi Tiết API & Tech Stack</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <div class="alert-box">
+            <strong>🎯 Mục tiêu Kế hoạch:</strong>
+            Thiết kế kiến trúc hệ thống chi tiết (Clean Architecture), đặc tả các bảng cơ sở dữ liệu PostgreSQL DDL SQL và sơ đồ API endpoints đồng bộ hóa.
+        </div>
+
+        <!-- 1. WHY CUSTOM -->
+        <section id="why">
+            <h2 class="section-heading">1. Phân Tích Giải Pháp Kỹ Thuật</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%;">Tiêu Chí Kỹ Thuật</th>
+                                <th>Giải Thích & Lợi Ích Lâu Dài Cho Dự Án</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>PostgreSQL RDBMS</strong></td>
+                                <td>Hỗ trợ kiểu UUID làm khóa chính tối ưu, quản lý các khóa ngoại chặt chẽ (ON DELETE CASCADE) giúp đảm bảo toàn vẹn dữ liệu và tránh tình trạng tasks mồ côi (orphaned tasks) khi dự án bị xóa.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Clean Architecture</strong></td>
+                                <td>Tách biệt hoàn toàn phần Logic Core Nghiệp vụ (Domain) ra khỏi Framework và Cơ sở dữ liệu, cho phép hoán đổi Repository từ LocalStorage (Mock) sang PostgreSQL (Thật) chỉ bằng cách đổi class truyền vào mà không phải sửa code nghiệp vụ.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>REST API & RBAC Middleware</strong></td>
+                                <td>Sử dụng RESTful endpoints trực quan kết hợp với Header phân quyền tĩnh (X-User-Role) giúp kiểm soát phân quyền chặt chẽ ngay tại gateway router của server.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ARCHITECTURE -->
+        <section id="arch">
+            <h2 class="section-heading">2. Sơ Đồ Tuần Tự Phê Duyệt Nhiệm Vụ</h2>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">
+                Luồng dữ liệu đồng bộ phê duyệt công việc (Task Approval Flow) từ Staff đến PM/Admin. Rê chuột / cuộn chuột để zoom và di chuyển sơ đồ:
+            </p>
+            
+            <div class="diagram-shell">
+                <div class="diagram-shell__hint">
+                    <span>LUỒNG SEQUENCE (MERMAID)</span>
+                    <span>Cuộn chuột để zoom • Kéo thả để pan • Click đúp để đặt lại</span>
+                </div>
+                <div class="mermaid-wrap">
+                    <div class="zoom-controls">
+                        <span class="zoom-label" id="zoom-value">100%</span>
+                        <button type="button" onclick="zoomIn()" title="Phóng to">+</button>
+                        <button type="button" onclick="zoomOut()" title="Thu nhỏ">&minus;</button>
+                        <button type="button" onclick="zoomReset()" title="Reset">&#8634;</button>
+                    </div>
+                    <div class="mermaid-viewport" id="mermaid-viewport">
+                        <div class="mermaid-canvas" id="mermaid-canvas">
+                            <div class="mermaid">
+                                sequenceDiagram
+                                    autonumber
+                                    actor Staff as Nguyễn Văn Staff
+                                    actor PM as Phan Văn PM
+                                    participant API as API Server / Express
+                                    participant DB as localStorage / PostgreSQL
+
+                                    Staff->>API: POST /api/tasks/:id/submit-approval {report_text, report_link}
+                                    Note over API: Xác thực vai trò Staff &<br/>Trạng thái task hợp lệ (In Progress)
+                                    API->>DB: Cập nhật trạng thái task sang Reviewing & Ghi log
+                                    DB-->>API: Thành công
+                                    API-->>Staff: Trả về trạng thái Reviewing thành công
+                                    Note over PM: PM nhận được thông báo<br/>ở hàng đợi phê duyệt (Approval Queue)
+                                    PM->>API: POST /api/approvals/:id/review {action: "Approve"}
+                                    Note over API: Xác thực vai trò PM phụ trách dự án
+                                    API->>DB: Đổi trạng thái task sang Done & Ghi log duyệt
+                                    DB-->>API: Thành công
+                                    API-->>PM: Trả về kết quả phê duyệt thành công
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ve-card ve-card--recessed">
+                <pre>src/
+├── domain/                         # Lớp Nghiệp Vụ Cốt Lõi (Entities & Rules)
+│   ├── entities/
+│   │   ├── User.js                 # Thực thể User
+│   │   ├── Project.js              # Thực thể Project
+│   │   ├── Task.js                 # Thực thể Task
+│   │   └── ApprovalRequest.js      # Thực thể Yêu cầu phê duyệt
+│   └── value-objects/
+│       ├── Priority.js             # High / Medium / Low
+│       └── TaskStatus.js           # To Do / In Progress / Reviewing / Done
+├── use-cases/                      # Lớp Điều Phối Nghiệp Vụ (Application Logic)
+│   ├── project/
+│   │   ├── CreateProject.js
+│   │   └── AssignPM.js
+│   └── task/
+│       ├── CreateTask.js
+│       ├── SubmitApproval.js
+│       └── ReviewTask.js
+└── infrastructure/                 # Lớp Chi Tiết Công Nghệ (Adapters & External Services)
+    ├── database/
+    │   ├── PostgreSQLRepository.js
+    │   └── LocalStorageRepository.js
+    └── security/
+        └── RBACMiddleware.js</pre>
+            </div>
+        </section>
+
+        <!-- 3. DATABASE SCHEMA -->
+        <section id="db">
+            <h2 class="section-heading">3. Database Schema (PostgreSQL DDL SQL)</h2>
+            <div class="ve-card">
+                <div class="table-wrap" style="margin-bottom: 1rem;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Tên bảng</th>
+                                <th style="width: 25%;">Thực thể chính</th>
+                                <th>Mục tiêu lưu vết nghiệp vụ chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                               <td><strong>users</strong></td>
+                               <td>Nhân viên & Vai trò</td>
+                               <td>Lưu ID (UUID), Email, Họ tên, Role (Admin/PM/Staff) để phân quyền.</td>
+                           </tr>
+                           <tr>
+                               <td><strong>projects</strong></td>
+                               <td>Dự án văn phòng</td>
+                               <td>Lưu ID, Tên dự án, PM ID (Khóa ngoại tham chiếu users.id), Trạng thái (Active/On Hold/Completed).</td>
+                           </tr>
+                           <tr>
+                               <td><strong>tasks</strong></td>
+                               <td>Công việc chi tiết</td>
+                               <td>Lưu ID, Project ID, Tiêu đề, Assignee ID, Priority, Due date, Trạng thái (To Do/In Progress/Reviewing/Done).</td>
+                           </tr>
+                           <tr>
+                               <td><strong>comments</strong></td>
+                               <td>Bình luận thảo luận</td>
+                               <td>Lưu ID, Task ID, User ID, Nội dung bình luận, Thời gian.</td>
+                           </tr>
+                           <tr>
+                               <td><strong>approval_requests</strong></td>
+                               <td>Yêu cầu phê duyệt</td>
+                               <td>Lưu ID, Task ID, Submitter ID, Báo cáo, Link tài liệu, Approver ID, Trạng thái (Pending/Approved/Rejected), Phản hồi.</td>
+                           </tr>
+                           <tr>
+                               <td><strong>activity_logs</strong></td>
+                               <td>Lịch sử hoạt động</td>
+                               <td>Lưu ID, Task ID, User ID, Mô tả hành động (Action), Thời gian.</td>
+                           </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ve-card ve-card--recessed" style="padding: 1rem; margin-bottom: 0;">
+                    <pre><code class="language-sql">-- BẢNG USERS
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL CHECK (role IN ('Admin', 'Project Manager', 'Staff')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- BẢNG PROJECTS
+CREATE TABLE projects (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    pm_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'Active' CHECK (status IN ('Active', 'On Hold', 'Completed')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- BẢNG TASKS
+CREATE TABLE tasks (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    assignee_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    priority VARCHAR(20) NOT NULL CHECK (priority IN ('High', 'Medium', 'Low')),
+    due_date DATE NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'To Do' CHECK (status IN ('To Do', 'In Progress', 'Reviewing', 'Done')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- BẢNG COMMENTS
+CREATE TABLE comments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    task_id UUID REFERENCES tasks(id) ON DELETE CASCADE NOT NULL,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- BẢNG APPROVAL_REQUESTS
+CREATE TABLE approval_requests (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    task_id UUID REFERENCES tasks(id) ON DELETE CASCADE NOT NULL,
+    submitter_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    report_text TEXT NOT NULL,
+    report_link VARCHAR(512),
+    approver_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Approved', 'Rejected')),
+    feedback TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- BẢNG ACTIVITY_LOGS
+CREATE TABLE activity_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    task_id UUID REFERENCES tasks(id) ON DELETE CASCADE NOT NULL,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    action TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TIMELINE -->
+        <section id="timeline">
+            <h2 class="section-heading">4. Danh Sách Task Triển Khai Chi Tiết</h2>
+            <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 20px;">
+                Dưới đây là sơ đồ chia nhỏ công việc thực thi MVP. Bạn có thể tích chọn trực tiếp các hộp kiểm dưới đây để theo dõi và cập nhật tiến độ tự động (trạng thái tiến độ sẽ được lưu lại trên trình duyệt của bạn).
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 24px;">
+                <!-- Giai đoạn 1 -->
+                <div>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <span class="badge badge--blue" style="border-radius: 4px;">Giai Đoạn 1</span>
+                        Cấu Hình Core Database & Module Auth (Ngày 1–3)
+                    </h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="task_1_1" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 1.1: Thiết lập database migration & DDL SQL Schema</strong>
+                                    <span class="task-badge task-badge--db">PostgreSQL</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Tạo các bảng <code>users</code>, <code>projects</code>, <code>tasks</code>, <code>comments</code>, <code>approval_requests</code>, <code>activity_logs</code> và các indexes trên PostgreSQL.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_1_2" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 1.2: Scaffold ứng dụng Node.js/Express theo Clean Architecture</strong>
+                                    <span class="task-badge task-badge--backend">Node.js</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Cài đặt express, pg-pool, dotenv, cors và thiết lập cấu trúc 3 lớp: Controllers, Services, và Repositories.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_1_3" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 1.3: Viết middleware RBAC kiểm tra quyền truy cập theo vai trò</strong>
+                                    <span class="task-badge task-badge--backend">Node.js</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Hiện thực middleware JWT/Guards giải mã token và kiểm tra quyền RBAC của người dùng trước khi vào router.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Giai đoạn 2 -->
+                <div>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <span class="badge badge--blue" style="border-radius: 4px;">Giai Đoạn 2</span>
+                        APIs & Giao Diện Quản Lý Dự Án (Ngày 4–6)
+                    </h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="task_2_1" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 2.1: Viết REST APIs CRUD quản lý Dự án</strong>
+                                    <span class="task-badge task-badge--backend">Node.js</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Xây dựng endpoints <code>POST /api/projects</code>, <code>GET /api/projects</code>, và <code>PATCH /api/projects/:id</code>.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_2_2" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 2.2: Thiết lập Giao diện Dashboard chính & Sidebar Navigation</strong>
+                                    <span class="task-badge task-badge--frontend">Vanilla JS</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Khởi tạo bố cục khung app, thanh tiêu đề, menu định tuyến và xử lý chuyển đổi giao diện mượt mà.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_2_3" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 2.3: Màn hình danh mục dự án (Project Directory) & Form Tạo mới</strong>
+                                    <span class="task-badge task-badge--frontend">Vanilla JS</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Hiển thị danh sách dự án dưới dạng thẻ card kèm hiển thị phần trăm tiến độ tự động; tích hợp form modal thêm mới dự án.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Giai đoạn 3 -->
+                <div>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <span class="badge badge--blue" style="border-radius: 4px;">Giai Đoạn 3</span>
+                        Kanban Board & APIs Công Việc (Ngày 7–10)
+                    </h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="task_3_1" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 3.1: Viết REST APIs CRUD quản lý Công việc</strong>
+                                    <span class="task-badge task-badge--backend">Node.js</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Hiện thực các endpoints: <code>POST /api/tasks</code>, <code>GET /api/projects/:id/tasks</code>, <code>PATCH /api/tasks/:id/status</code>.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_3_2" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 3.2: Giao diện Kanban Board kéo thả cập nhật tiến độ trực quan</strong>
+                                    <span class="task-badge task-badge--frontend">Vanilla JS</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Thiết kế 4 cột trạng thái: To Do, In Progress, Reviewing, Done kèm tương tác kéo thả thẻ HTML5 Drag and Drop.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_3_3" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 3.3: Giao diện xem chi tiết Task, Comment Box & Activity Logs</strong>
+                                    <span class="task-badge task-badge--frontend">Vanilla JS</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Tích hợp modal hiển thị mô tả nhiệm vụ, danh sách lịch sử sửa đổi trạng thái và khung bình luận trực tiếp.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Giai đoạn 4 -->
+                <div>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <span class="badge badge--blue" style="border-radius: 4px;">Giai Đoạn 4</span>
+                        Log Engine & Trình Phê Duyệt Trạng Thái (Ngày 11–13)
+                    </h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="task_4_1" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 4.1: Log Engine tự động ghi nhận thay đổi trạng thái</strong>
+                                    <span class="task-badge task-badge--backend">Node.js</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Thiết lập hook hoặc trigger trung gian tự động chèn bản ghi vào bảng <code>activity_logs</code> khi cập nhật task.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_4_2" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 4.2: APIs đệ trình và phê duyệt hoàn thành nhiệm vụ</strong>
+                                    <span class="task-badge task-badge--backend">Node.js</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Endpoints <code>POST /api/tasks/:id/submit-approval</code> và <code>POST /api/approvals/:id/review</code> để duyệt/từ chối.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_4_3" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 4.3: Giao diện hàng đợi phê duyệt (Approval Queue) dành cho PM/Admin</strong>
+                                    <span class="task-badge task-badge--frontend">Vanilla JS</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Màn hình gom nhóm các nhiệm vụ đang chờ phê duyệt, hiển thị báo cáo, đính kèm link tài liệu và form nhập feedback từ chối.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Giai đoạn 5 -->
+                <div>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <span class="badge badge--blue" style="border-radius: 4px;">Giai Đoạn 5</span>
+                        Kiểm Thử UAT & Mock Database (Ngày 14–15)
+                    </h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="task_5_1" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 5.1: Xây dựng bộ kịch bản kiểm thử Happy Path & E2E</strong>
+                                    <span class="task-badge task-badge--devops">QA</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Kiểm tra toàn bộ vòng đời của một dự án và công việc từ lúc tạo cho tới khi hoàn thành.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_5_2" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 5.2: Triển khai CSDL giả lập LocalStorage vào file db.js</strong>
+                                    <span class="task-badge task-badge--frontend">Vanilla JS</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Liên kết database mock với các view HTML để đảm bảo Prototype UAT hoạt động độc lập không cần server backend.</p>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task_5_3" class="task-checkbox" onchange="saveProgress()">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong>Task 5.3: Đóng gói và viết hướng dẫn triển khai sản xuất</strong>
+                                    <span class="task-badge task-badge--devops">DevOps</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Viết Docker Compose cấu hình Node.js/PostgreSQL và tài liệu hướng dẫn chạy lệnh seed dữ liệu thật.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TECH STACK -->
+        <section id="techstack">
+            <h2 class="section-heading">5. Đồng Bộ REST API & Stack Kỹ Thuật</h2>
+            <div class="ve-card">
+                <div style="margin-bottom: 1rem;">
+                    <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Chi tiết API Router:</h3>
+                    <ul>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/projects</code> - Tạo mới dự án (Quyền Admin)</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>GET /api/projects</code> - Danh sách dự án (Tất cả vai trò, lọc theo quyền)</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/tasks</code> - Tạo task mới (PM phụ trách, Admin)</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/tasks/:id/submit-approval</code> - Gửi yêu cầu duyệt (Staff)</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/approvals/:id/review</code> - Duyệt/Từ chối task (PM, Admin)</li>
+                    </ul>
+                </div>
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Thành phần</th>
+                                <th style="width: 25%;">Công nghệ đề xuất</th>
+                                <th>Mô tả vai trò kỹ thuật chính</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                               <td><strong>Web Framework</strong></td>
+                               <td>Express.js / Node.js</td>
+                               <td>Hệ sinh thái phong phú, dễ dàng viết các REST endpoints nhanh gọn, có middleware xử lý bảo mật.</td>
+                           </tr>
+                           <tr>
+                               <td><strong>Database ORM</strong></td>
+                               <td>Prisma ORM hoặc pg-pool</td>
+                               <td>Prisma ORM tự động tạo type safety, hỗ trợ migrations CSDL PostgreSQL dễ dàng và chính xác.</td>
+                           </tr>
+                           <tr>
+                               <td><strong>Architecture Pattern</strong></td>
+                               <td>Clean Architecture (3 Layers)</td>
+                               <td>Đảm bảo nghiệp vụ lõi (Domain) không bị phụ thuộc vào database bên ngoài, tạo điều kiện viết unit test tốt.</td>
+                           </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+    <script src="plan-detailed.js"></script>
+</body>
+</html>

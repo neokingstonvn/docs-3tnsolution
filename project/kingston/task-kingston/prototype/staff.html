@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Console — Task Kingston</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="staff.css">
+</head>
+<body>
+
+    <!-- Left Sidebar Layout -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">👨‍💻</span>
+            <div class="logo-text">
+                <h1>Task Kingston</h1>
+                <p>Staff Portal</p>
+            </div>
+        </div>
+        
+        <div class="user-profile-mock">
+            <div class="avatar" id="staff-avatar">NS</div>
+            <div class="profile-info">
+                <span class="name" id="staff-name">Nguyễn Văn Staff</span>
+                <span style="font-size: 0.65rem; color: var(--text-dim);">Thành viên</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav">
+            <p class="menu-title">Chức năng chính</p>
+            <a class="nav-item active" id="menu-staff-tasks">
+                <span class="nav-icon">📋</span>
+                <div class="nav-label"><strong>Nhiệm vụ cá nhân</strong><span>Các việc được phân công</span></div>
+            </a>
+            
+            <p class="menu-title" style="margin-top: auto;">Cổng UAT</p>
+            <a href="index.html" class="nav-item">
+                <span class="nav-icon">🚪</span>
+                <div class="nav-label"><strong>Thoát Portal</strong><span>Về UAT Gateway</span></div>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Workspace -->
+    <main class="app-main">
+        
+        <div class="top-breadcrumb-bar">
+            <span class="breadcrumb" id="top-title">Nhiệm vụ được giao</span>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <!-- Notification Bell -->
+                <div class="noti-btn-wrap">
+                    <button class="scan-icon-btn" id="btn-noti-bell" style="width: 32px; height: 32px; font-size: 0.85rem; border-color: var(--border);">🔔</button>
+                    <span class="noti-badge" id="noti-count" style="display: none;">0</span>
+                    <div class="noti-dropdown" id="noti-dropdown-box">
+                        <div style="padding: 0.5rem 0.85rem; font-size: 0.72rem; font-weight: bold; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;">
+                            <span>Thông báo mới</span>
+                            <span id="btn-clear-noti" class="clickable-item" style="color: var(--accent);">Đọc tất cả</span>
+                        </div>
+                        <div id="noti-list-container"></div>
+                    </div>
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-dim);">
+                    UAT Mode • Vai trò: Staff / Member
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-workspace">
+            <div class="control-panel-column">
+                
+                <!-- TAB 1: STAFF TASKS BOARD -->
+                <div id="view-staff-tasks" class="view-panel active">
+                    <div class="glass-card" style="background: transparent; border: none; padding: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <h2>📋 Bảng công việc cá nhân</h2>
+                            <p style="font-size: 0.8rem; color: var(--text-dim);">Nhấn vào thẻ công việc để chuyển trạng thái, bình luận hoặc gửi yêu cầu phê duyệt.</p>
+                        </div>
+                        
+                        <div class="kanban-container">
+                            <!-- Column To Do -->
+                            <div class="kanban-column">
+                                <div class="kanban-column-header">
+                                    <span>To Do</span>
+                                    <span class="status-badge badge-info" id="count-todo">0</span>
+                                </div>
+                                <div id="kanban-todo-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1;"></div>
+                            </div>
+                            <!-- Column In Progress -->
+                            <div class="kanban-column">
+                                <div class="kanban-column-header">
+                                    <span>In Progress</span>
+                                    <span class="status-badge badge-warning" id="count-inprogress">0</span>
+                                </div>
+                                <div id="kanban-inprogress-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1;"></div>
+                            </div>
+                            <!-- Column Reviewing -->
+                            <div class="kanban-column" style="border-color: rgba(99, 102, 241, 0.3);">
+                                <div class="kanban-column-header">
+                                    <span>Reviewing</span>
+                                    <span class="status-badge badge-indigo" id="count-reviewing">0</span>
+                                </div>
+                                <div id="kanban-reviewing-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1;"></div>
+                            </div>
+                            <!-- Column Done -->
+                            <div class="kanban-column" style="border-color: rgba(16, 185, 129, 0.3);">
+                                <div class="kanban-column-header">
+                                    <span>Done</span>
+                                    <span class="status-badge badge-success" id="count-done">0</span>
+                                </div>
+                                <div id="kanban-done-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Chi tiết Task & Hành động (Chuyển In Progress, Comments) -->
+    <div class="modal-overlay" id="task-detail-modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <div class="modal-header" id="td-modal-title">Chi tiết nhiệm vụ</div>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.82rem;">
+                    <div><span style="color: var(--text-dim);">Dự án:</span> <strong id="td-modal-project">-</strong></div>
+                    <div><span style="color: var(--text-dim);">Người giao:</span> <strong id="td-modal-creator">-</strong></div>
+                    <div><span style="color: var(--text-dim);">Hạn chót:</span> <strong id="td-modal-due-date">-</strong></div>
+                    <div><span style="color: var(--text-dim);">Độ ưu tiên:</span> <strong id="td-modal-priority">-</strong></div>
+                    <div><span style="color: var(--text-dim);">Trạng thái:</span> <strong id="td-modal-status" class="status-badge badge-info" style="font-size:0.65rem;">-</strong></div>
+                </div>
+                <div style="border-top: 1px solid var(--border); padding-top: 0.5rem;">
+                    <span style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.25rem;">Mô tả chi tiết:</span>
+                    <p id="td-modal-desc" style="font-size: 0.82rem; color: var(--text); line-height: 1.5; background: rgba(0,0,0,0.01); padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border);"></p>
+                </div>
+                
+                <!-- Action Buttons: Start Work / Submit Approval -->
+                <div id="td-action-block" style="border-top: 1px solid var(--border); padding-top: 0.75rem; display: flex; gap: 8px;">
+                    <button type="button" class="btn btn-success" id="btn-start-work" style="display: none; width: 100%;">🚀 Bắt đầu làm việc (In Progress)</button>
+                    <button type="button" class="btn btn-primary" id="btn-open-submit-approval" style="display: none; width: 100%;">📝 Gửi báo cáo phê duyệt hoàn thành</button>
+                    <div id="td-locked-status-message" style="display: none; font-size: 0.75rem; color: var(--text-dim); text-align: center; width: 100%;">
+                        🔒 Task đang ở trạng thái kiểm duyệt/đã xong, không thể thay đổi trạng thái.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab bình luận & activity logs -->
+            <div style="border-top: 1px solid var(--border); padding-top: 0.75rem;">
+                <div style="display: flex; gap: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.5rem; padding-bottom: 0.25rem;">
+                    <span id="tab-btn-comments" style="font-size: 0.8rem; font-weight: 700; cursor: pointer; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 4px;">💬 Bình luận</span>
+                    <span id="tab-btn-logs" style="font-size: 0.8rem; font-weight: 700; cursor: pointer; color: var(--text-dim); padding-bottom: 4px;">📜 Lịch sử hoạt động</span>
+                </div>
+                
+                <!-- Comments Panel -->
+                <div id="td-panel-comments" style="display: block;">
+                    <div id="td-comments-list" style="max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; margin-bottom: 0.75rem; padding-right: 4px;"></div>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" id="td-new-comment-text" placeholder="Nhập bình luận..." style="flex-grow: 1; background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem; color: var(--text); font-size: 0.8rem; outline: none;">
+                        <button type="button" class="btn btn-primary" id="btn-td-submit-comment" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Gửi</button>
+                    </div>
+                </div>
+
+                <!-- Logs Panel -->
+                <div id="td-panel-logs" style="display: none;">
+                    <div id="td-logs-list" style="max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem; color: var(--text-dim); padding-right: 4px;"></div>
+                </div>
+            </div>
+
+            <div class="modal-actions" style="margin-top: 1.25rem;">
+                <button type="button" class="btn btn-secondary" id="btn-td-close">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Form Nộp Báo Cáo Phê Duyệt -->
+    <div class="modal-overlay" id="submit-approval-modal">
+        <div class="modal-content">
+            <div class="modal-header">📝 Nộp báo cáo hoàn thành nhiệm vụ</div>
+            <p class="card-desc" style="margin-bottom: 1rem;">Mô tả kết quả công việc và dán link tài liệu/báo cáo sản phẩm để Project Manager kiểm duyệt.</p>
+            <form id="form-submit-approval">
+                <div class="form-group" style="margin-bottom: 0.75rem;">
+                    <label for="report-text">Báo cáo kết quả (Nhiệm vụ đã hoàn thành ra sao)</label>
+                    <textarea id="report-text" rows="3" placeholder="Ví dụ: Đã hoàn thành vẽ banner, kích thước 1200x600..." required></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                    <label for="report-link">Link tài liệu đính kèm (Google Drive, Figma, v.v.)</label>
+                    <input type="url" id="report-link" placeholder="Nhập địa chỉ URL..." required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-sa-cancel">Quay lại</button>
+                    <button type="submit" class="btn btn-success">Gửi yêu cầu duyệt</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toast-notify">
+        <span id="toast-icon">✅</span>
+        <span id="toast-message">Thao tác thành công!</span>
+    </div>
+
+    <!-- Scripts mock DB & logic -->
+    <script src="db.js"></script>
+    <script src="staff.js"></script>
+</body>
+</html>

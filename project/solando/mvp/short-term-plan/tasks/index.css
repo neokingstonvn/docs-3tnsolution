@@ -1,0 +1,77 @@
+@import "../../index.css";
+
+/* Local overrides for KiotViet short-term plan */
+:root {
+    --accent-dim: rgba(22, 163, 74, 0.05);
+}
+
+.alert-green {
+    background-color: var(--green-dim);
+    border-left: 4px solid var(--green);
+    padding: 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13.5px;
+    color: var(--text);
+    margin-bottom: 24px;
+}
+
+.alert-green strong {
+    color: var(--green);
+}
+
+/* Custom styling for task list checkboxes */
+.task-list {
+    list-style: none !important;
+    padding-left: 0 !important;
+}
+
+.task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+}
+
+.task-checkbox {
+    margin-top: 4px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.task-badge {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.task-badge--backend {
+    background: var(--indigo-dim);
+    color: var(--indigo);
+    border: 1px solid var(--indigo);
+}
+
+.task-badge--frontend {
+    background: var(--accent-blue-dim);
+    color: var(--accent-blue);
+    border: 1px solid var(--accent-blue);
+}
+
+.task-badge--db {
+    background: var(--red-dim);
+    color: var(--red);
+    border: 1px solid var(--red);
+}
+
+.task-badge--devops {
+    background: var(--yellow-dim);
+    color: var(--yellow);
+    border: 1px solid var(--yellow);
+}

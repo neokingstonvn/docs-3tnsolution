@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PORTAL_NAME}} — UAT Demo Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Left Sidebar Layout -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">☀️</span>
+            <div class="logo-text">
+                <h1>{{PROJECT_NAME}}</h1>
+                <p>{{PORTAL_ROLE_CODE}} Portal</p>
+            </div>
+        </div>
+        
+        <div class="user-profile-mock">
+            <div class="avatar">{{AVATAR_INITIALS}}</div>
+            <div class="profile-info">
+                <span class="name">{{USER_MOCK_NAME}}</span>
+                <span style="font-size: 0.65rem; color: var(--text-dim);">{{PORTAL_ROLE_NAME}}</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav">
+            <p class="menu-title">Chức năng chính</p>
+            {{SIDEBAR_MENU_HTML}}
+            
+            <p class="menu-title" style="margin-top: auto;">Cổng UAT</p>
+            <a href="index.html" class="nav-item">
+                <span class="nav-icon">🚪</span>
+                <div class="nav-label"><strong>Thoát Portal</strong><span>Về UAT Gateway</span></div>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Workspace -->
+    <main class="app-main">
+        
+        <div class="top-breadcrumb-bar">
+            <span class="breadcrumb">{{PORTAL_NAME}} Console & UAT</span>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">
+                UAT Mode • Dữ liệu lưu LocalStorage
+            </div>
+        </div>
+
+        <div class="dashboard-workspace">
+            <div class="control-panel-column">
+                {{WORKSPACE_CONTENT_HTML}}
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Scripts mock DB & logic -->
+    <script src="db.js"></script>
+    <script src="{{PORTAL_ROLE_CODE_LOWER}}.js"></script>
+</body>
+</html>

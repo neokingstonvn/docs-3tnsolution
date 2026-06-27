@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3TN Project Hub</title>
+    <!-- Google Fonts: Instrument Serif (Italic Accent) + Plus Jakarta Sans (Modern Sans-serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --border-bright: #cbd5e1;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            
+            --indigo: #4f46e5;
+            --indigo-dim: rgba(79, 70, 229, 0.05);
+            --indigo-border: rgba(79, 70, 229, 0.15);
+            --indigo-text: #4338ca;
+
+            --teal: #0d9488;
+            --teal-dim: rgba(13, 148, 136, 0.05);
+            --teal-border: rgba(13, 148, 136, 0.15);
+            --teal-text: #0f766e;
+
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-lg: 1.25rem;
+            --radius-md: 0.75rem;
+            --radius-sm: 0.5rem;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.04), 0 4px 6px -4px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02);
+            --shadow-hover: 0 25px 50px -12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(224, 231, 255, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(204, 251, 241, 0.25) 0px, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 1.5rem;
+        }
+
+        .container {
+            max-width: 960px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--border);
+            padding: 0.4rem 1.15rem;
+            border-radius: 9999px;
+            backdrop-filter: blur(8px);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.25rem;
+        }
+
+        .logo-symbol {
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--indigo), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        header p.subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        header p.subtitle em {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.35rem;
+            font-style: italic;
+            color: var(--indigo-text);
+        }
+
+        /* PROJECT CARDS GRID */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* LARGE PROJECT CARD */
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            transition: var(--transition);
+        }
+
+        .project-card.solando::before {
+            background: var(--teal);
+        }
+
+        .project-card.kingston::before {
+            background: var(--indigo);
+        }
+
+        .project-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-bright);
+            transform: translateY(-4px);
+        }
+
+        .card-tag {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+            align-self: flex-start;
+        }
+
+        .project-card.solando .card-tag {
+            background: var(--teal-dim);
+            border: 1px solid var(--teal-border);
+            color: var(--teal-text);
+        }
+
+        .project-card.kingston .card-tag {
+            background: var(--indigo-dim);
+            border: 1px solid var(--indigo-border);
+            color: var(--indigo-text);
+        }
+
+        .project-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            flex-grow: 1;
+        }
+
+        /* CARD ACTION LINKS */
+        .card-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            font-family: inherit;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        /* PRIMARY ACTION BUTTONS */
+        .project-card.solando .btn-primary {
+            background: var(--teal);
+            color: var(--surface);
+            border: 1px solid var(--teal);
+        }
+
+        .project-card.solando .btn-primary:hover {
+            background: #0f766e;
+            border-color: #0f766e;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+        }
+
+        .project-card.kingston .btn-primary {
+            background: var(--indigo);
+            color: var(--surface);
+            border: 1px solid var(--indigo);
+        }
+
+        .project-card.kingston .btn-primary:hover {
+            background: #4338ca;
+            border-color: #4338ca;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        /* SECONDARY ACTION BUTTONS */
+        .btn-secondary {
+            background: rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: var(--border-bright);
+            color: var(--text-primary);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- HEADER -->
+        <header>
+            <div class="logo-badge">
+                <span class="logo-symbol">✦</span>
+                <span class="logo-text">3TN Space Directory</span>
+            </div>
+            <h1>Danh Sách <span style="background: linear-gradient(135deg, #1e293b, var(--indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dự Án Nghiệp Vụ</span></h1>
+            <p class="subtitle">
+                Cổng truy cập nhanh vào <em>các đặc tả thiết kế, lộ trình triển khai</em> và mô hình nguyên mẫu UAT tương tác.
+            </p>
+        </header>
+
+        <!-- TWO MAIN PROJECT BOXES -->
+        <div class="projects-grid">
+
+            <!-- 1. SOLANDO SOLAR ERP CARD -->
+            <div class="project-card solando">
+                <span class="card-tag">☀️ Solar & Energy ERP</span>
+                <h2 class="project-title">Solando Solar ERP</h2>
+                <p class="project-desc">
+                    Hệ thống quản trị tài nguyên chuyên nghiệp dành cho mảng điện mặt trời. Hỗ trợ đầy đủ phân cấp đại lý B2B, áp giá bán tự động, đồng bộ đối tác công nợ qua cổng API KiotViet, quản lý xuất kho theo lô và quét QR kích hoạt bảo hành.
+                </p>
+                <div class="card-actions">
+                    <a href="./solando/mvp/index.html" class="btn-action btn-primary" target="_blank">
+                        📋 Xem Đặc Tả MVP
+                    </a>
+                    <a href="./solando/requirement/index.html" class="btn-action btn-secondary" target="_blank">
+                        🧱 Xem Kiến Trúc DDD
+                    </a>
+                    <a href="./solando/mvp/prototype/index.html" class="btn-action btn-secondary" style="border-color: var(--teal-border); background: var(--teal-dim); color: var(--teal-text);" target="_blank">
+                        🖥️ Chạy UAT Prototype
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. TASK KINGSTON CARD -->
+            <div class="project-card kingston">
+                <span class="card-tag">💼 Office Collaboration</span>
+                <h2 class="project-title">Task Kingston</h2>
+                <p class="project-desc">
+                    Hệ thống quản lý công việc nội bộ văn phòng tập trung tối ưu hóa hiệu năng và bảo mật. Phân quyền vai trò RBAC nghiêm ngặt (Admin, PM, Staff), kiểm soát chặt chẽ luồng phê duyệt trạng thái Kanban/List và tự động hóa lưu vết lịch sử.
+                </p>
+                <div class="card-actions">
+                    <a href="./kingston/task-kingston/index.html" class="btn-action btn-primary" target="_blank">
+                        📋 Xem Đặc Tả MVP
+                    </a>
+                    <a href="./kingston/task-kingston/mvp/plan-detailed/index.html" class="btn-action btn-secondary" target="_blank">
+                        🧭 Kế Hoạch Triển Khai
+                    </a>
+                    <a href="./kingston/task-kingston/prototype/index.html" class="btn-action btn-secondary" style="border-color: var(--indigo-border); background: var(--indigo-dim); color: var(--indigo-text);" target="_blank">
+                        🖥️ Chạy UAT Prototype
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            &copy; 2026 3TN Studio. Thiết kế theo tiêu chuẩn giao diện sáng màu thanh lịch v2.
+        </footer>
+
+    </div>
+
+</body>
+</html>

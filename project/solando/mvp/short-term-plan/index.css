@@ -1,0 +1,33 @@
+@import "../index.css";
+
+/* Local overrides for KiotViet short-term plan */
+:root {
+    /* Set accent-dim to green-dim for short term plan accentuating KiotViet */
+    --accent-dim: rgba(22, 163, 74, 0.05);
+}
+
+.text-green-brand {
+    color: #3fa536;
+}
+
+.bg-green-brand {
+    background-color: #3fa536;
+}
+
+.border-green-brand {
+    border-color: #3fa536;
+}
+
+.alert-green {
+    background-color: var(--green-dim);
+    border-left: 4px solid var(--green);
+    padding: 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13.5px;
+    color: var(--text);
+    margin-bottom: 24px;
+}
+
+.alert-green strong {
+    color: var(--green);
+}

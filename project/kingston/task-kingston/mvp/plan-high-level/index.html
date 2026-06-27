@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch Triển Khai MVP — Task Kingston</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="plan-high-level.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span style="font-size: 1.25rem;">📋</span>
+            <div class="logo-text">
+                <h1>Task Kingston</h1>
+                <p>Kế Hoạch MVP Tổng Thể & Kiến Trúc</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="../plan-detailed/index.html" class="btn btn-purple">
+                <span>🛠️ Tasks implement chi tiết</span>
+            </a>
+            <a href="../../prototype/index.html" class="btn btn-emerald">
+                <span>🎯 Trải nghiệm Prototype (UAT)</span>
+            </a>
+            <a href="../../presentation/index.html" class="btn">
+                <span>📺 Slide trình chiếu</span>
+            </a>
+            <a href="../../mmp/index.html" class="btn">
+                <span>🚀 Kế hoạch dài hạn (MMP)</span>
+            </a>
+            <a href="../../index.html" class="btn">
+                <span>📋 Đặc tả tổng thể</span>
+                <span>→</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="main-layout">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <p class="sidebar-title">Mục Lục</p>
+            <nav>
+                <a class="nav-link active" onclick="navTo('why')">1. Tại Sao Chọn Task Kingston</a>
+                <a class="nav-link" onclick="navTo('compare')">2. Ưu Điểm Giải Pháp Tự Lập Trình</a>
+                <a class="nav-link" onclick="navTo('arch')">3. Sơ Đồ Khung Kết Nối</a>
+                <a class="nav-link" onclick="navTo('database')">4. Thiết Kế Database Rút Gọn</a>
+                <a class="nav-link" onclick="navTo('flows')">5. Quy Trình Vận Hành</a>
+                <a class="nav-link" onclick="navTo('hybrid')">6. Kiến Trúc Custom Code</a>
+                <a class="nav-link" onclick="navTo('timeline')">7. Lộ Trình Triển Khai</a>
+            </nav>
+
+            <p class="sidebar-title">Tài Liệu Khác</p>
+            <nav>
+                <a href="../plan-detailed/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🛠️ Tasks implement chi tiết</span>
+                    <span style="color: var(--accent); font-weight: bold;">→</span>
+                </a>
+                <a href="../../prototype/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🎯 Trải nghiệm Prototype (UAT)</span>
+                    <span style="color: var(--green); font-weight: bold;">→</span>
+                </a>
+                <a href="../../index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>📋 Đặc tả tổng thể</span>
+                    <span style="color: var(--text-dim); font-weight: bold;">→</span>
+                </a>
+                <a href="../../mmp/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🚀 Kế hoạch dài hạn</span>
+                    <span style="color: var(--text-dim); font-weight: bold;">→</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Goal Callout -->
+            <div class="alert-green">
+                <strong>🎯 Mục tiêu Kế hoạch MVP (Ứng dụng Task Kingston):</strong>
+                Xây dựng nền tảng quản lý công việc tối giản phục vụ văn phòng công ty với 3 phân quyền chính (Admin, Project Manager, Staff). Hệ thống tập trung giải quyết các bài toán: Phân quyền tạo dự án, giao việc trực quan qua Kanban Board, khóa trạng thái Done thông qua luồng phê duyệt nhiệm vụ nghiêm ngặt, tự động ghi nhận nhật ký hoạt động (Activity Log) và thảo luận trực tiếp (Comments). Phiên bản MVP chạy hoàn toàn độc lập với database mock ở client-side (`localStorage`) để duyệt UAT siêu tốc trước khi kết nối dữ liệu thực tế.
+            </div>
+
+            <!-- 1. TẠI SAO CHỌN TASK KINGSTON -->
+            <section id="why">
+                <h2 class="section-heading">1. Tại Sao Xây Dựng Hệ Thống Chuyên Biệt?</h2>
+                <div class="ve-card">
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%;">Tiêu Chí Đánh Giá</th>
+                                        <th>Lợi Ích Và Ý Nghĩa Thực Tế</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600;">Khóa trạng thái Done</td>
+                                        <td style="color: var(--text-dim);">Nhân viên (Staff) không thể tự ý đánh dấu hoàn thành (Done) mà chỉ có thể gửi yêu cầu duyệt. Công việc chỉ được chuyển sang Done khi PM/Admin bấm nút duyệt thực tế.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Lưu vết Activity Log</td>
+                                        <td style="color: var(--text-dim);">Tự động ghi lại mọi thay đổi quan trọng của công việc (người gán, cập nhật trạng thái, ngày gửi yêu cầu duyệt) giúp minh bạch hóa trách nhiệm.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Phân quyền RBAC sâu</td>
+                                        <td style="color: var(--text-dim);">Tách biệt hoàn toàn tính năng theo vai trò: Admin tạo dự án và phân quyền; PM tạo task và duyệt báo cáo; Staff nhận việc và nộp báo cáo kết quả.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Độ đo tiến độ tự động</td>
+                                        <td style="color: var(--text-dim);">Phần trăm hoàn thành dự án được tính toán tự động dựa trên tỷ lệ số lượng task đã chuyển sang trạng thái Done thực tế, tránh các báo cáo ảo.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. NATIVE CODE ADVANTAGES -->
+            <section id="compare">
+                <h2 class="section-heading">2. Ưu Điểm Của Giải Pháp Tự Lập Trình (Custom Build)</h2>
+                <div class="ve-card">
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="background: var(--surface); padding: 16px; border-radius: 8px; border: 1px solid var(--border); border-left: 4px solid var(--accent);">
+                            <h4 style="font-size: 14px; font-weight: 700; color: var(--accent);">💻 Giao diện tương tác Kanban hiện đại & Mượt mà</h4>
+                            <p style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Hỗ trợ kéo thả trực quan để chuyển trạng thái công việc kèm bộ lọc nhanh theo người làm, dự án hoặc độ ưu tiên.</p>
+                        </div>
+                        <div style="background: var(--surface); padding: 16px; border-radius: 8px; border: 1px solid var(--border); border-left: 4px solid var(--green);">
+                            <h4 style="font-size: 14px; font-weight: 700; color: var(--green);">🔒 Kiểm soát luồng phê duyệt & Khóa trạng thái chặt chẽ</h4>
+                            <p style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Ngăn chặn sai sót hoặc báo cáo ảo từ cấp nhân viên nhờ cấu hình ràng buộc cứng trạng thái nhiệm vụ.</p>
+                        </div>
+                        <div style="background: var(--surface); padding: 16px; border-radius: 8px; border: 1px solid var(--border); border-left: 4px solid var(--text);">
+                            <h4 style="font-size: 14px; font-weight: 700; color: var(--text);">🛠️ Cấu trúc dữ liệu mở rộng & Sẵn sàng nâng cấp CSDL</h4>
+                            <p style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Mô hình hóa dữ liệu chuẩn PostgreSQL giúp quá trình chuyển đổi từ localStorage giả lập lên cơ sở dữ liệu thực tế cực kỳ dễ dàng.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. KHUNG KẾT NỐI -->
+            <section id="arch">
+                <h2 class="section-heading">3. Sơ Đồ Khung Kết Nối Giao Tiếp</h2>
+                <div class="ve-card ve-card--recessed">
+                    <pre style="font-family: 'Fira Code', monospace; font-size: 12px; white-space: pre; overflow-x: auto; line-height: 1.6; color: var(--text);">
+┌────────────────────────────────────────────────────────┐
+│                      GATEWAY PORTAL                    │
+│           (Đăng nhập / Lựa chọn Vai trò Người dùng)    │
+└──────────────────────────┬─────────────────────────────┘
+                           │
+         ┌─────────────────┼─────────────────┐
+         ▼                 ▼                 ▼
+┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+│  ADMIN PORTAL  │ │   PM PORTAL    │ │  STAFF PORTAL  │
+│- Tạo/Sửa Dự án │ │- Tạo/Sửa Task  │ │- Nhận việc     │
+│- Gán PM        │ │- Gán việc/Prior│ │- Đổi trạng thái│
+│- Quản lý RBAC  │ │- Duyệt báo cáo │ │- Gửi yêu cầu   │
+└────────┬───────┘ └────────┬───────┘ └────────┬───────┘
+         │                  │                  │
+         └──────────────────┼──────────────────┘
+                            ▼
+           ┌─────────────────────────────────┐
+           │        CSDL LOCALSTORAGE        │
+           │ (Mock Entities: users, projects)│
+           └─────────────────────────────────┘
+                    </pre>
+                </div>
+            </section>
+
+            <!-- 4. DATABASE RÚT GỌN -->
+            <section id="database">
+                <h2 class="section-heading">4. Thiết Kế Cơ Sở Dữ Liệu Rút Gọn</h2>
+                <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 16px;">Để đáp ứng nhu cầu cốt lõi, cơ sở dữ liệu của Task Kingston gồm các bảng tinh gọn sau:</p>
+                <div class="ve-card ve-card--recessed">
+                    <pre style="font-family: 'Fira Code', monospace; font-size: 12px; white-space: pre; overflow-x: auto; line-height: 1.6; color: var(--text);">
+<strong>1. Table `users` (Nhân sự & Vai trò)</strong>
+- id: UUID PRIMARY KEY (Định danh duy nhất)
+- email: VARCHAR(100) UNIQUE (Email đăng nhập)
+- full_name: VARCHAR(100) (Tên đầy đủ)
+- role: VARCHAR(20) CHECK (role IN ('Admin', 'Project Manager', 'Staff'))
+
+<strong>2. Table `projects` (Dự án)</strong>
+- id: UUID PRIMARY KEY
+- name: VARCHAR(150) NOT NULL (Tên dự án)
+- description: TEXT
+- pm_id: UUID REFERENCES users(id) (PM phụ trách)
+- status: VARCHAR(20) CHECK (status IN ('Active', 'On Hold', 'Completed'))
+
+<strong>3. Table `tasks` (Công việc)</strong>
+- id: UUID PRIMARY KEY
+- project_id: UUID REFERENCES projects(id) ON DELETE CASCADE
+- title: VARCHAR(255) NOT NULL
+- assignee_id: UUID REFERENCES users(id) ON DELETE SET NULL
+- priority: VARCHAR(20) CHECK (priority IN ('High', 'Medium', 'Low'))
+- due_date: TIMESTAMP
+- status: VARCHAR(20) CHECK (status IN ('To Do', 'In Progress', 'Reviewing', 'Done'))
+
+<strong>4. Table `approval_requests` (Hàng đợi Phê Duyệt Trạng Thái)</strong>
+- id: UUID PRIMARY KEY
+- task_id: UUID REFERENCES tasks(id) ON DELETE CASCADE
+- submitter_id: UUID REFERENCES users(id)
+- report_text: TEXT (Nội dung báo cáo công việc)
+- report_link: VARCHAR(255) (Link tài liệu báo cáo)
+- status: VARCHAR(20) CHECK (status IN ('Pending', 'Approved', 'Rejected'))
+- feedback: TEXT (Ý kiến phản hồi từ PM/Admin khi Reject)
+
+<strong>5. Table `activity_logs` (Nhật ký hoạt động & Bình luận)</strong>
+- id: UUID PRIMARY KEY
+- task_id: UUID REFERENCES tasks(id) ON DELETE CASCADE
+- user_id: UUID REFERENCES users(id)
+- action: TEXT (Hành động hoặc nội dung bình luận)
+- created_at: TIMESTAMP DEFAULT NOW()
+                    </pre>
+                </div>
+            </section>
+
+            <!-- 5. QUY TRÌNH VẬN HÀNH -->
+            <section id="flows">
+                <h2 class="section-heading">5. Quy Trình Vận Hành Thao Tác</h2>
+                <div class="ve-card">
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <h4 style="font-size: 14.5px; font-weight: 700; color: var(--accent); margin-bottom: 8px;">Luồng A: Khởi tạo và Phân quyền Dự án</h4>
+                            <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">
+                                Admin khởi tạo dự án mới trên Dashboard ➔ Chỉ định Project Manager phụ trách ➔ PM cấu hình các thành viên Staff tham gia dự án ➔ Thành viên tham gia bắt đầu thấy dự án xuất hiện trong danh sách cá nhân.
+                            </p>
+                        </div>
+                        <div style="border-top: 1px solid var(--border); padding-top: 16px;">
+                            <h4 style="font-size: 14.5px; font-weight: 700; color: var(--green); margin-bottom: 8px;">Luồng B: Giao việc & Kéo thả trạng thái</h4>
+                            <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">
+                                PM tạo công việc (Task) trong màn hình chi tiết dự án ➔ Thiết lập mức độ ưu tiên và ngày hạn chót ➔ Gán cho Staff ➔ Staff chuyển trạng thái task từ <strong>To Do</strong> sang <strong>In Progress</strong> trên Kanban Board để báo hiệu bắt đầu làm việc.
+                            </p>
+                        </div>
+                        <div style="border-top: 1px solid var(--border); padding-top: 16px;">
+                            <h4 style="font-size: 14.5px; font-weight: 700; color: var(--indigo); margin-bottom: 8px;">Luồng C: Đệ trình & Phê duyệt Hoàn thành</h4>
+                            <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">
+                                Khi làm xong, Staff điền Link báo cáo và nội dung giải trình ➔ Nhấn gửi duyệt để đưa trạng thái sang <strong>Reviewing</strong> (Khóa quyền sửa/kéo thả của Staff) ➔ PM/Admin nhận thông báo trong Hàng đợi, bấm <strong>Approve</strong> (Task chuyển sang <strong>Done</strong> và tự động tính lại % tiến độ dự án) hoặc <strong>Reject</strong> (Task trả về <strong>In Progress</strong> kèm phản hồi lý do).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. KIẾN TRÚC MÃ NGUỒN CUSTOM CODE -->
+            <section id="hybrid">
+                <h2 class="section-heading">6. Kiến Trúc Phát Triển Custom Code</h2>
+                <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 16px;">Mã nguồn dự án được thiết kế phân lớp khoa học để tối ưu tính mở rộng:</p>
+                <div class="ve-card ve-card--recessed">
+                    <pre style="font-family: 'Fira Code', monospace; font-size: 12px; white-space: pre; overflow-x: auto; line-height: 1.6; color: var(--text);">
+<strong>1. Giao diện Người dùng (Frontend Layer)</strong>
+- HTML5 thuần phân tách hoàn toàn mã Javascript và CSS.
+- CSS variables quản lý hệ thống màu sắc sáng Slate v2 thanh lịch thống nhất.
+- Router xử lý điều hướng mượt mà, tải trang nhanh không gây lag.
+
+<strong>2. Lớp Dữ Liệu Giả Lập (Mock DB Layer - db.js)</strong>
+- Đọc ghi dữ liệu đồng bộ thông qua APIs `localStorage`.
+- Đảm bảo tính nhất quán dữ liệu qua lại giữa các vai trò (khi Admin đổi tên dự án hoặc Staff nộp báo cáo, PM lập tức cập nhật dữ liệu tương ứng).
+- Sẵn sàng chuyển đổi sang các REST APIs kết nối CSDL thực tế.
+                    </pre>
+                </div>
+            </section>
+
+            <!-- 7. LỘ TRÌNH TRIỂN KHAI -->
+            <section id="timeline">
+                <h2 class="section-heading">7. Lộ Trình Triển Khai MVP (Roadmap)</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4 style="font-size: 14px; font-weight: 700; margin-left: 20px;">Phase 1: Setup Nền Tảng & Cơ Sở Dữ Liệu</h4>
+                        <p style="font-size: 12.5px; color: var(--text-dim); margin-left: 20px; margin-top: 4px;">
+                            Thiết lập Clean Architecture, tạo database DDL SQL và cấu hình mock dữ liệu mẫu (seed data) trong file <code>db.js</code> để khởi chạy lần đầu.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4 style="font-size: 14px; font-weight: 700; margin-left: 20px;">Phase 2: APIs & Kanban Board Giao Diện</h4>
+                        <p style="font-size: 12.5px; color: var(--text-dim); margin-left: 20px; margin-top: 4px;">
+                            Hiện thực các luồng CRUD Dự án và Công việc. Thiết kế Kanban Board kéo thả hỗ trợ chuyển trạng thái trực quan.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4 style="font-size: 14px; font-weight: 700; margin-left: 20px;">Phase 3: Log Engine & Bình Luận Trao Đổi</h4>
+                        <p style="font-size: 12.5px; color: var(--text-dim); margin-left: 20px; margin-top: 4px;">
+                            Phát triển log engine tự động lưu vết các thao tác đổi trạng thái hoặc người phụ trách. Thêm khung bình luận trao đổi thông tin trong task.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4 style="font-size: 14px; font-weight: 700; margin-left: 20px;">Phase 4: Luồng Phê Duyệt Nhiệm Vụ</h4>
+                        <p style="font-size: 12.5px; color: var(--text-dim); margin-left: 20px; margin-top: 4px;">
+                            Hoàn thiện Hàng đợi phê duyệt (Approval Queue). Khóa quyền tự ý đổi trạng thái Done của Staff và thêm form feedback từ chối của PM.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4 style="font-size: 14px; font-weight: 700; margin-left: 20px;">Phase 5: Kiểm Thử UAT & Bàn Giao</h4>
+                        <p style="font-size: 12.5px; color: var(--text-dim); margin-left: 20px; margin-top: 4px;">
+                            Chạy kịch bản kiểm thử Happy Paths và hoàn thành các cổng Portal UAT tương tác hoàn chỉnh.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script Section -->
+    <script src="plan-high-level.js"></script>
+</body>
+</html>

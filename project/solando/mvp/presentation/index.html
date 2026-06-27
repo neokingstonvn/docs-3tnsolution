@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình Chiếu Kế Hoạch Triển Khai — Solando ERP</title>
+    <!-- Google Fonts: Instrument Serif + JetBrains Mono + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="./presentation.css">
+</head>
+<body>
+
+    <!-- Floating Top Presentation Bar -->
+    <header class="presentation-bar">
+        <div class="logo-section">
+            <span class="logo-icon">☀️</span>
+            <div class="logo-content">
+                <h1>Solando ERP</h1>
+                <p>Lộ trình triển khai & Nghiệp vụ</p>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <a href="../index.html" class="slide-link">📋 Đặc tả MVP</a>
+            <a href="../short-term-plan/index.html" class="slide-link">🔌 Kế hoạch ngắn hạn</a>
+            <a href="../long-term-plan/index.html" class="slide-link">🚀 Kế hoạch dài hạn</a>
+            <button onclick="toggleFullScreen()" class="fullscreen-btn" title="Toàn màn hình">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l-5 5m11 5v-4m0 0h-4m4 0l-5 5" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Slide Deck Scroll Snap Container -->
+    <div class="deck">
+
+        <!-- SLIDE 1: WELCOME & ROADMAP OVERVIEW -->
+        <section class="slide slide--title">
+            <div class="slide__container" style="align-items: center; text-align: center;">
+                <svg class="slide__decor" style="top:-20px;right:-20px;" width="120" height="120" viewBox="0 0 120 120">
+                    <line x1="120" y1="0" x2="120" y2="40" stroke="var(--accent)" stroke-width="2" />
+                    <line x1="80" y1="0" x2="120" y2="0" stroke="var(--accent)" stroke-width="2" />
+                </svg>
+                <svg class="slide__decor" style="bottom:-20px;left:-20px;" width="120" height="120" viewBox="0 0 120 120">
+                    <line x1="0" y1="80" x2="0" y2="120" stroke="var(--accent)" stroke-width="2" />
+                    <line x1="0" y1="120" x2="40" y2="120" stroke="var(--accent)" stroke-width="2" />
+                </svg>
+                
+                <div class="reveal">
+                    <span class="slide-badge">Dành Cho Chủ Đầu Tư & Ban Giám Đốc</span>
+                </div>
+                <h1 class="slide__display reveal">Chiến Lược Số Hóa Quy Trình & Vận Hành Solando ERP</h1>
+                <div class="reveal">
+                    <p class="slide__body" style="max-width: 800px; margin: 16px auto; text-align: center;">
+                        Đầu tư tinh gọn, lấy lại quyền chủ động quy trình kinh doanh và loại bỏ hoàn toàn các rủi ro vận hành.
+                    </p>
+                </div>
+                
+                <!-- Visual stage flow cards -->
+                <div class="grid-2 reveal" style="max-width: 800px; margin-top: clamp(16px, 3vh, 32px); text-align: left;">
+                    <div class="glass-card" style="border-left: 4px solid var(--accent);">
+                        <span class="slide-timeline-badge">Giai Đoạn 1</span>
+                        <h3 style="font-family: var(--font-sans); font-size: 16px; font-weight: 700; margin-top: 8px;">⚡ Vận Hành Tức Thì</h3>
+                        <p style="font-size: 12px; color: var(--text-dim); margin-top: 6px; line-height: 1.5;">
+                            Dựng sẵn lõi dữ liệu & giao diện quản trị. Nhân viên nhập hàng, lên đơn, in QR bảo hành sử dụng ngay.
+                        </p>
+                    </div>
+                    
+                    <div class="glass-card" style="border-left: 4px solid var(--green);">
+                        <span class="slide-timeline-badge" style="color: var(--green); background: var(--green-dim);">Giai Đoạn 2</span>
+                        <h3 style="font-family: var(--font-sans); font-size: 16px; font-weight: 700; margin-top: 8px;">🚀 Tối Ưu & Tự Chủ</h3>
+                        <p style="font-size: 12px; color: var(--text-dim); margin-top: 6px; line-height: 1.5;">
+                            Xây dựng Cổng thông tin đại lý, Ứng dụng di động quét kho, báo cáo doanh thu & biên lợi nhuận động.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: BÀI TOÁN THỰC TẾ & CHIẾN LƯỢC TIẾP CẬN -->
+        <section class="slide slide--content" style="background-image:radial-gradient(ellipse at 80% 60%, var(--accent-dim) 0%, transparent 40%);">
+            <div class="slide__container">
+                <div class="reveal" style="text-align: center;">
+                    <span class="slide__label">Nhiệm Vụ Cốt Lõi</span>
+                    <h2 class="slide__heading" style="margin-bottom: clamp(16px, 3vh, 32px);">Giải Quyết Điểm Nghẽn & Vòng Đời Thiết Bị</h2>
+                </div>
+                
+                <div class="grid-3 reveal">
+                    <div class="glass-card" style="border-top: 3px solid var(--red);">
+                        <div class="card-num-badge" style="color: var(--red); background: var(--red-dim);">01</div>
+                        <h3 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700; margin-bottom: 8px;">Kiểm Soát Vòng Đời Serial</h3>
+                        <p style="font-size: 12px; color: var(--text-dim); line-height: 1.5;">
+                            Theo dõi chính xác từng số Serial (Biến tần, Pin) từ lúc bán ra cho đại lý đến khi được kích hoạt bảo hành ngoài thực địa.
+                        </p>
+                    </div>
+
+                    <div class="glass-card" style="border-top: 3px solid var(--accent);">
+                        <div class="card-num-badge">02</div>
+                        <h3 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700; margin-bottom: 8px;">Quản Lý Bảng Giá & Chiết Khấu</h3>
+                        <p style="font-size: 12px; color: var(--text-dim); line-height: 1.5;">
+                            Quản lý bảng giá chuẩn theo từng phân hạng đại lý, giúp nhân viên tra cứu nhanh chóng và chính xác.
+                        </p>
+                    </div>
+
+                    <div class="glass-card" style="border-top: 3px solid var(--green);">
+                        <div class="card-num-badge" style="color: var(--green); background: var(--green-dim);">03</div>
+                        <h3 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700; margin-bottom: 8px;">Dễ Dàng Bảo Hành QR</h3>
+                        <p style="font-size: 12px; color: var(--text-dim); line-height: 1.5;">
+                            Đại lý/Thợ quét mã QR trên sản phẩm để kích hoạt bảo hành tại công trình, tự nhận diện lô hàng xuất xứ.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Flowchart Diagram -->
+                <div class="glass-card reveal" style="margin-top: clamp(16px, 3vh, 28px); width: 100%;">
+                    <h4 style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-bottom: 12px;">Luồng Vận Hành Bảo Hành Solando Warranty</h4>
+                    <div class="slide-horizontal-flow">
+                        <div class="flow-step-box" style="border-top-color: var(--indigo); background: var(--indigo-dim);">
+                            <strong style="color: var(--indigo);">1. Nhập Kho Nhập Khẩu</strong>
+                            <span style="color: var(--text-dim); font-size: 11px;">Gán Serial linh kiện khi hàng về</span>
+                        </div>
+                        <div class="flow-step-arrow">➔</div>
+                        <div class="flow-step-box" style="border-top-color: var(--accent); background: var(--accent-dim);">
+                            <strong style="color: var(--accent);">2. Xuất Kho KiotViet</strong>
+                            <span style="color: var(--text-dim); font-size: 11px;">Đồng bộ kiểm tra đơn hàng</span>
+                        </div>
+                        <div class="flow-step-arrow">➔</div>
+                        <div class="flow-step-box" style="border-top-color: var(--green); background: var(--green-dim);">
+                            <strong style="color: var(--green);">3. Kích Hoạt QR</strong>
+                            <span style="color: var(--text-dim); font-size: 11px;">Quét kích hoạt bảo hành ngoài thực địa</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: GIAI ĐOẠN 1 - TÍCH HỢP KIOTVIET (BẢO HÀNH & SERIAL) -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <div class="slide__inner">
+                    <div>
+                        <span class="slide__label reveal" style="color: var(--green);">Giai Đoạn 1 (Ngắn Hạn)</span>
+                        <h2 class="slide__heading reveal">Ứng Dụng Solando Warranty Riêng Biệt</h2>
+                        <p class="slide__body reveal" style="margin-bottom: 20px;">
+                            Giữ nguyên KiotViet cho vận hành bán hàng, chỉ phát triển app Solando Warranty độc lập để quản lý bảo hành & serial.
+                        </p>
+                        <ul class="slide__bullets">
+                            <li class="reveal">
+                                <strong>Đồng bộ dữ liệu cần thiết từ KiotViet API</strong>: Gọi API tự động đồng bộ hóa đơn, SKU sản phẩm và thông tin đại lý sang app bảo hành. Không làm thay đổi thói quen bán hàng.
+                            </li>
+                            <li class="reveal">
+                                <strong>Giải pháp kỹ thuật độc lập</strong>: Tự phát triển ứng dụng <strong>Solando Warranty (React (Vite) + NestJS)</strong> để tối ưu quét mã QR tại công trình và quản lý sự cố lỗi.
+                            </li>
+                            <li class="reveal">
+                                <strong>Quản lý Serial từ Nhập Kho</strong>: Hỗ trợ gán số Serial cho các thiết bị chính ngay khi làm thủ tục nhập kho nhập khẩu, đảm bảo vòng đời theo dõi Serial khép kín.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card reveal" style="border: 1.5px dashed var(--green); background: var(--green-dim); display: flex; flex-direction: column; justify-content: space-between; padding: 24px; min-height: 280px;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-bright); padding-bottom: 8px; margin-bottom: 16px;">
+                                <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase;">Mô hình Bảo hành KiotViet</span>
+                                <span style="font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--green); background: var(--surface); border: 1px solid var(--green); padding: 2px 6px; border-radius: 4px;">UAT sau 1-2 tuần</span>
+                            </div>
+                            <div class="grid-2" style="gap: 12px;">
+                                <div style="background: var(--surface); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border);">
+                                    <span style="font-size: 20px;">🗄️</span>
+                                    <h5 style="font-family: var(--font-sans); font-size: 12px; font-weight: 700; margin-top: 4px;">Postgres rút gọn</h5>
+                                    <p style="font-size: 10px; color: var(--text-dim); margin-top: 2px;">Chỉ lưu Serial, bảo hành, tickets.</p>
+                                </div>
+                                <div style="background: var(--surface); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border);">
+                                    <span style="font-size: 20px;">🔗</span>
+                                    <h5 style="font-family: var(--font-sans); font-size: 12px; font-weight: 700; margin-top: 4px;">KiotViet Client Auth</h5>
+                                    <p style="font-size: 10px; color: var(--text-dim); margin-top: 2px;">Kết nối hóa đơn qua OAuth 2.0 API.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 16px; border-top: 1px solid var(--border-bright); padding-top: 12px;">
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: block;" class="animate-pulse"></span>
+                            <p style="font-size: 11px; font-style: italic; color: var(--text-dim);">
+                                Giảm thiểu rủi ro vận hành và đẩy nhanh tiến độ go-live gấp đôi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: TIMELINE CHI TIẾT GIAI ĐOẠN 1 (TÍCH HỢP KIOTVIET) -->
+        <section class="slide slide--content" style="background-image:radial-gradient(ellipse at 20% 80%, var(--accent-dim) 0%, transparent 45%);">
+            <div class="slide__container">
+                <div class="reveal" style="text-align: center;">
+                    <span class="slide__label" style="color: var(--green);">Lộ Trình Bàn Giao</span>
+                    <h2 class="slide__heading">Timeline Triển Khai Giai Đoạn 1</h2>
+                    <p class="slide__body">
+                        Vận hành thực tế phân hệ Bảo hành & Serial trong vòng 2 tuần.
+                    </p>
+                </div>
+
+                <!-- Horizontal Timeline Track Diagram -->
+                <div style="position: relative; width: 100%; max-width: 900px; margin: 32px auto; padding: 24px 0;" class="reveal">
+                    <!-- Progress Line Background -->
+                    <div style="position: absolute; top: 40px; left: 16%; right: 16%; height: 3px; background: var(--border-bright); z-index: 1; border-radius: 4px;"></div>
+                    <!-- Active Progress Line Overlay -->
+                    <div style="position: absolute; top: 40px; left: 16%; width: 34%; height: 3px; background: var(--green); z-index: 2; border-radius: 4px;"></div>
+                    
+                    <div class="grid-3" style="position: relative; z-index: 3;">
+                        <!-- Phase 1 -->
+                        <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 700; font-size: 13px; border: 4px solid var(--bg); box-shadow: 0 2px 8px rgba(0,0,0,0.15);">01</div>
+                            <div style="margin-top: 12px;">
+                                <h4 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700;">Hạ tầng & API</h4>
+                                <p style="font-size: 11px; color: var(--text-dim); margin-top: 4px; line-height: 1.4; padding: 0 10px;">Dựng PostgreSQL, tích hợp OAuth 2.0 KiotViet API.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Phase 2 -->
+                        <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 700; font-size: 13px; border: 4px solid var(--bg); box-shadow: 0 2px 8px rgba(0,0,0,0.15);">02</div>
+                            <div style="margin-top: 12px;">
+                                <h4 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700;">Giao diện Nhập Kho & CSKH</h4>
+                                <p style="font-size: 11px; color: var(--text-dim); margin-top: 4px; line-height: 1.4; padding: 0 10px;">Gán Serial khi hàng về kho nhập khẩu & quản lý ticket sự cố.</p>
+                            </div>
+                        </div>
+
+                        <!-- Phase 3 -->
+                        <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--surface); color: var(--text-dim); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 700; font-size: 13px; border: 4px solid var(--bg); border: 1px solid var(--border-bright);">03</div>
+                            <div style="margin-top: 12px;">
+                                <h4 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700;">Public QR & Go-Live</h4>
+                                <p style="font-size: 11px; color: var(--text-dim); margin-top: 4px; line-height: 1.4; padding: 0 10px;">Trang kích hoạt bảo hành QR di động ngoài công trường.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; font-size: 12px; font-style: italic; color: var(--text-dim);" class="reveal">
+                    Lộ trình thiết kế tinh gọn giúp hệ thống vận hành thực địa nhanh nhất.
+                </p>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: GIAI ĐOẠN 2 - ERP TỰ XÂY DỰNG (70 NGÀY) -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <div class="slide__inner">
+                    <!-- Why custom built -->
+                    <div>
+                        <span class="slide__label reveal" style="color: var(--accent);">Giai Đoạn 2 (Dài Hạn)</span>
+                        <h2 class="slide__heading reveal">Nâng Cấp Lên Hệ Thống Tự Xây Dựng Hoàn Chỉnh</h2>
+                        <p class="slide__body reveal" style="margin-bottom: 20px;">
+                            Thiết kế tối ưu theo nhu cầu Solando.
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 12px;" class="reveal">
+                            <div style="display: flex; gap: 10px; background: var(--surface); padding: 12px; border-radius: 12px; border: 1px solid var(--border);">
+                                <div style="color: var(--accent); font-family: var(--font-mono); font-weight: 700; font-size: 15px;">01</div>
+                                <div>
+                                    <h4 style="font-family: var(--font-sans); font-size: 13.5px; font-weight: 700;">Cổng thông tin đại lý tự đặt hàng</h4>
+                                    <p style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">Đại lý tự đăng nhập tra cứu bảng giá theo phân hạng của mình, tự lên đơn hàng nháp và kiểm tra bảo hành.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px; background: var(--surface); padding: 12px; border-radius: 12px; border: 1px solid var(--border);">
+                                <div style="color: var(--accent); font-family: var(--font-mono); font-weight: 700; font-size: 15px;">02</div>
+                                <div>
+                                    <h4 style="font-family: var(--font-sans); font-size: 13.5px; font-weight: 700;">Báo cáo doanh số tự động</h4>
+                                    <p style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">Hệ thống tự động thống kê doanh số bán hàng, biểu đồ tăng trưởng doanh thu theo thời gian thực.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px; background: var(--surface); padding: 12px; border-radius: 12px; border: 1px solid var(--border);">
+                                <div style="color: var(--accent); font-family: var(--font-mono); font-weight: 700; font-size: 15px;">03</div>
+                                <div>
+                                    <h4 style="font-family: var(--font-sans); font-size: 13.5px; font-weight: 700;">Lịch sử bảo hành thiết bị</h4>
+                                    <p style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">Quản lý tập trung lịch sử kích hoạt bảo hành, thời gian bảo hành còn lại của từng số Serial máy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Integrated schematic diagram -->
+                    <div class="glass-card reveal" style="border: 1px solid var(--border); padding: 16px;">
+                        <h3 style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--text-dim); border-bottom: 1px solid var(--border); padding-bottom: 6px; text-align: center; text-transform: uppercase;">Mô Hình Vận Hành ERP Đồng Bộ</h3>
+                        
+                        <div class="integrated-diagram-container">
+                            <!-- Central Database -->
+                            <div class="central-db-node">
+                                <span>🗄️</span>
+                                <strong>DB LÕI</strong>
+                            </div>
+                            
+                            <!-- PWA Scanner -->
+                            <div class="outer-diagram-node node-top-left">
+                                <span>📱</span>
+                                <div class="node-title">Quét kho</div>
+                                <span class="node-badge">Thủ kho quét</span>
+                            </div>
+
+                            <!-- Dealer Portal -->
+                            <div class="outer-diagram-node node-bottom-left">
+                                <span>👥</span>
+                                <div class="node-title">Trang đại lý</div>
+                                <span class="node-badge">Đại lý đặt</span>
+                            </div>
+
+                            <!-- Admin & Sales ERP -->
+                            <div class="outer-diagram-node node-right">
+                                <span>💼</span>
+                                <div class="node-title">ERP Quản lý</div>
+                                <span class="node-badge">CSKH & Admin</span>
+                            </div>
+                            
+                            <!-- Connecting arrows (SVGs) -->
+                            <svg class="svg-connectors" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="160" y1="50" x2="225" y2="100"/>
+                                <line x1="160" y1="150" x2="225" y2="100"/>
+                                <line x1="330" y1="100" x2="265" y2="100"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: LỢI ÍCH NGHIỆP VỤ & GIÁ TRỊ CỐT LÕI -->
+        <section class="slide slide--dashboard" style="background-image:radial-gradient(ellipse at 70% 30%, var(--accent-dim) 0%, transparent 40%);">
+            <div class="slide__container">
+                <div class="reveal" style="text-align: center;">
+                    <span class="slide__label">Hiệu Quả Vận Hành</span>
+                    <h2 class="slide__heading">Lợi Ích Nghiệp Vụ Đem Lại Cho Solando</h2>
+                </div>
+
+                <div class="grid-3 reveal">
+                    <!-- Card 1 -->
+                    <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; text-align: center; min-height: 240px;">
+                        <div>
+                            <div style="font-size: 32px; margin-bottom: 8px;">🛡️</div>
+                            <h3 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700; margin-bottom: 6px;">Quản Lý Báo Giá Tập Trung</h3>
+                            <p style="font-size: 12px; color: var(--text-dim); line-height: 1.5;">
+                                Lưu trữ tập trung mọi báo giá và đơn bán hàng của nhân viên. Dễ dàng tra cứu, đối chiếu bảng giá chuẩn và kiểm soát giá bán thống nhất.
+                            </p>
+                        </div>
+                        <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent); background: var(--accent-dim); padding: 4px; border-radius: 6px; margin-top: 12px; border: 1px solid var(--border);">Kiểm soát giá bán thống nhất</div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; text-align: center; min-height: 240px;">
+                        <div>
+                            <div style="font-size: 32px; margin-bottom: 8px;">⚡</div>
+                            <h3 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700; margin-bottom: 6px;">Số Hóa Nghiệp Vụ Kho</h3>
+                            <p style="font-size: 12px; color: var(--text-dim); line-height: 1.5;">
+                                Thủ kho quét và gán mã Serial ngay khi làm thủ tục nhập kho nhập khẩu. Định danh từng thiết bị ngay đầu vòng đời để kiểm kho chính xác 100%.
+                            </p>
+                        </div>
+                        <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--blue); background: var(--blue-dim); padding: 4px; border-radius: 6px; margin-top: 12px; border: 1px solid var(--border);">100% Định danh từ đầu</div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; text-align: center; min-height: 240px;">
+                        <div>
+                            <div style="font-size: 32px; margin-bottom: 8px;">🤝</div>
+                            <h3 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700; margin-bottom: 6px;">Trải Nghiệm Khách Hàng</h3>
+                            <p style="font-size: 12px; color: var(--text-dim); line-height: 1.5;">
+                                Đại lý tự tạo đơn và theo dõi trạng thái đơn hàng của mình. Khách mua lẻ quét QR dán trên thân máy để tự tra cứu thời hạn bảo hành.
+                            </p>
+                        </div>
+                        <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--green); background: var(--green-dim); padding: 4px; border-radius: 6px; margin-top: 12px; border: 1px solid var(--border);">0 thủ tục giấy tờ kích hoạt</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: TIMELINE CHI TIẾT GIAI ĐOẠN 2 (70 NGÀY) -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <div class="reveal" style="text-align: center;">
+                    <span class="slide__label">Kế Hoạch Bàn Giao Dài Hạn</span>
+                    <h2 class="slide__heading">Timeline Triển Khai Giai Đoạn 2</h2>
+                    <p class="slide__body" style="margin-bottom: 16px;">
+                        Tiến trình bàn giao từng phân hệ trong vòng 10 tuần.
+                    </p>
+                </div>
+
+                <!-- Vertical Progress timeline -->
+                <div class="slide-scroll reveal" style="width: 100%; max-width: 800px; margin: 0 auto;">
+                    <div class="slide-timeline">
+                        <!-- Row 1 -->
+                        <div class="slide-timeline-item">
+                            <span class="slide-timeline-badge">Tuần 1–2</span>
+                            <div class="slide-timeline-text">
+                                <h4>1. Danh Mục Sản Phẩm Tập Trung</h4>
+                                <p>Thiết kế dữ liệu mã sản phẩm thiết bị, thư viện tài liệu hướng dẫn CO/CQ và thông số kỹ thuật.</p>
+                            </div>
+                            <span class="slide-timeline-status" style="color: var(--accent); background: var(--accent-dim);">Mốc 1</span>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="slide-timeline-item">
+                            <span class="slide-timeline-badge">Tuần 3–5</span>
+                            <div class="slide-timeline-text">
+                                <h4>2. Đại Lý & Ứng Dụng Quét Mã Vạch Kho</h4>
+                                <p>Phát triển ứng dụng quét serial bằng camera điện thoại cho thủ kho. Quản lý phân nhóm đại lý.</p>
+                            </div>
+                            <span class="slide-timeline-status" style="color: var(--accent); background: var(--accent-dim);">Mốc 2</span>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="slide-timeline-item">
+                            <span class="slide-timeline-badge">Tuần 6–7</span>
+                            <div class="slide-timeline-text">
+                                <h4>3. Quản Lý Báo Giá & Đơn Hàng</h4>
+                                <p>Tự động áp giá theo phân hạng của đại lý khi lập báo giá và theo dõi trạng thái xử lý đơn hàng.</p>
+                            </div>
+                            <span class="slide-timeline-status" style="color: var(--text-dim); background: var(--border-bright);">Mốc 3</span>
+                        </div>
+
+                        <!-- Row 4 -->
+                        <div class="slide-timeline-item">
+                            <span class="slide-timeline-badge">Tuần 8–9</span>
+                            <div class="slide-timeline-text">
+                                <h4>4. Cổng Thông Tin Đại Lý & Bảng Thống Kê Quản Trị</h4>
+                                <p>Xây dựng bảng tổng hợp doanh thu, biên lợi nhuận bán hàng và trang tự đặt hàng cho đại lý.</p>
+                            </div>
+                            <span class="slide-timeline-status" style="color: var(--text-dim); background: var(--border-bright);">Mốc 4</span>
+                        </div>
+
+                        <!-- Row 5 -->
+                        <div class="slide-timeline-item">
+                            <span class="slide-timeline-badge">Tuần 10</span>
+                            <div class="slide-timeline-text">
+                                <h4>5. Cổng QR Bảo Hành & Vận Hành Hệ Thống</h4>
+                                <p>Tích hợp thông báo SMS/Zalo kích hoạt bảo hành, tối ưu hóa hệ thống & bàn giao toàn bộ.</p>
+                            </div>
+                            <span class="slide-timeline-status" style="color: var(--green); background: var(--green-dim);">Bàn Giao</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: BẢNG SO SÁNH TRỰC QUAN -->
+        <section class="slide slide--table">
+            <div class="slide__container">
+                <div class="reveal" style="text-align: center;">
+                    <span class="slide__label">Phân Tích So Sánh</span>
+                    <h2 class="slide__heading">So Sánh Hai Giai Đoạn Triển Khai</h2>
+                </div>
+
+                <div class="slide-table-card reveal" style="max-width: 900px; margin: 0 auto;">
+                    <table class="slide-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Tiêu Chỉ So Sánh</th>
+                                <th style="width: 37.5%; color: var(--green);">Giai Đoạn 1: Tích Hợp KiotViet</th>
+                                <th style="width: 37.5%; color: var(--accent);">Giai Đoạn 2: ERP Tự Xây Dựng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 600; color: var(--text);">Tốc độ bàn giao</td>
+                                <td>⚡ <strong>Cực kỳ nhanh (1-2 tuần)</strong>. Gọi API KiotViet có sẵn.</td>
+                                <td>🚀 <strong>Trung bình (70 ngày)</strong>. Lập trình từ đầu NestJS + React (Vite).</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; color: var(--text);">Đại lý tự lên đơn</td>
+                                <td>❌ Vẫn dùng KiotViet độc lập. App Solando Warranty chỉ xử lý gán Serial và quét QR Bảo hành.</td>
+                                <td>✅ <strong>Cổng Thông Tin Đại Lý</strong>. Đại lý tự đăng nhập xem bảng giá riêng & đặt hàng online.</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; color: var(--text);">Theo doanh số đơn hàng</td>
+                                <td>⚠️ Nhân viên tự tổng hợp số liệu báo giá, đơn hàng, tồn kho bằng file Excel.</td>
+                                <td>✅ <strong>Báo Cáo Quản Trị Tự Động</strong>. Tự động tính toán doanh thu, doanh số và hàng tồn kho thực tế.</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; color: var(--text);">Thao tác kho hàng</td>
+                                <td>⚠️ Nhập thủ công hoặc gán serial trễ khi xuất đơn bán hàng.</td>
+                                <td>✅ <strong>Quản lý từ gốc nhập kho</strong>. Gán serial ngay khi nhập kho nhập khẩu, kiểm soát tự động.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: CHUẨN BỊ & CAM KẾT HÀNH ĐỘNG -->
+        <section class="slide slide--content" style="align-items: center; text-align: center;">
+            <div class="slide__container">
+                <div class="reveal" style="text-align: center;">
+                    <span class="slide-badge">Hành Động Ngay</span>
+                    <h2 class="slide__heading">Chuẩn Bị Để Bắt Đầu Giai Đoạn 1</h2>
+                    <p class="slide__body" style="max-width: 600px; margin: 0 auto 24px auto;">
+                        Để kịp bàn giao hệ thống chạy thử, Ban Giám Đốc cần phê duyệt các thông tin sau:
+                    </p>
+                </div>
+
+                <div class="grid-2 reveal" style="max-width: 800px; text-align: left; margin: 0 auto;">
+                    <div class="glass-card" style="border-left: 4px solid var(--accent); display: flex; gap: 10px;">
+                        <span style="font-size: 20px;">🌐</span>
+                        <div>
+                            <h4 style="font-family: var(--font-sans); font-size: 13.5px; font-weight: 700;">Tên miền & Máy chủ đám mây</h4>
+                            <p style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">Cung cấp địa chỉ máy chủ và trỏ tên miền phụ (ví dụ: <code>erp.solando.vn</code>) để cài chứng chỉ bảo mật.</p>
+                        </div>
+                    </div>
+                    <div class="glass-card" style="border-left: 4px solid var(--accent); display: flex; gap: 10px;">
+                        <span style="font-size: 20px;">📈</span>
+                        <div>
+                            <h4 style="font-family: var(--font-sans); font-size: 13.5px; font-weight: 700;">Quy Chuẩn Chiết Khấu Đại Lý</h4>
+                            <p style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">Quy định chi tiết các mức chiết khấu tối đa cho từng phân hạng đại lý để nạp cấu hình hệ thống.</p>
+                        </div>
+                    </div>
+                    <div class="glass-card" style="border-left: 4px solid var(--accent); display: flex; gap: 10px;">
+                        <span style="font-size: 20px;">📃</span>
+                        <div>
+                            <h4 style="font-family: var(--font-sans); font-size: 13.5px; font-weight: 700;">Mẫu File Báo Giá Word/PDF</h4>
+                            <p style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">Cung cấp file Word/PDF mẫu báo giá hiện tại để xuất báo giá tự động theo form công ty.</p>
+                        </div>
+                    </div>
+                    <div class="glass-card" style="border-left: 4px solid var(--accent); display: flex; gap: 10px;">
+                        <span style="font-size: 20px;">🤝</span>
+                        <div>
+                            <h4 style="font-family: var(--font-sans); font-size: 13.5px; font-weight: 700;">Phân Nhóm & Phân Hạng Đại Lý</h4>
+                            <p style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">Chuẩn hóa danh sách đại lý và cấp hạng (Tier 1/Tier 2) cụ thể hiện có để nạp vào database.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="color: var(--accent); font-family: var(--font-sans); font-size: 14px; font-weight: 700; margin-top: clamp(16px, 3vh, 32px);" class="reveal">
+                    🎯 Sẵn sàng tăng tốc vận hành cùng Solando ERP!
+                </p>
+
+                <div class="reveal" style="margin-top: 16px;">
+                    <a href="../prototype/index.html" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--bg); padding: 10px 20px; border-radius: 8px; font-family: var(--font-sans); font-weight: 700; font-size: 13px; text-decoration: none; box-shadow: 0 4px 12px rgba(212, 167, 58, 0.2); transition: transform 0.2s, box-shadow 0.2s;">
+                        <span>🚀 Trải Nghiệm Prototype UAT Ngay</span> ➔
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Slide Control Script -->
+    <script src="./presentation.js"></script>
+</body>
+</html>

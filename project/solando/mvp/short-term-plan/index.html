@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch Tích Hợp KiotViet — Solando Warranty</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&family=Architects+Daughter&display=swap" rel="stylesheet">
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+
+    <!-- Top header -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span style="color: var(--green);">🔌</span>
+            <div class="logo-text">
+                <h1>Solando Warranty</h1>
+                <p class="sketch-font">Kế hoạch ngắn hạn — Tích hợp KiotViet</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="./tasks/index.html" class="btn btn-purple">
+                <span>🛠️ Tasks implement chi tiết</span>
+            </a>
+            <a href="../prototype/index.html" class="btn btn-blue">
+                <span>🎯 Trải nghiệm Prototype (UAT)</span>
+            </a>
+            <a href="../presentation/index.html" class="btn btn-amber">
+                <span>📺 Slide trình chiếu</span>
+            </a>
+            <a href="../long-term-plan/index.html" class="btn btn-purple">
+                <span>🚀 Kế hoạch dài hạn</span>
+            </a>
+            <a href="../index.html" class="btn btn-emerald">
+                <span>📋 Đặc tả MVP</span>
+                <span>→</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="main-layout">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <p class="sidebar-title">Mục Lục</p>
+            <nav>
+                <a class="nav-link active" onclick="navTo(event, 'why')">1. Tại Sao Chọn KiotViet</a>
+                <a class="nav-link" onclick="navTo(event, 'compare')">2. Ưu Điểm Giải Pháp Tự Code</a>
+                <a class="nav-link" onclick="navTo(event, 'arch')">3. Sơ Đồ Khung Kết Nối</a>
+                <a class="nav-link" onclick="navTo(event, 'database')">4. Thiết Kế Database Rút Gọn</a>
+                <a class="nav-link" onclick="navTo(event, 'flows')">5. Quy Trình Vận Hành</a>
+                <a class="nav-link" onclick="navTo(event, 'hybrid')">6. Kiến Trúc Custom Code</a>
+                <a class="nav-link" onclick="navTo(event, 'timeline')">7. Lộ Trình Triển Khai</a>
+            </nav>
+
+            <p class="sidebar-title">Tài Liệu Khác</p>
+            <nav>
+                <a href="./tasks/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🛠️ Tasks implement chi tiết</span>
+                    <span style="color: var(--accent); font-weight: bold;">→</span>
+                </a>
+                <a href="../prototype/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🎯 Trải nghiệm Prototype (UAT)</span>
+                    <span style="color: var(--accent-blue); font-weight: bold;">→</span>
+                </a>
+                <a href="../presentation/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>📺 Slide trình chiếu</span>
+                    <span style="color: var(--accent-gold); font-weight: bold;">→</span>
+                </a>
+                <a href="../index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>📋 Đặc tả MVP</span>
+                    <span style="color: var(--green); font-weight: bold;">→</span>
+                </a>
+                <a href="../long-term-plan/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🚀 Kế hoạch dài hạn</span>
+                    <span style="color: var(--indigo); font-weight: bold;">→</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+
+            <!-- Goal callout -->
+            <div class="alert-green">
+                <strong>🎯 Mục tiêu Kế hoạch Tích Hợp KiotViet (Ứng dụng Solando Warranty):</strong>
+                Tận dụng phần mềm bán hàng <strong>KiotViet</strong> làm hạt nhân quản lý giao dịch, hàng hóa và bán lẻ. Chúng ta tự phát triển một ứng dụng riêng biệt mang tên <strong>Solando Warranty (React (Vite) + NestJS)</strong> để quản lý số Serial, kích hoạt bảo hành QR và xử lý sự cố. Ứng dụng này chỉ đồng bộ dữ liệu hóa đơn và SKU thực sự cần thiết từ KiotViet API, không chứa bất kỳ chức năng nhập kho hay mua hàng/nhập khẩu nào. Giúp hệ thống go-live cực nhanh trong vòng 1-2 tuần.
+            </div>
+
+            <!-- 1. TẠI SAO CHỌN KIOTVIET -->
+            <section id="why" style="--i:1">
+                <h2 class="section-heading sketch-font">1. Tại Sao Chọn Tích Hợp KiotViet?</h2>
+                <div class="ve-card">
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%;">Tiêu Chí Đánh Giá</th>
+                                        <th>Lợi Ích Và Ý Nghĩa Thực Tế</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600;">Giảm 80% khối lượng code</td>
+                                        <td class="muted-cell">KiotViet đã xử lý hoàn toàn các phần phức tạp nhất của ERP: Báo giá, Đơn hàng, Hóa đơn bán lẻ/đơn buôn, Danh mục SKU sản phẩm, Khách hàng/Đại lý và Tồn kho tổng quát.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Tập trung vào phần Bảo hành</td>
+                                        <td class="muted-cell">Chúng ta chỉ cần thiết kế và xây dựng những tính năng KiotViet không hỗ trợ: gán mã Serial đích danh cho từng sản phẩm, quét QR kích hoạt bảo hành công trường và theo dõi xử lý Ticket sửa chữa.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Tính đồng bộ dữ liệu sạch</td>
+                                        <td class="muted-cell">Bằng việc gọi trực tiếp KiotViet Public API, thông tin sản phẩm và hóa đơn bán hàng luôn khớp 100% với hệ thống KiotViet của bộ phận Kế toán & Kinh doanh.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Không lo ngại rủi ro vận hành</td>
+                                        <td class="muted-cell">Nhân viên văn phòng không phải thay đổi thói quen làm việc hàng ngày, vẫn thao tác tạo đơn và xuất hóa đơn trên KiotViet như bình thường.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. NATIVE CODE ADVANTAGES -->
+            <section id="compare" style="--i:2">
+                <h2 class="section-heading sketch-font">2. Ưu Điểm Của Giải Pháp Tự Lập Trình (Custom Build)</h2>
+                <div class="ve-card">
+                    <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 16px;">Giải pháp tự phát triển bằng mã nguồn độc lập (React (Vite) + NestJS + PostgreSQL) mang lại các lợi thế vượt trội cho sự phát triển lâu dài:</p>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="background: var(--surface); padding: 16px; border-radius: 8px; border: 1px solid var(--border); border-left: 4px solid var(--accent);">
+                            <h4 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700; color: var(--accent);">📱 Trải nghiệm người dùng di động (UX) xuất sắc</h4>
+                            <p style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Tùy biến 100% giao diện di động cho thủ kho và trang kích hoạt bảo hành QR public mượt mà, tải nhanh và responsive hoàn hảo.</p>
+                        </div>
+                        <div style="background: var(--surface); padding: 16px; border-radius: 8px; border: 1px solid var(--border); border-left: 4px solid var(--green);">
+                            <h4 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700; color: var(--green);">🔒 An toàn bảo mật & Phân quyền sâu</h4>
+                            <p style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Quản lý phân quyền chi tiết nhiều lớp thông qua JWT/Guards tự viết, bảo mật mã nguồn độc lập, giảm thiểu rủi ro bị tấn công.</p>
+                        </div>
+                        <div style="background: var(--surface); padding: 16px; border-radius: 8px; border: 1px solid var(--border); border-left: 4px solid var(--blue);">
+                            <h4 style="font-family: var(--font-sans); font-size: 14px; font-weight: 700; color: var(--blue);">🛠️ Khả năng bảo trì và mở rộng lâu dài</h4>
+                            <p style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Sử dụng git repository tiêu chuẩn, cấu trúc Clean Architecture giúp dễ dàng kiểm soát phiên bản và nâng cấp tính năng khi có nhiều nhân sự tham gia.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. KHUNG KẾT NỐI -->
+            <section id="arch" style="--i:3">
+                <h2 class="section-heading sketch-font">3. Sơ Đồ Khung Kết Nối</h2>
+                <div class="ve-card ve-card--recessed">
+                    <pre style="font-family: var(--font-mono); font-size: 12px; white-space: pre; overflow-x: auto; line-height: 1.6; color: var(--text);">
+┌─────────────────────────┐               ┌─────────────────────────┐
+│     KiotViet Cloud      │               │   Hệ Thống Bảo Hành     │
+│  (Quản lý hàng hóa,     │               │      (PostgreSQL)       │
+│   hóa đơn bán hàng)     │               │   (Lưu Serial, Ticket)  │
+└────────────┬────────────┘               └────────────▲────────────┘
+             │                                         │
+             │ Gọi API lấy thông tin hóa đơn           │ Cập nhật/Đối chiếu
+             └─────────────────────────────────────────┘
+                                                       │
+                                          ┌────────────┴────────────┐
+                                          │  React (Vite) / NestJS  │
+                                          │   - Giao diện gán mã    │
+                                          │   - Giao diện quét kho  │
+                                          │   - Form QR kích hoạt   │
+                                          └─────────────────────────┘
+                    </pre>
+                </div>
+            </section>
+
+            <!-- 4. DATABASE RÚT GỌN -->
+            <section id="database" style="--i:4">
+                <h2 class="section-heading sketch-font">4. Thiết Kế Cơ Sở Dữ Liệu Rút Gọn</h2>
+                <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 16px;">Để đáp ứng nhu cầu cốt lõi, cơ sở dữ liệu PostgreSQL chỉ cần 3 bảng tinh gọn sau:</p>
+                <div class="ve-card ve-card--recessed">
+                    <pre style="font-family: var(--font-mono); font-size: 12px; white-space: pre; overflow-x: auto; line-height: 1.6; color: var(--text);">
+<strong>1. Table `serials` (Theo dõi từng thiết bị cụ thể)</strong>
+- id: <span style="color: var(--accent);">SERIAL PRIMARY KEY</span>
+- product_id: <span style="color: var(--indigo);">INT</span> (SKU sản phẩm đối chiếu từ KiotViet)
+- serial_number: <span style="color: var(--indigo);">VARCHAR(50) UNIQUE</span> (Mã vạch máy)
+- kiotviet_invoice_id: <span style="color: var(--indigo);">VARCHAR(50) NULL</span> (Ánh xạ sang hóa đơn đã bán)
+- status: <span style="color: var(--indigo);">VARCHAR(20)</span> ('InStock', 'Sold', 'Activated')
+- sold_date: <span style="color: var(--indigo);">TIMESTAMP NULL</span>
+- created_at: <span style="color: var(--indigo);">TIMESTAMP DEFAULT NOW()</span>
+
+<strong>2. Table `warranties` (Thông tin kích hoạt bảo hành thực địa)</strong>
+- id: <span style="color: var(--accent);">SERIAL PRIMARY KEY</span>
+- serial_number: <span style="color: var(--indigo);">VARCHAR(50) REFERENCES serials(serial_number)</span>
+- customer_name: <span style="color: var(--indigo);">VARCHAR(100)</span> (Tên khách hàng sử dụng cuối)
+- customer_phone: <span style="color: var(--indigo);">VARCHAR(20)</span> (Số điện thoại nhận tin nhắn)
+- address: <span style="color: var(--indigo);">TEXT</span> (Địa chỉ lắp đặt thực tế)
+- activated_date: <span style="color: var(--indigo);">TIMESTAMP DEFAULT NOW()</span>
+- warranty_expiry: <span style="color: var(--indigo);">TIMESTAMP</span> (Tự tính toán dựa trên cấu hình bảo hành sản phẩm)
+
+<strong>3. Table `tickets` (Theo dõi sự cố bảo trì nếu phát sinh)</strong>
+- id: <span style="color: var(--accent);">SERIAL PRIMARY KEY</span>
+- serial_number: <span style="color: var(--indigo);">VARCHAR(50) REFERENCES serials(serial_number)</span>
+- requester_phone: <span style="color: var(--indigo);">VARCHAR(20)</span>
+- issue_description: <span style="color: var(--indigo);">TEXT</span> (Mô tả sự cố)
+- status: <span style="color: var(--indigo);">VARCHAR(20)</span> ('Open', 'Processing', 'Resolved')
+- cskh_notes: <span style="color: var(--indigo);">TEXT</span> (Ghi chú xử lý, kỹ thuật đi công trường)
+                    </pre>
+                </div>
+            </section>
+
+            <!-- 5. LUỒNG NGHIỆP VỤ -->
+            <section id="flows" style="--i:5">
+                <h2 class="section-heading sketch-font">5. Chi Tiết Các Luồng Nghiệp Vụ Cốt Lõi</h2>
+                
+                <!-- Mermaid Shell for Interactive Diagram -->
+                <div class="diagram-shell">
+                    <div class="diagram-shell__hint">
+                        <span>SƠ ĐỒ QUY TRÌNH TÍCH HỢP KIOTVIET (MERMAID)</span>
+                        <span>Cuộn/Rê chuột để phóng to, di chuyển • Kích đúp để đặt lại</span>
+                    </div>
+                    <div class="mermaid-wrap">
+                        <div class="zoom-controls">
+                            <button type="button" data-action="zoom-in" title="Phóng to">+</button>
+                            <button type="button" data-action="zoom-out" title="Thu nhỏ">&minus;</button>
+                            <button type="button" data-action="zoom-fit" title="Căn vừa">&#8634;</button>
+                            <button type="button" data-action="zoom-one" title="Tỷ lệ 1:1">1:1</button>
+                            <button type="button" data-action="zoom-expand" title="Mở tab mới">&#x26F6;</button>
+                            <span class="zoom-label">Đang tải...</span>
+                        </div>
+                        <div class="mermaid-viewport">
+                            <div class="mermaid mermaid-canvas"></div>
+                        </div>
+                    </div>
+                    <script type="text/plain" class="diagram-source">
+                        flowchart TD
+                            Import["1. Nhập Kho Nhập Khẩu<br/>(Phiếu NKxxxx)"] -->|Thủ kho gán Serial| DB["3. Postgres Database<br/>(Trạng thái: InStock)"]
+                            KV["2. Hóa Đơn KiotViet<br/>(Đồng bộ đơn B2B)"] -->|Gọi API| Sync["4. API Client Đồng Bộ"]
+                            Sync -->|Ánh xạ hóa đơn| Outbound["5. Thủ kho Xuất Kho<br/>(Quét chọn Serial InStock)"]
+                            Outbound -->|Cập nhật: Sold| DB
+                            EndUser["6. Quét QR Thực Địa<br/>(Kích hoạt bảo hành)"] -->|Public Form| Web["7. Web QR Warranty App"]
+                            Web -->|Cập nhật: Activated| DB
+                            
+                            classDef kvClass fill:#16a34a15,stroke:#16a34a,stroke-width:2px;
+                            classDef erpClass fill:#b8860b15,stroke:#b8860b,stroke-width:2px;
+                            classDef userClass fill:#4f46e515,stroke:#4f46e5,stroke-width:2px;
+                            
+                            class KV kvClass
+                            class Sync,DB,Web,Outbound erpClass
+                            class Import,EndUser userClass
+                    </script>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <!-- Flow 1 -->
+                    <div class="ve-card" style="border-left: 4px solid var(--green);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                            <span class="badge badge--green">Quy Trình 1</span>
+                            <h4 style="font-size: 15px; font-weight: 700;">Thủ Kho Gán Serial 2 Bước (Nhập / Xuất Kho)</h4>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 12px;">Quy trình quản lý Serial được thiết lập chặt chẽ ngay từ gốc sản phẩm:</p>
+                        <ol style="font-size: 13px; padding-left: 20px; line-height: 1.6; color: var(--text-dim); margin-bottom: 12px;">
+                            <li><strong>Bước 1: Nhập Kho Hàng Về:</strong> Khi hàng nhập khẩu cập cảng về kho, Thủ kho tạo phiếu nhập khẩu (ví dụ: <code>NK000101</code>) trên hệ thống, nhập/quét toàn bộ Serial gốc của nhà sản xuất. Hệ thống lưu trữ các thiết bị này ở trạng thái <code>InStock</code>.</li>
+                            <li><strong>Bước 2: Xuất Kho Bán Hàng:</strong> Khi có đơn hàng bán ra đồng bộ từ KiotViet (ví dụ: <code>HD000145</code>), Thủ kho mở giao diện Xuất Kho, hệ thống tự động lọc ra các Serial <code>InStock</code> của chính SKU đó để Thủ kho chọn gán nhanh. Nhấn lưu sẽ cập nhật Serial sang trạng thái <code>Sold</code> và liên kết trực tiếp với Đơn hàng xuất bán cho đại lý.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Flow 2 -->
+                    <div class="ve-card" style="border-left: 4px solid var(--green);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                            <span class="badge badge--green">Quy Trình 2</span>
+                            <h4 style="font-size: 15px; font-weight: 700;">Đại Lý / Khách Hàng Quét QR Kích Hoạt</h4>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 12px;">Thiết bị dán tem QR chứa liên kết kích hoạt (ví dụ: <code>solando.vn/warranty?sn=SN789123</code>):</p>
+                        <ol style="font-size: 13px; padding-left: 20px; line-height: 1.6; color: var(--text-dim);">
+                            <li>Đại lý/Khách hàng dùng điện thoại di động quét mã QR dán trên máy.</li>
+                            <li>Trang kích hoạt bảo hành hiện ra, tự điền mã Serial và kiểm tra trạng thái trong database nội bộ.</li>
+                            <li>Khách hàng điền thông tin: Tên khách hàng cuối, Số điện thoại và Địa chỉ lắp đặt.</li>
+                            <li>Hệ thống tính toán thời gian bảo hành và hạn bảo hành, đổi trạng thái Serial sang <code>Activated</code> và ghi nhận dữ liệu vào bảng <code>warranties</code>.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. HYBRID DEVELOPMENT WORKFLOW -->
+            <section id="hybrid" style="--i:6">
+                <h2 class="section-heading sketch-font">6. Kiến Trúc Custom Code (React (Vite) + NestJS)</h2>
+                <div class="alert-green">
+                    <strong>💡 Giải pháp kiến trúc tối ưu:</strong>
+                    Phát triển đồng bộ cả màn hình nghiệp vụ nội bộ (Thủ kho gán Serial, Dashboard Admin) và trang kích hoạt bảo hành QR public trên nền tảng <strong>React (Vite)</strong> để đảm bảo hiệu năng tối đa. Toàn bộ logic API kết nối KiotViet và cơ sở dữ liệu PostgreSQL được quản lý tập trung bởi Backend <strong>NestJS</strong>.
+                </div>
+            </section>
+
+            <!-- 7. LỘ TRÌNH TRIỂN KHAI -->
+            <section id="timeline" style="--i:7">
+                <h2 class="section-heading sketch-font">7. Lộ Trình Triển Khai Chi Tiết</h2>
+                <div class="ve-card">
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25%;">Giai Đoạn</th>
+                                        <th style="width: 35%;">Nội Dung Triển Khai</th>
+                                        <th>Mục Tiêu Đạt Được</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600;">Giai đoạn 1 (Ngày 1-4)</td>
+                                        <td class="muted-cell">Thiết lập database PostgreSQL trên Docker VPS. Viết API Gateway tích hợp KiotViet OAuth 2.0.</td>
+                                        <td>Kết nối thành công hóa đơn từ KiotViet API sang PostgreSQL.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Giai đoạn 2 (Ngày 5-8)</td>
+                                        <td class="muted-cell">Xây dựng trang Web cho thủ kho quét gán Serial. Import file Excel serial ban đầu.</td>
+                                        <td>Thủ kho bắt đầu vận hành gán Serial cho đơn xuất bán được ngay.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Giai đoạn 3 (Ngày 9-11)</td>
+                                        <td class="muted-cell">Thiết kế trang Web kích hoạt QR công trình mượt mà (React (Vite)). Tích hợp kiểm tra Serial hợp lệ.</td>
+                                        <td>Khách hàng quét mã QR kích hoạt bảo hành thành công.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Giai đoạn 4 (Ngày 12-14)</td>
+                                        <td class="muted-cell">Kiểm thử tích hợp, tối ưu CSS di động và bàn giao Go-live chính thức.</td>
+                                        <td>Hệ thống hoạt động ổn định trên môi trường Production Cloud.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Local Navigation Script -->
+    <script src="./index.js"></script>
+
+    <!-- Mermaid script loader -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        window.mermaid = mermaid;
+    </script>
+</body>
+
+</html>

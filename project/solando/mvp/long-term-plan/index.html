@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch Triển Khai Dài Hạn — Solando ERP</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&family=Architects+Daughter&display=swap" rel="stylesheet">
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+
+    <!-- Top header -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span style="color: var(--indigo);">🚀</span>
+            <div class="logo-text">
+                <h1>Solando ERP</h1>
+                <p class="sketch-font">Kế Hoạch Dài Hạn — Custom Clean Architecture</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="../presentation/index.html" class="btn btn-amber">
+                <span>📺 Slide trình chiếu</span>
+            </a>
+            <a href="../short-term-plan/index.html" class="btn btn-emerald">
+                <span>🔌 Kế hoạch ngắn hạn (KiotViet)</span>
+            </a>
+            <a href="../index.html" class="btn btn-purple">
+                <span>📋 Đặc tả MVP</span>
+                <span>→</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="main-layout">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <p class="sidebar-title">Mục Lục</p>
+            <nav>
+                <a class="nav-link active" onclick="navTo(event, 'why')">1. Lý Do Tự Xây Dựng</a>
+                <a class="nav-link" onclick="navTo(event, 'arch')">2. Kiến Trúc Hệ Thống</a>
+                <a class="nav-link" onclick="navTo(event, 'modules')">3. 9 Module Cốt Lõi</a>
+                <a class="nav-link" onclick="navTo(event, 'reports')">4. Báo Cáo & Phân Tích</a>
+                <a class="nav-link" onclick="navTo(event, 'timeline')">5. Timeline Triển Khai</a>
+                <a class="nav-link" onclick="navTo(event, 'techstack')">6. Stack Kỹ Thuật</a>
+            </nav>
+
+            <p class="sidebar-title">Tài Liệu Khác</p>
+            <nav>
+                <a href="../presentation/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>📺 Slide trình chiếu</span>
+                    <span style="color: var(--accent-gold); font-weight: bold;">→</span>
+                </a>
+                <a href="../index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>📋 Đặc tả MVP</span>
+                    <span style="color: var(--green); font-weight: bold;">→</span>
+                </a>
+                <a href="../short-term-plan/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🔌 Kế hoạch ngắn hạn</span>
+                    <span style="color: var(--indigo); font-weight: bold;">→</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+
+            <!-- Goal callout -->
+            <div class="alert-box alert-box--yellow" style="border-left: 4px solid var(--indigo);">
+                <strong>🎯 Mục tiêu Kế hoạch Dài hạn:</strong>
+                Xây dựng hệ thống ERP & Portal độc lập, làm chủ 100% mã nguồn (Native Custom), chuyển đổi từ KiotViet sang kiến trúc bền vững <strong>Clean Architecture</strong>. Điều này giúp Solando kiểm soát trọn vẹn logic nghiệp vụ phức tạp, bảo mật tối đa và thiết lập hệ thống báo cáo phân tích và quản lý vận hành chặt chẽ.
+            </div>
+
+            <!-- 1. LÝ DO TỰ XÂY DỰNG -->
+            <section id="why" style="--i:1">
+                <h2 class="section-heading sketch-font">1. Lý Do Tự Xây Dựng (Native Custom ERP)</h2>
+                <div class="ve-card">
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%;">Tiêu Chí Đánh Giá</th>
+                                        <th>Giải Thích & Lợi Ích Lâu Dài Cho Solando</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600;">Tự do tùy biến nghiệp vụ sâu</td>
+                                        <td class="muted-cell">Dễ dàng can thiệp sâu vào Database Transactions. Ví dụ: Xử lý tranh chấp dữ liệu tồn kho khi nhiều thủ kho cùng xuất nhập một mã serial cùng một thời điểm.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Portal tự phục vụ cho Đại lý</td>
+                                        <td class="muted-cell">Đại lý tự đăng nhập vào cổng riêng (Dealer Portal) để tra cứu bảng giá theo Tier của mình, tự tạo đơn hàng, theo dõi đơn hàng và yêu cầu bảo hành mà không cần liên hệ sale.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Báo cáo & Phân tích BI động</td>
+                                        <td class="muted-cell">Dashboard báo cáo doanh số, tự động tính toán biên lợi nhuận Margin thực tế theo đơn hàng và phân tích doanh thu tự động hóa bán phần giúp giảm tải kế toán.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Quét mã kho chuyên biệt (PWA)</td>
+                                        <td class="muted-cell">Phát triển Web App dạng Progressive Web App (PWA) tối ưu quét camera điện thoại nhạy bén để nhập/xuất serial trong môi trường kho thực tế thiếu sáng hoặc bụi bẩn.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Làm chủ hoàn toàn cơ sở dữ liệu</td>
+                                        <td class="muted-cell">Sử dụng Prisma ORM quản lý Schema và Migrations chuyên nghiệp, dễ dàng tối ưu hóa index cơ sở dữ liệu khi số lượng Serial thiết bị lên tới hàng triệu bản ghi.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Tránh Vendor Lock-in</td>
+                                        <td class="muted-cell">Không phụ thuộc vào các chính sách phí, giới hạn tính năng hay rủi ro gián đoạn đồng bộ API từ phía KiotViet, giúp doanh nghiệp tự chủ dữ liệu và vận hành độc lập.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. KIẾN TRÚC HỆ THỐNG -->
+            <section id="arch" style="--i:2">
+                <h2 class="section-heading sketch-font">2. Kiến Trúc Hệ Thống (Clean Architecture)</h2>
+                <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 24px;">Sơ đồ 4 lớp đồng tâm đảm bảo nghiệp vụ cốt lõi không bị ảnh hưởng bởi sự thay đổi công nghệ bên ngoài. Cuộn/Rê chuột để thu phóng sơ đồ bên dưới:</p>
+
+                <!-- Mermaid Shell for Interactive Diagram -->
+                <div class="diagram-shell">
+                    <div class="diagram-shell__hint">
+                        <span>SƠ ĐỒ PHÂN LỚP KIẾN TRÚC (MERMAID)</span>
+                        <span>Cuộn/Rê chuột để phóng to, di chuyển • Kích đúp để đặt lại</span>
+                    </div>
+                    <div class="mermaid-wrap">
+                        <div class="zoom-controls">
+                            <button type="button" data-action="zoom-in" title="Phóng to">+</button>
+                            <button type="button" data-action="zoom-out" title="Thu nhỏ">&minus;</button>
+                            <button type="button" data-action="zoom-fit" title="Căn vừa">&#8634;</button>
+                            <button type="button" data-action="zoom-one" title="Tỷ lệ 1:1">1:1</button>
+                            <button type="button" data-action="zoom-expand" title="Mở tab mới">&#x26F6;</button>
+                            <span class="zoom-label">Đang tải...</span>
+                        </div>
+                        <div class="mermaid-viewport">
+                            <div class="mermaid mermaid-canvas"></div>
+                        </div>
+                    </div>
+                    <script type="text/plain" class="diagram-source">
+                        flowchart TD
+                            subgraph Infra ["1. INFRASTRUCTURE LAYER (External)"]
+                                Db["PostgreSQL & Prisma ORM"]
+                                Ui["React (Vite) Web Client / Portal"]
+                                S3["AWS S3 Cloud Storage"]
+                            end
+                            subgraph Pres ["2. PRESENTATION LAYER (API)"]
+                                Ctrl["NestJS Controllers"]
+                                Dtos["Data Transfer Objects (DTOs)"]
+                                AuthGuards["Auth Guards & Interceptors"]
+                            end
+                            subgraph App ["3. USE CASES / APPLICATION LAYER"]
+                                Service["Services & Flow Handlers"]
+                                EventHandlers["Domain Event Listeners"]
+                            end
+                            subgraph Domain ["4. DOMAIN LAYER (Enterprise Core)"]
+                                Ent["Business Entities"]
+                                RepInterfaces["Repository Interfaces"]
+                            end
+
+                            Infra -->|Calls / Resolves| Pres
+                            Pres -->|Executes| App
+                            App -->|Manipulates| Domain
+                            Infra -.->|Implements| RepInterfaces
+
+                            classDef infraClass fill:#1e3a8a15,stroke:#1e3a8a,stroke-width:2px;
+                            classDef presClass fill:#b8860b15,stroke:#b8860b,stroke-width:2px;
+                            classDef appClass fill:#16a34a15,stroke:#16a34a,stroke-width:2px;
+                            classDef domClass fill:#dc262615,stroke:#dc2626,stroke-width:2px;
+
+                            class Infra,Db,Ui,S3 infraClass
+                            class Pres,Ctrl,Dtos,AuthGuards presClass
+                            class App,Service,EventHandlers appClass
+                            class Domain,Ent,RepInterfaces domClass
+                    </script>
+                </div>
+
+                <!-- Custom Card Layout of Layers -->
+                <div class="arch-layers">
+                    <div class="arch-layer">
+                        <div class="arch-layer-title">1. Infrastructure Layer (External)</div>
+                        <div class="arch-cards-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="arch-subcard" style="border-left: 3px solid var(--accent-blue);">
+                                <div class="arch-subcard-header">PostgreSQL & Prisma ORM</div>
+                                <div class="arch-subcard-desc">Lưu trữ dữ liệu quan hệ, tự động khởi tạo cơ sở dữ liệu và xử lý Transactions tranh chấp tồn kho.</div>
+                            </div>
+                            <div class="arch-subcard" style="border-left: 3px solid var(--accent-blue);">
+                                <div class="arch-subcard-header">React (Vite) Web Portal & S3</div>
+                                <div class="arch-subcard-desc">Portal tự phục vụ cho đại lý lên đơn và lưu trữ file chứng từ CO/CQ kỹ thuật.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector">
+                        <svg viewBox="0 0 24 24"><path d="M12 4v16m-4-4l4 4 4-4"/></svg>
+                    </div>
+
+                    <div class="arch-layer">
+                        <div class="arch-layer-title">2. Presentation Layer (API Gateway)</div>
+                        <div class="arch-cards-grid">
+                            <div class="arch-subcard" style="border-left: 3px solid var(--accent);">
+                                <div class="arch-subcard-header">NestJS Controllers & DTOs</div>
+                                <div class="arch-subcard-desc">Định nghĩa HTTP Endpoints, validation dữ liệu đầu vào và chuyển đổi serialization dữ liệu đầu ra.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector">
+                        <svg viewBox="0 0 24 24"><path d="M12 4v16m-4-4l4 4 4-4"/></svg>
+                    </div>
+
+                    <div class="arch-layer">
+                        <div class="arch-layer-title">3. Use Cases / Application Layer</div>
+                        <div class="arch-cards-grid">
+                            <div class="arch-subcard" style="border-left: 3px solid var(--green);">
+                                <div class="arch-subcard-header">Business Services & Event Listeners</div>
+                                <div class="arch-subcard-desc">Thực thi các luồng quy trình (Use Cases) như Tính chiết khấu đại lý, Xuất kho gán Serial, và Lắng nghe sự kiện Domain.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector">
+                        <svg viewBox="0 0 24 24"><path d="M12 4v16m-4-4l4 4 4-4"/></svg>
+                    </div>
+
+                    <div class="arch-layer">
+                        <div class="arch-layer-title">4. Domain Layer (Enterprise Core)</div>
+                        <div class="arch-cards-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="arch-subcard" style="border-left: 3px solid var(--red);">
+                                <div class="arch-subcard-header">Entities (Lõi thực thể)</div>
+                                <div class="arch-subcard-desc">Lưu trữ logic nghiệp vụ cốt lõi không đổi (đại lý, đơn hàng, hóa đơn, serial thiết bị).</div>
+                            </div>
+                            <div class="arch-subcard" style="border-left: 3px solid var(--red);">
+                                <div class="arch-subcard-header">Repository Interfaces</div>
+                                <div class="arch-subcard-desc">Các giao thức khai báo giao diện kết nối cơ sở dữ liệu hoàn toàn độc lập với công nghệ cụ thể.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 15px; font-weight: 700; margin-top: 24px; margin-bottom: 12px;">Cấu trúc thư mục mã nguồn ERP (NestJS)</h3>
+                <div class="ve-card ve-card--recessed">
+                    <pre style="font-family: var(--font-mono); font-size: 12px; white-space: pre; overflow-x: auto; line-height: 1.6; color: var(--text);">
+src/
+├── <strong style="color: var(--accent);">domain/</strong>                  # Lớp Thực thể Lõi (Không phụ thuộc Framework/Database)
+│   ├── entities/            # Dealer, Product, Order, Serial, Invoice, ActivatedAsset
+│   └── repositories/        # Interface truy xuất (IDealerRepository, IOrderRepository...)
+├── <strong style="color: var(--indigo);">use-cases/</strong>               # Lớp Nghiệp vụ (Use Cases - Luồng xử lý cụ thể)
+│   ├── authentication/      # LoginUseCase, ValidateUserUseCase
+│   ├── dealer/              # CheckCreditLimitUseCase, CreateDealerUseCase
+│   ├── quotation/           # CalculateMarginUseCase, ApproveQuotationUseCase
+│   ├── order/               # CreateOrderFromQuotationUseCase, ShipOrderUseCase
+│   ├── billing/             # ProcessManualPaymentUseCase, IssueInvoiceUseCase
+│   ├── inventory/           # ImportBatchUseCase, ScanSerialExportUseCase
+│   └── warranty/            # ActivateWarrantyViaQRUseCase
+└── <strong style="color: var(--text);">infrastructure/</strong>         # Lớp Hạ tầng (Công nghệ cụ thể)
+    ├── database/            # Prisma implementation repositories
+    ├── http/                # NestJS Controllers, Routes, DTOs
+    └── shared/              # Helpers, Logging, Configs
+                    </pre>
+                </div>
+            </section>
+
+            <!-- 3. 9 MODULE CỐT LÕI -->
+            <section id="modules" style="--i:3">
+                <h2 class="section-heading sketch-font">3. Danh Sách 9 Module Nghiệp Vụ Cốt Lõi</h2>
+                <div class="ve-card">
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25%;">Tên Module</th>
+                                        <th style="width: 25%;">Thực Thể Core</th>
+                                        <th>Use Cases & Chức năng trọng tâm</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600;">1. Auth & RBAC</td>
+                                        <td><code style="font-family: var(--font-mono); font-size: 11px; background: var(--indigo-dim); color: var(--indigo); padding: 2px 6px; border-radius: 4px;">User, Role, Permission</code></td>
+                                        <td class="muted-cell">Đăng nhập JWT, phân quyền chi tiết cho nhân viên văn phòng và các đại lý đăng nhập Portal.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">2. Master Data</td>
+                                        <td><code style="font-family: var(--font-mono); font-size: 11px; background: var(--indigo-dim); color: var(--indigo); padding: 2px 6px; border-radius: 4px;">Branch, Currency, Config</code></td>
+                                        <td class="muted-cell">Cấu hình tham số hệ thống chung (Tỷ giá ngoại tệ, chi nhánh, ngưỡng Margin % tối thiểu).</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">3. Dealer & CRM</td>
+                                        <td><code style="font-family: var(--font-mono); font-size: 11px; background: var(--indigo-dim); color: var(--indigo); padding: 2px 6px; border-radius: 4px;">Dealer, EndUser</code></td>
+                                        <td class="muted-cell">Quản lý hồ sơ đại lý, phân hạng Tier 1/Tier 2 và gán nhân viên Sale phụ trách chăm sóc.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">4. Product & PIM</td>
+                                        <td><code style="font-family: var(--font-mono); font-size: 11px; background: var(--indigo-dim); color: var(--indigo); padding: 2px 6px; border-radius: 4px;">Product, SolutionKit</code></td>
+                                        <td class="muted-cell">Quản lý SKU Inverter, Pin Lithium, combo BOM kỹ thuật và tài liệu kỹ thuật CO/CQ đính kèm trên S3.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">5. Báo Giá</td>
+                                        <td><code style="font-family: var(--font-mono); font-size: 11px; background: var(--indigo-dim); color: var(--indigo); padding: 2px 6px; border-radius: 4px;">Quotation, Item</code></td>
+                                        <td class="muted-cell">Pricing Engine tự tính đơn giá bán theo Tier của Đại lý, tự tính Margin và báo duyệt Admin khi Margin thấp.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">6. Đơn Hàng</td>
+                                        <td><code style="font-family: var(--font-mono); font-size: 11px; background: var(--indigo-dim); color: var(--indigo); padding: 2px 6px; border-radius: 4px;">Order, OrderItem</code></td>
+                                        <td class="muted-cell">Quy trình duyệt đơn: Chuyển đổi báo giá -> Kiểm tra phê duyệt margin -> Phê duyệt chuẩn bị hàng.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">7. Báo Cáo & Phân Tích</td>
+                                        <td><code style="font-family: var(--font-mono); font-size: 11px; background: var(--indigo-dim); color: var(--indigo); padding: 2px 6px; border-radius: 4px;">Invoice</code></td>
+                                        <td class="muted-cell">Ghi nhận thanh toán đơn hàng thủ công, kết xuất báo cáo doanh thu, biên lợi nhuận (Margin) chi tiết.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">8. Kho & Số Serial</td>
+                                        <td><code style="font-family: var(--font-mono); font-size: 11px; background: var(--indigo-dim); color: var(--indigo); padding: 2px 6px; border-radius: 4px;">Batch, Serial</code></td>
+                                        <td class="muted-cell">Nhập lô hàng PO (nhà cung cấp), import file excel hàng nghìn Serial. Quét QR xuất kho thực tế bằng camera điện thoại.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">9. Bảo Hành & QR</td>
+                                        <td><code style="font-family: var(--font-mono); font-size: 11px; background: var(--indigo-dim); color: var(--indigo); padding: 2px 6px; border-radius: 4px;">Asset, Ticket</code></td>
+                                        <td class="muted-cell">Public QR Form ngoài công trường kích hoạt bảo hành inverter, tra cứu lịch sử kích hoạt của Serial, gửi Zalo ZNS xác nhận.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. BÁO CÁO & PHÂN TÍCH -->
+            <section id="reports" style="--i:4">
+                <h2 class="section-heading sketch-font">4. Báo Cáo Quản Trị & Phân Tích Tài Chính</h2>
+                <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 16px;">Để kiểm soát doanh thu tối ưu và hỗ trợ Ban Giám độ ra quyết định kinh doanh kịp thời:</p>
+                <div class="ve-card ve-card--recessed">
+                    <ul style="list-style: none; padding-left: 0; font-size: 13.5px; line-height: 1.8;">
+                        <li style="position: relative; padding-left: 20px; margin-bottom: 8px;">
+                            <span style="position: absolute; left: 0; color: var(--accent);">•</span>
+                            <span><strong>Theo dõi thanh toán đơn hàng:</strong> Cho phép kế toán ghi nhận thanh toán thủ công khi nhận chuyển khoản ngân hàng, khớp trạng thái đơn hàng.</span>
+                        </li>
+                        <li style="position: relative; padding-left: 20px;">
+                            <span style="position: absolute; left: 0; color: var(--accent);">•</span>
+                            <span><strong>Phân tích Margin & Sales:</strong> Dashboard hiển thị doanh số, biên lợi nhuận thực tế theo sản phẩm, theo đại lý và theo từng nhân viên Sale.</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 5. TIMELINE TRIỂN KHAI -->
+            <section id="timeline" style="--i:5">
+                <h2 class="section-heading sketch-font">5. Timeline & Kế Hoạch Triển Khai</h2>
+                <div class="timeline">
+
+                    <!-- Phase 1 -->
+                    <div class="timeline-item">
+                        <span class="timeline-dot"></span>
+                        <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                                <h3 style="font-size: 15px; font-weight: 700;">Phase 1 — Nền tảng Core & Product PIM</h3>
+                                <span class="badge badge--blue">Ngày 1 – Ngày 14</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" checked disabled>
+                                    <span>Khởi tạo khung Clean Architecture cho dự án NestJS + Prisma ORM</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" checked disabled>
+                                    <span>Thiết lập module Xác thực JWT & phân quyền RBAC cho nhân viên nội bộ & đại lý</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" checked disabled>
+                                    <span>Định nghĩa SKU sản phẩm, BOM giải pháp kỹ thuật, đính kèm CO/CQ trên AWS S3</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" checked disabled>
+                                    <span>Thiết lập kết nối PostgreSQL và chạy DB migrations đầu tiên</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="timeline-item">
+                        <span class="timeline-dot timeline-dot--inactive"></span>
+                        <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                                <h3 style="font-size: 15px; font-weight: 700;">Phase 2 — Đại Lý & Kho Serial (PWA Scanner)</h3>
+                                <span class="badge badge--blue" style="background: var(--surface-recessed); color: var(--text-dim);">Ngày 15 – Ngày 35</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Thiết kế cơ sở dữ liệu đại lý phân hạng (Tier 1/Tier 2) và gán Sale phụ trách</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Thiết lập luồng Nhập kho theo Lô (Batch), Import Serial từ file Excel lớn</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Phát triển Web App PWA Scanner tối ưu camera điện thoại quét Serial xuất kho thực tế</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="timeline-item">
+                        <span class="timeline-dot timeline-dot--inactive"></span>
+                        <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                                <h3 style="font-size: 15px; font-weight: 700;">Phase 3 — Báo Giá, Pricing Engine & Đơn Hàng</h3>
+                                <span class="badge badge--blue" style="background: var(--surface-recessed); color: var(--text-dim);">Ngày 36 – Ngày 49</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Xây dựng Pricing Engine áp dụng giá tự động theo cấp độ đại lý Tier 1, Tier 2</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Tạo báo giá, tính toán Margin theo lô, tự động cảnh báo duyệt Admin khi Margin thấp</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Thiết lập cơ chế chuyển đổi báo giá thành đơn hàng và tích hợp luồng phê duyệt Margin</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 4 -->
+                    <div class="timeline-item">
+                        <span class="timeline-dot timeline-dot--inactive"></span>
+                        <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                                <h3 style="font-size: 15px; font-weight: 700;">Phase 4 — Báo Cáo Quản Trị & Phân Tích Doanh Thu</h3>
+                                <span class="badge badge--blue" style="background: var(--surface-recessed); color: var(--text-dim);">Ngày 50 – Ngày 63</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Xây dựng màn hình ghi nhận thanh toán thủ công cho kế toán</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Phát triển tính năng phân tích doanh thu đại lý theo kỳ</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Thiết kế Dashboard báo cáo doanh số, biên lợi nhuận Margin động cho BGĐ</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 5 -->
+                    <div class="timeline-item">
+                        <span class="timeline-dot timeline-dot--inactive"></span>
+                        <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                                <h3 style="font-size: 15px; font-weight: 700;">Phase 5 — Bảo Hành QR & Go-live Cloud</h3>
+                                <span class="badge badge--blue" style="background: var(--surface-recessed); color: var(--text-dim);">Ngày 64 – Ngày 70</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Xây dựng trang Web public quét QR trên inverter ngoài công trường không cần login</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Tích hợp SMS/Zalo Gateway tự nhắn tin xác nhận kích hoạt bảo hành cho End-User</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                    <input type="checkbox" disabled>
+                                    <span>Deploy AWS Production, kiểm thử hiệu năng chịu tải (load test), bàn giao Go-live</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 6. STACK KỸ THUẬT -->
+            <section id="techstack" style="--i:6">
+                <h2 class="section-heading sketch-font">6. Stack Kỹ Thuật Đề Xuất</h2>
+                <div class="ve-card">
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25%;">Thành phần</th>
+                                        <th style="width: 25%;">Công nghệ lâu dài</th>
+                                        <th>Lý do & Mô tả vai trò kỹ thuật</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 600;">Backend Server</td>
+                                        <td style="font-weight: 700; color: var(--accent);">NestJS (TypeScript)</td>
+                                        <td class="muted-cell">Cung cấp cấu trúc Dependency Injection vững chắc, hỗ trợ chia lớp Clean Architecture chuẩn mực và bảo mật tốt.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Cơ sở dữ liệu</td>
+                                        <td style="font-weight: 700;">PostgreSQL 16</td>
+                                        <td class="muted-cell">Hệ quản trị CSDL quan hệ tin cậy số một cho các nghiệp vụ ERP, hỗ trợ ACID transactions để xử lý các luồng nghiệp vụ phức tạp.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">ORM Engine</td>
+                                        <td style="font-weight: 700;">Prisma ORM</td>
+                                        <td class="muted-cell">Type-safety tự động từ schema database sang TypeScript, hỗ trợ quản lý DB Migrations dễ bảo trì.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Admin & Dealer Portal</td>
+                                        <td style="font-weight: 700; color: var(--accent);">React (Vite) + Tailwind CSS</td>
+                                        <td class="muted-cell">Ứng dụng Single Page Application (SPA) gọn nhẹ, tải nhanh, phản hồi mượt mà và dễ dàng deploy.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Lưu trữ file tài liệu</td>
+                                        <td style="font-weight: 700;">AWS S3</td>
+                                        <td class="muted-cell">Quản lý tập trung các tài liệu CO/CQ kỹ thuật, datasheet của inverter và pin solar.</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">Hạ tầng & Cloud</td>
+                                        <td style="font-weight: 700;">Docker + AWS EC2/RDS</td>
+                                        <td class="muted-cell">Hạ tầng ảo hóa linh hoạt, cấu hình auto-backup và giám sát tài nguyên (monitoring) chặt chẽ.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Local Navigation Script -->
+    <script src="./index.js"></script>
+
+    <!-- Mermaid script loader -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        window.mermaid = mermaid;
+    </script>
+</body>
+
+</html>

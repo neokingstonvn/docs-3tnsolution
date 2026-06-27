@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch Dài Hạn (Sau MVP) — Task Kingston</title>
+    <!-- Google Fonts: Plus Jakarta Sans + Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="mmp.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span style="color: var(--indigo); font-size: 1.5rem;">🚀</span>
+            <div class="logo-text">
+                <h1>Task Kingston</h1>
+                <p>Kế Hoạch Dài Hạn (Sau MVP)</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="../presentation/index.html" class="btn">📺 Slide Trình Chiếu</a>
+            <a href="../index.html" class="btn">📋 Đặc Tả Tổng Thể</a>
+            <a href="../mvp/plan-high-level/index.html" class="btn">🧭 Kế hoạch MVP tổng thể</a>
+            <a href="../mvp/plan-detailed/index.html" class="btn btn-purple">🔌 Kế hoạch MVP chi tiết</a>
+            <a href="../prototype/index.html" class="btn btn-emerald">🖥️ Chạy Prototype UAT</a>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+        <p class="sidebar-title">Định hướng dài hạn</p>
+        <nav>
+            <a class="nav-link active" onclick="navTo('why')">1. Định Hướng Phát Triển</a>
+            <a class="nav-link" onclick="navTo('arch')">2. Sơ Đồ Hệ Thống Dài Hạn</a>
+            <a class="nav-link" onclick="navTo('features')">3. Tính Năng Ngoài Phạm Vi MVP</a>
+            <a class="nav-link" onclick="navTo('timeline')">4. Lộ Trình Chi Tiết Phases 6-10</a>
+            <a class="nav-link" onclick="navTo('techstack')">5. Stack Doanh Nghiệp Đề Xuất</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <div class="alert-box">
+            <strong>🎯 Mục tiêu Kế hoạch:</strong>
+            Định hướng phát triển dài hạn (Post-MVP), tập trung xây dựng các tính năng nâng cao, nâng cấp bảo mật và tích hợp đa kênh sau khi phiên bản MVP đã vận hành ổn định.
+        </div>
+
+        <!-- 1. WHY CUSTOM -->
+        <section id="why">
+            <h2 class="section-heading">1. Định Hướng Phát Triển Nghiệp Vụ</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%;">Tiêu Chí Nghiệp Vụ</th>
+                                <th>Giải Thích & Lợi Ích Lâu Dài Cho Doanh Nghiệp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Tối Ưu Hóa Quy Trình</strong></td>
+                                <td>Thay thế các thao tác dán link báo cáo thủ công bằng việc lưu trữ trực tiếp, tích hợp chặt chẽ với quy trình phê duyệt hồ sơ và bình luận thời gian thực.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tương Tác Đa Kênh</strong></td>
+                                <td>Đồng bộ thông báo đẩy qua Slack, Telegram, Email giúp giảm thiểu thời gian chờ duyệt công việc của nhân sự, tối ưu tiến độ dự án.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phân Tích Năng Suất</strong></td>
+                                <td>Xây dựng Gantt charts và báo cáo hiệu suất (Burn-down chart) giúp ban giám đốc có cái nhìn trực quan về năng lực và khối lượng công việc của từng phòng ban.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ARCHITECTURE -->
+        <section id="arch">
+            <h2 class="section-heading">2. Sơ Đồ Hệ Thống Dài Hạn</h2>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">
+                Mô hình sơ đồ kiến trúc tích hợp hệ thống dài hạn bao gồm các kênh thông báo và lưu trữ đám mây. Rê chuột / cuộn chuột để zoom và di chuyển sơ đồ:
+            </p>
+            
+            <div class="diagram-shell">
+                <div class="diagram-shell__hint">
+                    <span>KIẾN TRÚC HỆ THỐNG DÀI HẠN (MERMAID)</span>
+                    <span>Cuộn chuột để zoom • Kéo thả để pan • Click đúp để đặt lại</span>
+                </div>
+                <div class="mermaid-wrap">
+                    <div class="zoom-controls">
+                        <span class="zoom-label" id="zoom-value">100%</span>
+                        <button type="button" onclick="zoomIn()" title="Phóng to">+</button>
+                        <button type="button" onclick="zoomOut()" title="Thu nhỏ">&minus;</button>
+                        <button type="button" onclick="zoomReset()" title="Reset">&#8634;</button>
+                    </div>
+                    <div class="mermaid-viewport" id="mermaid-viewport">
+                        <div class="mermaid-canvas" id="mermaid-canvas">
+                            <div class="mermaid">
+                                graph TD
+                                    subgraph Clients
+                                        Web[Giao diện Web React]
+                                        Mobile[Mobile App React Native]
+                                    end
+                                    subgraph API_Gateway
+                                        GW[API Gateway / Auth SSO]
+                                    end
+                                    subgraph Backend_Services
+                                        Core[Node.js Core Microservice]
+                                        Notify[Notification Service / Worker]
+                                    end
+                                    subgraph Integrations
+                                        Slack[Slack / Telegram Webhooks]
+                                        Email[SendGrid Email API]
+                                        S3[(AWS S3 Storage)]
+                                    end
+                                    subgraph Database_Cluster
+                                        DB[(PostgreSQL Primary DB)]
+                                        Replica[(Read Replicas DB)]
+                                    end
+                                    
+                                    Web & Mobile --> GW
+                                    GW --> Core & Notify
+                                    Core --> S3
+                                    Core --> DB
+                                    DB --> Replica
+                                    Notify --> Slack & Email
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ve-card ve-card--recessed">
+                <pre>src-enterprise/
+├── services/
+│   ├── gateway/            # API Gateway & SSO Authenticator (Keycloak)
+│   ├── core-task/          # Core Business logic
+│   └── notification/       # SendGrid, Telegram & Slack workers
+└── storage/
+    └── s3-adapter/         # Cloud storage file managers</pre>
+            </div>
+        </section>
+
+        <!-- 3. OUT-OF-SCOPE FEATURES -->
+        <section id="features">
+            <h2 class="section-heading">3. Các Tính Năng Phát Triển Giai Đoạn Sau</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Tính Năng Dài Hạn</th>
+                                <th style="width: 35%;">Mô Tả Chức Năng</th>
+                                <th>Lợi Ích So Với MVP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Tải file trực tiếp lên Cloud</strong></td>
+                                <td>Cho phép người dùng upload file đính kèm (ảnh, tài liệu báo cáo) trực tiếp lên hệ thống qua AWS S3/MinIO.</td>
+                                <td>Tiết kiệm thời gian, tăng tính an toàn bảo mật tài liệu so với việc dán link Google Drive công khai.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tích hợp thông báo đa kênh</strong></td>
+                                <td>Gửi email, tin nhắn Slack/Telegram thời gian thực khi có cập nhật trạng thái nhiệm vụ hoặc yêu cầu duyệt mới.</td>
+                                <td>Đảm bảo PM phê duyệt nhanh chóng, thành viên nhận thông tin phản hồi tức thì.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Biểu đồ Gantt trực quan</strong></td>
+                                <td>Giao diện biểu đồ thanh ngang Gantt hỗ trợ kéo thả ngày bắt đầu/kết thúc công việc và liên kết phụ thuộc.</td>
+                                <td>PM dễ dàng theo dõi đường găng (critical path) của toàn bộ dự án.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Đăng nhập một lần (SSO)</strong></td>
+                                <td>Hỗ trợ đăng nhập qua Google Workspace, Active Directory hoặc Azure AD nội bộ của doanh nghiệp.</td>
+                                <td>Đồng bộ tài khoản nhân sự tự động, tăng cường an ninh bảo mật Enterprise.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TIMELINE PHASES 6-10 -->
+        <section id="timeline">
+            <h2 class="section-heading">4. Lộ Trình Phân Kỳ Dài Hạn (Phases 6 - 10)</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 6 — Thông Báo Đa Kênh (Slack / Email)</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp Nodemailer/SendGrid gửi email nhắc deadline tự động</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Xây dựng Slack Webhook/Telegram Bot đẩy tin nhắn duyệt việc thời gian thực</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 7 — Lưu Trữ Tài Liệu & Upload File</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tải tệp đính kèm lên AWS S3 trực tiếp từ modal Task</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Preview file PDF, Excel, ảnh trực tiếp không cần tải về máy</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 8 — Biểu Đồ Gantt & Phân Tích KPI</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Phát triển Gantt chart kéo thả dependencies</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Xây dựng dashboard đo lường KPI và mức độ hoàn thành task của nhân viên</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 9 — Xác Thực Doanh Nghiệp (SSO / JWT)</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp cơ chế Token JWT (AccessToken & RefreshToken) bảo mật cao</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>SSO đăng nhập thông qua Google Workspace & Active Directory</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 10 — Mobile App iOS & Android</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Xây dựng ứng dụng di động Task Kingston bằng React Native</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Đẩy thông báo đẩy native (Push notifications) khi có công việc mới</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TECH STACK -->
+        <section id="techstack">
+            <h2 class="section-heading">5. Stack Kỹ Thuật Đề Xuất Cho Doanh Nghiệp</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Thành phần</th>
+                                <th style="width: 25%;">Công nghệ đề xuất</th>
+                                <th>Lợi ích ứng dụng lâu dài cho doanh nghiệp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Frontend Framework</strong></td>
+                                <td>React (Next.js / Vite)</td>
+                                <td>Tối ưu hóa render phía client, chia nhỏ và tái sử dụng components, hiệu năng cao trên các hệ thống lớn.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mobile App</strong></td>
+                                <td>React Native / Flutter</td>
+                                <td>Sử dụng chung phần lớn mã nguồn logic với Web, phát triển ứng dụng cho cả iOS và Android nhanh chóng.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cloud Storage</strong></td>
+                                <td>Amazon S3 / Google Cloud</td>
+                                <td>Độ bền dữ liệu cực cao, hỗ trợ phân quyền truy cập tạm thời an toàn qua Pre-signed URLs.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SSO Gateway</strong></td>
+                                <td>Keycloak / Auth0</td>
+                                <td>Tiêu chuẩn bảo mật chuyên nghiệp hỗ trợ OAuth2, OIDC, quản trị tập trung tất cả user công ty.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+    <script src="mmp.js"></script>
+</body>
+</html>

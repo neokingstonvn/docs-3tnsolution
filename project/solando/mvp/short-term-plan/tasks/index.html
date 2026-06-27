@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch Triển Khai Chi Tiết — Solando Warranty</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&family=Architects+Daughter&display=swap" rel="stylesheet">
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+
+    <!-- Top header -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span style="color: var(--accent);">🛠️</span>
+            <div class="logo-text">
+                <h1>Solando Warranty</h1>
+                <p class="sketch-font">Mục Lục Task & Thiết Kế Chi Tiết</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="../index.html" class="btn btn-emerald">
+                <span>🔌 Kế hoạch ngắn hạn</span>
+            </a>
+            <a href="../../index.html" class="btn btn-amber">
+                <span>📋 Đặc tả MVP</span>
+                <span>→</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="main-layout">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <p class="sidebar-title">Mục Lục</p>
+            <nav>
+                <a class="nav-link active" onclick="navTo(event, 'objective')">1. Mục Tiêu Chi Tiết</a>
+                <a class="nav-link" onclick="navTo(event, 'phases')">2. Tasks Theo Giai Đoạn</a>
+                <a class="nav-link" onclick="navTo(event, 'db-design')">3. Cấu Trúc Database (SQL)</a>
+                <a class="nav-link" onclick="navTo(event, 'kiotviet-api')">4. Tích Hợp KiotViet API</a>
+                <a class="nav-link" onclick="navTo(event, 'testing')">5. Kế Hoạch Kiểm Thử</a>
+            </nav>
+
+            <p class="sidebar-title">Tài Liệu Khác</p>
+            <nav>
+                <a href="../index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🔌 Kế hoạch ngắn hạn</span>
+                    <span style="color: var(--green); font-weight: bold;">→</span>
+                </a>
+                <a href="../../index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>📋 Đặc tả MVP</span>
+                    <span style="color: var(--accent); font-weight: bold;">→</span>
+                </a>
+                <a href="../../long-term-plan/index.html" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>🚀 Kế hoạch dài hạn</span>
+                    <span style="color: var(--indigo); font-weight: bold;">→</span>
+                </a>
+                <a href="./README.md" class="nav-link" style="display:flex; justify-content:space-between;">
+                    <span>📝 Xem bản Markdown (README.md)</span>
+                    <span style="color: var(--accent-blue); font-weight: bold;">→</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+
+            <!-- Goal callout -->
+            <div class="alert-green">
+                <strong>🎯 Thiết Kế Thực Thi (Detailed Implementation Design):</strong>
+                Tài liệu này đóng vai trò blueprint chi tiết từng task lập trình cụ thể cho cả Backend (NestJS) và Frontend (React) để hiện thực hóa luồng tích hợp KiotViet. Bạn có thể bấm tích chọn các task dưới đây để theo dõi tiến độ công việc trực quan (tiến độ sẽ tự động lưu lại trên trình duyệt).
+            </div>
+
+            <!-- 1. MỤC TIÊU CHI TIẾT -->
+            <section id="objective" style="--i:1">
+                <h2 class="section-heading sketch-font">1. Mục Tiêu Chi Tiết & Scope Cốt Lõi</h2>
+                <div class="ve-card">
+                    <p style="font-size: 14.5px; color: var(--text-dim);">Để hoàn thành việc tích hợp trong vòng 14 ngày, đội ngũ kỹ thuật cần chia nhỏ công việc thành 4 giai đoạn độc lập. Hệ thống NestJS sẽ đóng vai trò gateway trung chuyển và xử lý logic gán Serial, còn React (Vite) sẽ đảm nhận hiển thị và tối ưu hóa UX di động cho thủ kho quét mã.</p>
+                </div>
+            </section>
+
+            <!-- 2. TASKS THEO GIAI ĐOẠN -->
+            <section id="phases" style="--i:2">
+                <h2 class="section-heading sketch-font">2. Danh Sách Task Triển Khai Chi Tiết</h2>
+                
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <!-- Giai đoạn 1 -->
+                    <div>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge--yellow" style="border-radius: 4px;">Giai Đoạn 1</span>
+                            Cấu Hình Core Database & API OAuth KiotViet (Ngày 1–4)
+                        </h3>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <input type="checkbox" id="task_1_1" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 1.1: [Solando Warranty App] Thiết Lập Database Migration (SQL Setup)</strong>
+                                        <span class="task-badge task-badge--db">PostgreSQL</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Tạo các bảng <code>serial_numbers</code>, <code>warranties</code>, <code>warranty_tickets</code> và thiết lập indexes tối ưu trên PostgreSQL 16.</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task_1_2" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 1.2: [Solando Warranty App] Khởi Tạo NestJS Backend Project</strong>
+                                        <span class="task-badge task-badge--backend">NestJS</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Scaffold dự án NestJS, cấu hình TypeORM/Prisma, class-validator, và file cấu hình môi trường (.env).</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task_1_3" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 1.3: [KiotViet Integration] Client OAuth 2.0 Client Handshake</strong>
+                                        <span class="task-badge task-badge--backend">NestJS</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Cài đặt HttpClient, viết module lấy access token từ API KiotViet kèm cơ chế tự động refresh và cache token.</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task_1_4" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 1.4: [KiotViet Integration] Service Đồng Bộ Hóa Đơn & SKU</strong>
+                                        <span class="task-badge task-badge--backend">NestJS</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Hiện thực API client gọi các endpoint hóa đơn và SKU hàng hóa từ KiotViet API để đối chiếu bán hàng.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Giai đoạn 2 -->
+                    <div>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge--indigo" style="border-radius: 4px;">Giai Đoạn 2</span>
+                            Phát Triển Giao Diện Thủ Kho & Gán Serial Xuất Kho (Ngày 5–8)
+                        </h3>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <input type="checkbox" id="task_2_1" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 2.1: [Solando Warranty App] API Quản Lý Số Serial</strong>
+                                        <span class="task-badge task-badge--backend">NestJS</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Viết API endpoints <code>POST /api/serials/assign</code> để gán Serial cho hóa đơn KiotViet và <code>GET /api/serials/invoice/{code}</code>.</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task_2_2" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 2.2: [Solando Warranty App] Khởi Tạo Vite + React App</strong>
+                                        <span class="task-badge task-badge--frontend">React (Vite)</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Setup dự án Frontend, cấu hình Router, Zustand quản lý Client State, và import design system CSS.</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task_2_3" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 2.3: [Solando Warranty App] Giao Diện Gán Serial (Warehouse UI)</strong>
+                                        <span class="task-badge task-badge--frontend">React (Vite)</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Màn hình Thủ kho nhập mã hóa đơn KiotViet để load danh sách SKU, số lượng cần quét gán Serial đích danh.</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task_2_4" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 2.4: [Solando Warranty App] Tích Hợp Quét Mã Vạch (Scanner Integration)</strong>
+                                        <span class="task-badge task-badge--frontend">React (Vite)</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Tích hợp thư viện quét mã <code>html5-qrcode</code> để dùng camera quét nhanh mã Serial, hỗ trợ cơ chế nhập tay khi mã mờ.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Giai đoạn 3 -->
+                    <div>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge--blue" style="border-radius: 4px;">Giai Đoạn 3</span>
+                            Phát Triển Cổng Kích Hoạt Bảo Hành QR Public (Ngày 9–11)
+                        </h3>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <input type="checkbox" id="task_3_1" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 3.1: [Solando Warranty App] API Kích Hoạt Bảo Hành QR</strong>
+                                        <span class="task-badge task-badge--backend">NestJS</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Hiện thực endpoint <code>GET /api/warranties/check/{serial}</code> và <code>POST /api/warranties/activate</code> tính toán ngày hết hạn dựa trên SKU.</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task_3_2" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 3.2: [Solando Warranty App] Form Kích Hoạt QR Di Động (Responsive UI)</strong>
+                                        <span class="task-badge task-badge--frontend">React (Vite)</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Tạo trang form công cộng lấy mã Serial từ query parameters, cho phép điền thông tin End-User để kích hoạt.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Giai đoạn 4 -->
+                    <div>
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge--green" style="border-radius: 4px;">Giai Đoạn 4</span>
+                            Phát Triển Tính Năng CSKH & Go-live (Ngày 12–14)
+                        </h3>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <input type="checkbox" id="task_4_1" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 4.1: [Solando Warranty App] API Quản Lý Ticket Bảo Hành</strong>
+                                        <span class="task-badge task-badge--backend">NestJS</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Tạo endpoints quản lý Ticket bảo trì thiết bị: <code>POST /api/tickets</code>, <code>PATCH /api/tickets/{id}</code> cập nhật trạng thái lỗi.</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task_4_2" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 4.2: [Solando Warranty App] Giao Diện CSKH (Tickets Console & Serial Search)</strong>
+                                        <span class="task-badge task-badge--frontend">React (Vite)</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Xây dựng console quản lý lỗi thiết bị cho CSKH, tìm kiếm lịch sử Serial và gán kỹ thuật xử lý sự cố.</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task_4_3" class="task-checkbox" onchange="saveProgress()">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                        <strong>Task 4.3: [QA & DevOps] Kiểm Thử E2E Tích Hợp & Deploy VPS</strong>
+                                        <span class="task-badge task-badge--devops">DevOps</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 0;">Chạy toàn bộ tích hợp KiotViet B2B đơn hàng test, kiểm thử đầu cuối (E2E), đóng gói ứng dụng bằng Docker Compose và deploy lên VPS.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. CẤU TRÚC DATABASE (SQL) -->
+            <section id="db-design" style="--i:3">
+                <h2 class="section-heading sketch-font">3. Cấu Trúc Database PostgreSQL Chi Tiết (DDL)</h2>
+                <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 12px;">Dưới đây là cấu trúc script SQL chính thức phục vụ migration dữ liệu trên database PostgreSQL 16:</p>
+                <div class="ve-card ve-card--recessed">
+                    <pre style="font-family: var(--font-mono); font-size: 12.5px; white-space: pre; overflow-x: auto; line-height: 1.6; color: var(--text);">
+-- Kích hoạt extension sinh UUID tự động
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- 1. Bảng lưu trữ Số Serial thiết bị đã bán
+CREATE TABLE serial_numbers (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    serial_number VARCHAR(100) UNIQUE NOT NULL,
+    product_code VARCHAR(50) NOT NULL, -- SKU hàng hóa KiotViet
+    product_name VARCHAR(255) NOT NULL,
+    invoice_code VARCHAR(100) NOT NULL, -- Hóa đơn xuất bán trên KiotViet
+    sold_date TIMESTAMP NOT NULL, -- Ngày hóa đơn KiotViet
+    status VARCHAR(50) DEFAULT 'Sold' CHECK (status IN ('Sold', 'Activated')), 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Bảng lưu trữ thông tin Kích hoạt Bảo hành
+CREATE TABLE warranties (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    serial_number VARCHAR(100) UNIQUE NOT NULL REFERENCES serial_numbers(serial_number) ON DELETE CASCADE,
+    customer_name VARCHAR(255) NOT NULL,
+    customer_phone VARCHAR(50) NOT NULL,
+    installation_address TEXT NOT NULL,
+    dealer_code VARCHAR(100), -- Khách hàng mua buôn từ KiotViet
+    activation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expiry_date TIMESTAMP NOT NULL, -- Hạn bảo hành thực tế tính toán
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Bảng lưu trữ nhật ký Yêu cầu Bảo hành (Tickets)
+CREATE TABLE warranty_tickets (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    serial_number VARCHAR(100) NOT NULL REFERENCES serial_numbers(serial_number) ON DELETE CASCADE,
+    status VARCHAR(50) DEFAULT 'Pending' CHECK (status IN ('Pending', 'In Progress', 'Resolved', 'Rejected')),
+    problem_description TEXT NOT NULL,
+    cskh_notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tạo Index để tối ưu hiệu năng tìm kiếm nhanh
+CREATE INDEX idx_serials_number ON serial_numbers(serial_number);
+CREATE INDEX idx_serials_invoice ON serial_numbers(invoice_code);
+CREATE INDEX idx_warranties_serial ON warranties(serial_number);
+CREATE INDEX idx_tickets_serial ON warranty_tickets(serial_number);
+                    </pre>
+                </div>
+            </section>
+
+            <!-- 4. TÍCH HỢP KIOTVIET API -->
+            <section id="kiotviet-api" style="--i:4">
+                <h2 class="section-heading sketch-font">4. Tích Hợp API KiotViet (Access & Payload Map)</h2>
+                
+                <div class="ve-card">
+                    <div class="ve-card__label" style="color: var(--accent);">OAuth 2.0 Auth Handshake</div>
+                    <p style="font-size: 13.5px; color: var(--text-dim); margin-bottom: 12px;">NestJS gọi API token KiotViet qua giao thức HTTP POST:</p>
+                    <div style="background: var(--surface-recessed); padding: 12px; border-radius: 6px; font-family: var(--font-mono); font-size: 11.5px; overflow-x: auto; color: var(--text);">
+POST https://id.kiotviet.vn/connect/token
+Headers: Content-Type: application/x-www-form-urlencoded
+Body: scopes=PublicAPI.Access&grant_type=client_credentials&client_id=CLIENT_ID&client_secret=CLIENT_SECRET
+                    </div>
+                </div>
+
+                <div class="ve-card">
+                    <div class="ve-card__label" style="color: var(--accent);">GET /invoices/code/{code} Response Schema</div>
+                    <p style="font-size: 13.5px; color: var(--text-dim); margin-bottom: 12px;">Cấu trúc JSON nhận về từ KiotViet API để NestJS lấy danh sách SKU đối chiếu số lượng quét gán Serial:</p>
+                    <div style="background: var(--surface-recessed); padding: 12px; border-radius: 6px; font-family: var(--font-mono); font-size: 11.5px; overflow-x: auto; color: var(--text);">
+{
+  "id": 10001452,
+  "code": "HD000145",
+  "purchaseDate": "2026-06-27T15:00:00",
+  "customerCode": "DL0009",
+  "customerName": "Đại Lý Năng Lượng Xanh",
+  "invoiceDetails": [
+    {
+      "productCode": "INVERTER-5KW",
+      "productName": "Biến tần Solando 5kW",
+      "quantity": 2,
+      "price": 15000000
+    }
+  ]
+}
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. KẾ HOẠCH KIỂM THỬ -->
+            <section id="testing" style="--i:5">
+                <h2 class="section-heading sketch-font">5. Kế Hoạch Kiểm Thử & Chạy Thử (QA Plan)</h2>
+                <div class="grid-cols-2">
+                    <div class="ve-card">
+                        <div class="ve-card__label" style="color: var(--green);">Kiểm Thử Tự Động</div>
+                        <ul style="font-size: 12.5px; color: var(--text-dim);">
+                            <li><strong>OAuth mock tests:</strong> Giả lập kết nối mạng KiotViet timeout, kiểm tra cơ chế retry.</li>
+                            <li><strong>Serial Validator unit tests:</strong> Check validate không cho phép lưu Serial rỗng hoặc sai số lượng so với hóa đơn gốc.</li>
+                        </ul>
+                    </div>
+                    <div class="ve-card">
+                        <div class="ve-card__label" style="color: var(--accent-blue);">UAT Bằng Tay</div>
+                        <ul style="font-size: 12.5px; color: var(--text-dim);">
+                            <li><strong>Quét gán kho:</strong> Đóng vai thủ kho sử dụng thiết bị quét thử mã máy dán tem QR để kiểm tra tính mượt mà của camera.</li>
+                            <li><strong>Kích hoạt QR:</strong> Dùng điện thoại quét QR link, điền thông tin End-User, kiểm tra bảng database ghi nhận chính xác.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Local Navigation & State Script -->
+    <script>
+        // Smooth scrolling active indicators
+        function navTo(event, id) {
+            event.preventDefault();
+            const target = document.getElementById(id);
+            if (target) {
+                const headerH = document.querySelector('.app-header').offsetHeight;
+                const top = target.getBoundingClientRect().top + window.pageYOffset - headerH - 16;
+                window.scrollTo({ top, behavior: 'smooth' });
+                
+                const links = document.querySelectorAll('.nav-link');
+                links.forEach(l => l.classList.remove('active'));
+                event.currentTarget.classList.add('active');
+            }
+        }
+
+        // Scroll tracking to highlight sidebar links
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            let currentActiveId = '';
+            const scrollPos = window.scrollY + 120;
+
+            sections.forEach(section => {
+                const top = section.offsetTop;
+                const height = section.offsetHeight;
+                if (scrollPos >= top && scrollPos < top + height) {
+                    currentActiveId = section.getAttribute('id');
+                }
+            });
+
+            if (currentActiveId) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('onclick').includes(currentActiveId)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+
+        // Load progress checkboxes state from localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            checkboxes.forEach(cb => {
+                const saved = localStorage.getItem(cb.id);
+                if (saved === 'true') {
+                    cb.checked = true;
+                }
+            });
+        });
+
+        // Save progress function
+        function saveProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            checkboxes.forEach(cb => {
+                localStorage.setItem(cb.id, cb.checked);
+            });
+        }
+    </script>
+</body>
+</html>

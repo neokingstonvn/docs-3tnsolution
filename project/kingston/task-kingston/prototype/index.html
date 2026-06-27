@@ -3,85 +3,623 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Kingston – UAT Demo Gateway</title>
+    <title>UAT Portal — Task Kingston</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="gateway.css">
+    <style>
+        /* CSS bổ sung cho bộ chọn tài khoản và chuông thông báo */
+        .user-profile-mock select {
+            background: transparent;
+            border: none;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text);
+            outline: none;
+            cursor: pointer;
+            width: 100%;
+            padding: 0.1rem 0;
+        }
+        .user-profile-mock select option {
+            background: #ffffff;
+            color: var(--text);
+            font-weight: 500;
+        }
+        /* Notification bell positioning */
+        .noti-btn-wrap {
+            position: relative;
+        }
+        .noti-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--red);
+            color: white;
+            font-size: 0.62rem;
+            font-weight: 800;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg);
+        }
+        .noti-dropdown {
+            display: none;
+            position: absolute;
+            top: 125%;
+            right: 0;
+            width: 320px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            z-index: 1001;
+            padding: 0.5rem 0;
+        }
+        .noti-dropdown.show {
+            display: block;
+        }
+        .noti-item {
+            padding: 0.65rem 1rem;
+            font-size: 0.78rem;
+            border-bottom: 1px solid var(--border);
+            line-height: 1.4;
+            color: var(--text);
+            transition: background 0.2s;
+        }
+        .noti-item.unread {
+            background: var(--accent-dim);
+            font-weight: 500;
+        }
+        .noti-item:hover {
+            background: var(--surface-hover);
+        }
+        .noti-item:last-child {
+            border-bottom: none;
+        }
+        .noti-empty {
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.78rem;
+        }
+        .view-panel {
+            display: none;
+        }
+        .view-panel.active {
+            display: block;
+        }
+        /* Style cho view toggle */
+        .view-toggle-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .toggle-btn {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .toggle-btn.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-color: rgba(79, 70, 229, 0.2);
+        }
+        /* Bổ sung trạng thái cho task cards */
+        .task-card.overdue {
+            border-left: 4px solid var(--red) !important;
+        }
+        .task-card.overdue::after {
+            content: '⚠️ QUÁ HẠN';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.62rem;
+            font-weight: 800;
+            color: var(--red);
+            background: var(--red-dim);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="gateway-container">
+    <!-- Left Sidebar Layout -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">💼</span>
+            <div class="logo-text">
+                <h1>Task Kingston</h1>
+                <p>UAT Unified Portal</p>
+            </div>
+        </div>
         
-        <div style="text-align: left; margin-bottom: 1.5rem; display: flex; justify-content: flex-start;">
-            <a href="../index.html" style="color: var(--accent); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; font-weight: 500;">
-                <span>←</span> Quay lại Tài Liệu Đặc Tả Tổng Thể
+        <!-- User Switcher Dropdown (Giả lập tài khoản) -->
+        <div class="user-profile-mock">
+            <div class="avatar" id="current-user-avatar">LA</div>
+            <div class="profile-info" style="flex-grow: 1;">
+                <span style="font-size: 0.65rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase;">Đang giả lập:</span>
+                <select id="user-switcher"></select>
+            </div>
+        </div>
+
+        <div class="sidebar-nav" id="sidebar-navigation">
+            <p class="menu-title">Chức năng hệ thống</p>
+            
+            <a class="nav-item active" id="menu-projects">
+                <span class="nav-icon">📁</span>
+                <div class="nav-label"><strong>Dự án văn phòng</strong><span id="label-projects">Thống kê & Danh sách</span></div>
+            </a>
+            
+            <a class="nav-item" id="menu-kanban">
+                <span class="nav-icon">📋</span>
+                <div class="nav-label"><strong>Bảng công việc</strong><span id="label-kanban">Quản lý Kanban & List</span></div>
+            </a>
+            
+            <a class="nav-item" id="menu-approvals">
+                <span class="nav-icon">⏳</span>
+                <div class="nav-label"><strong>Duyệt hoàn thành</strong><span id="label-approvals">Hàng đợi phê duyệt</span></div>
+            </a>
+            
+            <a class="nav-item" id="menu-rbac">
+                <span class="nav-icon">👥</span>
+                <div class="nav-label"><strong>Nhân sự & RBAC</strong><span>Vai trò hệ thống</span></div>
+            </a>
+            
+            <p class="menu-title" style="margin-top: auto;">Chuyển hướng</p>
+            <a href="../index.html" class="nav-item">
+                <span class="nav-icon">📄</span>
+                <div class="nav-label"><strong>Tài liệu đặc tả</strong><span>Quay lại trang chính</span></div>
             </a>
         </div>
+    </aside>
+
+    <!-- Main Content Workspace -->
+    <main class="app-main">
         
-        <div class="gateway-header">
-            <h1>☀️ Task Kingston Gateway</h1>
-            <p>Hệ thống thử nghiệm UAT Demo. Vui lòng chọn cổng thông tin trải nghiệm:</p>
-        </div>
-
-        <div class="portal-grid">
-            <!-- 1. ADMIN CARD -->
-            <div class="portal-card card-accent-1">
-                <div>
-                    <span class="portal-icon">👑</span>
-                    <h2>Admin Portal</h2>
-                    <p>Cổng thông tin tối cao dành cho Ban giám đốc hoặc Quản trị hệ thống.</p>
-                    <ul class="features-list">
-                        <li>Khởi tạo & quản lý mọi dự án</li>
-                        <li>Chỉ định PM chịu trách nhiệm</li>
-                        <li>Cấu hình vai trò nhân viên (RBAC)</li>
-                        <li>Quyền phê duyệt tối cao</li>
-                    </ul>
+        <div class="top-breadcrumb-bar">
+            <span class="breadcrumb" id="top-title">Thư mục Dự án</span>
+            <div style="display: flex; align-items: center; gap: 1.25rem;">
+                
+                <!-- Notification Bell 🔔 -->
+                <div class="noti-btn-wrap">
+                    <button class="scan-icon-btn" id="btn-noti-bell" style="width: 36px; height: 36px; font-size: 0.95rem; border-color: var(--border); background: white; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center;">🔔</button>
+                    <span class="noti-badge" id="noti-count" style="display: none;">0</span>
+                    <div class="noti-dropdown" id="noti-dropdown-box">
+                        <div style="padding: 0.6rem 0.85rem; font-size: 0.75rem; font-weight: bold; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                            <span>Thông báo mới</span>
+                            <span id="btn-clear-noti" class="clickable-item" style="color: var(--accent); cursor: pointer;">Đọc tất cả</span>
+                        </div>
+                        <div id="noti-list-container" style="max-height: 250px; overflow-y: auto;"></div>
+                    </div>
                 </div>
-                <a href="admin.html" class="btn-portal btn-accent-1">Vào cổng Admin ➔</a>
-            </div>
 
-            <!-- 2. PM CARD -->
-            <div class="portal-card card-accent-2">
-                <div>
-                    <span class="portal-icon">👔</span>
-                    <h2>Project Manager Portal</h2>
-                    <p>Cổng thông tin dành cho Quản lý dự án (PM) để lập kế hoạch và giao việc.</p>
-                    <ul class="features-list">
-                        <li>Xem các dự án được chỉ định</li>
-                        <li>Tạo & giao task cho Staff</li>
-                        <li>Đặt mức ưu tiên và deadline</li>
-                        <li>Hàng đợi phê duyệt (Approval Queue)</li>
-                    </ul>
+                <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-dim); background: var(--surface-hover); padding: 0.4rem 0.75rem; border-radius: 0.5rem; border: 1px solid var(--border);" id="active-role-badge">
+                    Vai trò: Admin
                 </div>
-                <a href="pm.html" class="btn-portal btn-accent-2">Vào cổng PM ➔</a>
-            </div>
-
-            <!-- 3. STAFF CARD -->
-            <div class="portal-card card-accent-3">
-                <div>
-                    <span class="portal-icon">👨‍💻</span>
-                    <h2>Staff / Member Portal</h2>
-                    <p>Cổng thông tin dành cho thành viên thực hiện nhiệm vụ và báo cáo.</p>
-                    <ul class="features-list">
-                        <li>Xem danh sách task cá nhân</li>
-                        <li>Cập nhật tiến trình công việc</li>
-                        <li>Gửi báo cáo kèm link tài liệu</li>
-                        <li>Bình luận trao đổi trong task</li>
-                    </ul>
-                </div>
-                <a href="staff.html" class="btn-portal btn-accent-3">Vào cổng Staff ➔</a>
             </div>
         </div>
 
-        <div class="sync-info-box">
-            <span>⚡</span>
-            <span>Dữ liệu được chia sẻ và đồng bộ hóa tức thì giữa các Portal thông qua cơ chế LocalStorage của trình duyệt.</span>
+        <div class="dashboard-workspace">
+            <div class="control-panel-column">
+                
+                <!-- ========================================================== -->
+                <!-- TAB 1: DỰ ÁN & OVERVIEW CARD -->
+                <!-- ========================================================== -->
+                <div id="view-projects" class="view-panel active">
+                    
+                    <!-- Widgets Thống kê nhanh -->
+                    <div class="glass-card">
+                        <h2>📊 Tổng quan hoạt động</h2>
+                        <p class="card-desc">Thống kê nhanh các chỉ số dự án của văn phòng.</p>
+                        <div class="form-row" style="grid-template-columns: repeat(3, 1fr); margin-top: 1rem;">
+                            <div class="user-profile-mock" style="margin-bottom: 0; padding: 1rem; flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px;">
+                                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: bold;">Tổng số dự án</span>
+                                <span id="stat-total-projects" style="font-size: 1.8rem; font-weight: 800; color: var(--accent);">0</span>
+                            </div>
+                            <div class="user-profile-mock" style="margin-bottom: 0; padding: 1rem; flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px;">
+                                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: bold;">Nhiệm vụ đang chạy</span>
+                                <span id="stat-active-tasks" style="font-size: 1.8rem; font-weight: 800; color: var(--green);">0</span>
+                            </div>
+                            <div class="user-profile-mock" style="margin-bottom: 0; padding: 1rem; flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px;">
+                                <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: bold;">Nhiệm vụ trễ hạn (Overdue)</span>
+                                <span id="stat-overdue-tasks" style="font-size: 1.8rem; font-weight: 800; color: var(--red);">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tạo dự án mới (Chỉ hiển thị cho Admin) -->
+                    <div class="glass-card" id="card-create-project" style="display: none;">
+                        <h2>➕ Khởi tạo dự án mới</h2>
+                        <p class="card-desc">Chỉ Admin mới có quyền tạo dự án mới và giao phó cho Project Manager phụ trách.</p>
+                        <form id="form-create-project" style="margin-top: 1rem;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="project-name">Tên dự án</label>
+                                    <input type="text" id="project-name" placeholder="Ví dụ: Chiến dịch truyền thông..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="project-pm">Project Manager phụ trách</label>
+                                    <select id="project-pm" required></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="project-template">Loại dự án (Mẫu nhiệm vụ)</label>
+                                    <select id="project-template" required>
+                                        <option value="none">Không dùng mẫu (Dự án trống)</option>
+                                        <option value="software">Phát triển phần mềm (IT/Software)</option>
+                                        <option value="marketing">Chiến dịch Marketing</option>
+                                        <option value="interior">Thiết kế & Thi công nội thất</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="project-desc">Mô tả dự án</label>
+                                <textarea id="project-desc" rows="2" placeholder="Nhập mục tiêu hoặc mô tả ngắn gọn..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="background: var(--accent); border-color: var(--accent);">Khởi tạo dự án</button>
+                        </form>
+                    </div>
+
+                    <!-- Danh sách dự án -->
+                    <div class="glass-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <h2>📂 Thư mục dự án văn phòng</h2>
+                            <div>
+                                <select id="filter-project-status" style="background: #ffffff; border: 1px solid var(--border); padding: 0.4rem 0.75rem; border-radius: 0.4rem; color: var(--text); font-size: 0.8rem; outline: none; cursor: pointer;">
+                                    <option value="all">Tất cả trạng thái</option>
+                                    <option value="Active">Đang hoạt động (Active)</option>
+                                    <option value="On Hold">Tạm ngưng (On Hold)</option>
+                                    <option value="Completed">Đã hoàn thành (Completed)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tên dự án</th>
+                                        <th>Mô tả</th>
+                                        <th>Project Manager</th>
+                                        <th>Tiến độ</th>
+                                        <th>Trạng thái</th>
+                                        <th id="th-project-action">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-projects"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================================== -->
+                <!-- TAB 2: KANBAN BOARD & LIST TASK VIEW -->
+                <!-- ========================================================== -->
+                <div id="view-kanban" class="view-panel">
+                    
+                    <!-- Form giao việc (PM & Admin) -->
+                    <div class="glass-card" id="card-create-task" style="display: none;">
+                        <h2>➕ Giao công việc mới</h2>
+                        <p class="card-desc">Tạo nhiệm vụ mới cho các thành viên trong dự án phụ trách.</p>
+                        <form id="form-create-task" style="margin-top: 1rem;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="task-project">Dự án</label>
+                                    <select id="task-project" required></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="task-assignee">Người thực hiện (Staff)</label>
+                                    <select id="task-assignee" required></select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="task-title">Tiêu đề công việc</label>
+                                    <input type="text" id="task-title" placeholder="Nhập tiêu đề nhiệm vụ..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="task-priority">Độ ưu tiên</label>
+                                    <select id="task-priority" required>
+                                        <option value="High">Cao (High)</option>
+                                        <option value="Medium" selected>Trung bình (Medium)</option>
+                                        <option value="Low">Thấp (Low)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="task-due-date">Hạn chót (Due date)</label>
+                                    <input type="date" id="task-due-date" required>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="task-desc">Mô tả công việc</label>
+                                <textarea id="task-desc" rows="2" placeholder="Mô tả cụ thể yêu cầu công việc..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success" style="background: var(--green); border-color: var(--green);">Tạo & Giao việc</button>
+                        </form>
+                    </div>
+
+                    <!-- Task Board Header: Lọc dự án & Switch View -->
+                    <div class="glass-card" style="background: transparent; border: none; padding: 0; box-shadow: none; margin-bottom: 1.25rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <h2 id="task-board-title">📋 Kanban Board công việc</h2>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <label for="filter-kanban-project" style="font-size: 0.8rem; font-weight: 700; color: var(--text-dim);">Dự án:</label>
+                                <select id="filter-kanban-project" style="background: #ffffff; border: 1px solid var(--border); padding: 0.4rem 0.75rem; border-radius: 0.4rem; color: var(--text); font-size: 0.8rem; outline: none; cursor: pointer;"></select>
+                                
+                                <div class="view-toggle-bar" style="margin-bottom: 0; margin-left: 0.5rem;">
+                                    <button class="toggle-btn active" id="btn-toggle-kanban">Kanban</button>
+                                    <button class="toggle-btn" id="btn-toggle-list">Danh sách (List)</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KANBAN BOARD CONTAINER -->
+                    <div id="container-kanban-view" style="display: block;">
+                        <div class="kanban-container">
+                            <!-- Column To Do -->
+                            <div class="kanban-column" id="col-todo">
+                                <div class="kanban-column-header">
+                                    <span>To Do</span>
+                                    <span class="status-badge badge-info" id="count-todo">0</span>
+                                </div>
+                                <div id="kanban-todo-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1; min-height: 200px;"></div>
+                            </div>
+                            <!-- Column In Progress -->
+                            <div class="kanban-column" id="col-inprogress">
+                                <div class="kanban-column-header">
+                                    <span>In Progress</span>
+                                    <span class="status-badge badge-warning" id="count-inprogress">0</span>
+                                </div>
+                                <div id="kanban-inprogress-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1; min-height: 200px;"></div>
+                            </div>
+                            <!-- Column Reviewing -->
+                            <div class="kanban-column" id="col-reviewing" style="border-color: rgba(99, 102, 241, 0.3);">
+                                <div class="kanban-column-header">
+                                    <span>Reviewing</span>
+                                    <span class="status-badge badge-indigo" id="count-reviewing">0</span>
+                                </div>
+                                <div id="kanban-reviewing-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1; min-height: 200px;"></div>
+                            </div>
+                            <!-- Column Done -->
+                            <div class="kanban-column" id="col-done" style="border-color: rgba(16, 185, 129, 0.3);">
+                                <div class="kanban-column-header">
+                                    <span>Done</span>
+                                    <span class="status-badge badge-success" id="count-done">0</span>
+                                </div>
+                                <div id="kanban-done-list" style="display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1; min-height: 200px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LIST VIEW CONTAINER -->
+                    <div id="container-list-view" class="glass-card" style="display: none;">
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã Task</th>
+                                        <th>Nhiệm vụ</th>
+                                        <th>Dự án</th>
+                                        <th>Người thực hiện</th>
+                                        <th>Độ ưu tiên</th>
+                                        <th>Hạn chót</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-tasks-list"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================================== -->
+                <!-- TAB 3: HÀNG ĐỢI PHÊ DUYỆT (ADMIN & PM) -->
+                <!-- ========================================================== -->
+                <div id="view-approvals" class="view-panel">
+                    <div class="glass-card">
+                        <h2>⏳ Hàng đợi phê duyệt công việc</h2>
+                        <p class="card-desc" id="approvals-desc">Xem báo cáo và kiểm duyệt chất lượng các công việc do Staff gửi yêu cầu.</p>
+                        <div class="ui-table-wrap" style="margin-top: 1rem;">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nhiệm vụ</th>
+                                        <th>Dự án</th>
+                                        <th>Người thực hiện</th>
+                                        <th>Nội dung báo cáo</th>
+                                        <th>Tài liệu đính kèm</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-approvals"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================================== -->
+                <!-- TAB 4: PHÂN QUYỀN RBAC & NHÂN SỰ (ADMIN ONLY) -->
+                <!-- ========================================================== -->
+                <div id="view-rbac" class="view-panel">
+                    <div class="glass-card">
+                        <h2>👥 Danh bạ & Phân quyền nhân sự (RBAC)</h2>
+                        <p class="card-desc">Cấu hình vai trò nhân viên hệ thống. Khi vai trò thay đổi, quyền hạn thao tác sẽ tự động điều chỉnh theo.</p>
+                        <div class="ui-table-wrap" style="margin-top: 1rem;">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Họ và Tên</th>
+                                        <th>Email</th>
+                                        <th>Vai trò hiện tại</th>
+                                        <th>Hành động thay đổi vai trò</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-rbac"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
+    </main>
+
+    <!-- ========================================================== -->
+    <!-- MODALS & POPUPS -->
+    <!-- ========================================================== -->
+
+    <!-- Modal Chi tiết Task & Comments & Logs -->
+    <div class="modal-overlay" id="task-detail-modal">
+        <div class="modal-content" style="max-width: 580px;">
+            <div class="modal-header" id="td-modal-title">Chi tiết nhiệm vụ</div>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <form id="form-edit-task">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.82rem;" id="td-info-grid">
+                        <div class="form-group">
+                            <label>Dự án</label>
+                            <span id="td-modal-project-label" style="font-weight: 700; display: block; padding-top: 4px;">-</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="td-edit-assignee">Người thực hiện</label>
+                            <select id="td-edit-assignee" class="form-control" style="width:100%; border: 1px solid var(--border); border-radius:4px; padding:0.25rem;" disabled></select>
+                            <span id="td-modal-assignee-label" style="font-weight: 700; display: none;">-</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="td-edit-priority">Độ ưu tiên</label>
+                            <select id="td-edit-priority" class="form-control" style="width:100%; border: 1px solid var(--border); border-radius:4px; padding:0.25rem;" disabled>
+                                <option value="High">Cao (High)</option>
+                                <option value="Medium">Trung bình (Medium)</option>
+                                <option value="Low">Thấp (Low)</option>
+                            </select>
+                            <span id="td-modal-priority-label" style="font-weight: 700; display: none;">-</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="td-edit-due-date">Hạn chót</label>
+                            <input type="date" id="td-edit-due-date" class="form-control" style="width:100%; border: 1px solid var(--border); border-radius:4px; padding:0.25rem;" disabled>
+                            <span id="td-modal-due-date-label" style="font-weight: 700; display: none;">-</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 0.5rem;">
+                        <label for="td-edit-title" id="lbl-td-title">Tên nhiệm vụ</label>
+                        <input type="text" id="td-edit-title" style="width: 100%; border: 1px solid var(--border); border-radius: 4px; padding: 0.4rem 0.5rem; font-size: 0.85rem; font-weight: 700;" disabled>
+                    </div>
+
+                    <div style="margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 0.5rem;">
+                        <label for="td-edit-desc">Mô tả chi tiết</label>
+                        <textarea id="td-edit-desc" rows="3" style="width: 100%; border: 1px solid var(--border); border-radius: 4px; padding: 0.4rem 0.5rem; font-size: 0.82rem; font-family: inherit; line-height: 1.5;" disabled></textarea>
+                    </div>
+                    
+                    <!-- Nút lưu chỉnh sửa task (Chỉ hiện cho PM/Admin) -->
+                    <div id="td-edit-actions" style="margin-top: 0.5rem; display: none; justify-content: flex-end; gap: 8px;">
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-edit-task" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">Hủy</button>
+                        <button type="submit" class="btn btn-success" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; background: var(--green);">Lưu thay đổi</button>
+                    </div>
+                </form>
+
+                <!-- Status control for Staff -->
+                <div style="border-top: 1px solid var(--border); padding-top: 0.75rem; display: flex; flex-direction: column; gap: 6px;">
+                    <div><span style="font-size: 0.75rem; color: var(--text-dim);">Trạng thái hiện tại:</span> <span id="td-modal-status-badge" class="status-badge badge-info" style="font-size:0.7rem; font-weight: bold;">-</span></div>
+                    <div id="td-staff-action-block" style="display: none; gap: 8px; margin-top: 4px;">
+                        <button type="button" class="btn btn-success" id="btn-start-work" style="width: 100%; font-size: 0.82rem;">🚀 Bắt đầu làm việc (In Progress)</button>
+                        <button type="button" class="btn btn-primary" id="btn-open-submit-approval" style="width: 100%; font-size: 0.82rem; background: var(--accent);">📝 Gửi báo cáo phê duyệt</button>
+                    </div>
+                    <div id="td-locked-status-message" style="display: none; font-size: 0.75rem; color: var(--text-dim); text-align: center; margin-top: 4px;">
+                        🔒 Nhiệm vụ đang được kiểm duyệt hoặc đã hoàn thành, không thể đổi trạng thái.
+                    </div>
+                </div>
+
+                <!-- Approval Decision Panel for Admin / PM (Reviewing tasks) -->
+                <div id="td-approver-decision-block" style="display: none; border-top: 1px solid var(--border); padding-top: 0.75rem; background: rgba(79, 70, 229, 0.03); padding: 0.75rem; border-radius: 6px; border: 1px dashed var(--accent);">
+                    <h4 style="font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;">📝 Yêu Cầu Phê Duyệt Hoàn Thành</h4>
+                    <div style="margin-bottom: 0.5rem; font-size: 0.8rem;">
+                        <div style="margin-bottom: 2px;"><span style="color: var(--text-dim);">Báo cáo Staff:</span> <strong id="td-decision-report-text">-</strong></div>
+                        <div><span style="color: var(--text-dim);">Tài liệu đính kèm:</span> <a id="td-decision-report-link" href="#" target="_blank" style="color: var(--accent); font-weight: 600;">Xem link ➔</a></div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0.75rem;">
+                        <label for="td-decision-feedback" style="font-size: 0.75rem; font-weight: 700;">Phản hồi (Bắt buộc nếu Reject)</label>
+                        <textarea id="td-decision-feedback" rows="2" style="width:100%; font-size:0.78rem; padding: 4px; border: 1px solid var(--border); border-radius:4px;" placeholder="Nhập phản hồi..."></textarea>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-success" id="btn-decision-approve" style="flex-grow: 1; padding: 0.4rem; font-size: 0.78rem; background: var(--green);">Approve (Duyệt)</button>
+                        <button type="button" class="btn btn-primary" id="btn-decision-reject" style="flex-grow: 1; padding: 0.4rem; font-size: 0.78rem; background: var(--red);">Reject (Từ chối)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab bình luận & activity logs -->
+            <div style="border-top: 1px solid var(--border); padding-top: 0.75rem;">
+                <div style="display: flex; gap: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.5rem; padding-bottom: 0.25rem;">
+                    <span id="tab-btn-comments" style="font-size: 0.8rem; font-weight: 700; cursor: pointer; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 4px;">💬 Bình luận</span>
+                    <span id="tab-btn-logs" style="font-size: 0.8rem; font-weight: 700; cursor: pointer; color: var(--text-dim); padding-bottom: 4px;">📜 Lịch sử hoạt động</span>
+                </div>
+                
+                <!-- Comments Panel -->
+                <div id="td-panel-comments" style="display: block;">
+                    <div id="td-comments-list" style="max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; margin-bottom: 0.75rem; padding-right: 4px;"></div>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" id="td-new-comment-text" placeholder="Nhập bình luận thảo luận..." style="flex-grow: 1; background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem; color: var(--text); font-size: 0.8rem; outline: none;">
+                        <button type="button" class="btn btn-primary" id="btn-td-submit-comment" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: var(--accent);">Gửi</button>
+                    </div>
+                </div>
+
+                <!-- Logs Panel -->
+                <div id="td-panel-logs" style="display: none;">
+                    <div id="td-logs-list" style="max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem; color: var(--text-dim); padding-right: 4px;"></div>
+                </div>
+            </div>
+
+            <div class="modal-actions" style="margin-top: 1.25rem;">
+                <button type="button" class="btn btn-secondary" id="btn-td-close">Đóng</button>
+            </div>
+        </div>
     </div>
 
+    <!-- Modal Form Nộp Báo Cáo Phê Duyệt (Staff) -->
+    <div class="modal-overlay" id="submit-approval-modal">
+        <div class="modal-content">
+            <div class="modal-header">📝 Nộp báo cáo hoàn thành nhiệm vụ</div>
+            <p class="card-desc" style="margin-bottom: 1rem;">Mô tả kết quả công việc và dán link tài liệu/báo cáo sản phẩm để Project Manager kiểm duyệt.</p>
+            <form id="form-submit-approval">
+                <div class="form-group" style="margin-bottom: 0.75rem;">
+                    <label for="report-text">Báo cáo kết quả (Nhiệm vụ đã hoàn thành ra sao)</label>
+                    <textarea id="report-text" rows="3" placeholder="Ví dụ: Đã hoàn thành vẽ banner, kích thước 1200x600..." required></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                    <label for="report-link">Link tài liệu đính kèm (Google Drive, Figma, v.v.)</label>
+                    <input type="url" id="report-link" placeholder="https://..." required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-sa-cancel">Quay lại</button>
+                    <button type="submit" class="btn btn-success" style="background: var(--green); border-color: var(--green);">Gửi yêu cầu duyệt</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toast-notify">
+        <span id="toast-icon">✅</span>
+        <span id="toast-message">Thao tác thành công!</span>
+    </div>
+
+    <!-- Scripts mock DB & logic -->
+    <script src="db.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

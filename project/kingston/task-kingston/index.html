@@ -175,51 +175,96 @@
                         <div class="module-group">
                             <div class="module-header">📦 Module 1: Dashboard & Project Directory</div>
                             <div class="module-desc">Cung cấp cái nhìn tổng quát về tiến độ và danh sách tất cả các dự án trong văn phòng.</div>
-                            <ul class="rules-list">
-                                <li><strong>Business Rules</strong>: Chỉ có Admin mới được tạo dự án mới và gán PM. Dự án có 3 trạng thái: Active, On Hold, Completed. Khi dự án Completed, toàn bộ công việc chưa xong sẽ bị đóng băng.</li>
-                                <li><strong>System Features</strong>: Tự động tính toán tiến độ dự án theo tỷ lệ % số task hoàn thành (Done / Tổng số task). Thống kê nhanh số dự án đang chạy và số task trễ hạn (overdue).</li>
-                                <li><strong>User Features</strong>: Giao diện Project Directory Card. Bộ lọc dự án theo trạng thái. Nút tạo dự án mới (chỉ hiện cho Admin).</li>
-                            </ul>
+                            <div class="module-grid">
+                                <div class="grid-row">
+                                    <div class="grid-label">Business Rules</div>
+                                    <div class="grid-value">Chỉ có Admin mới được tạo dự án mới và gán PM. Dự án có 3 trạng thái: Active, On Hold, Completed. Khi dự án Completed, toàn bộ công việc chưa xong sẽ bị đóng băng. Hỗ trợ <strong>Mẫu công việc tự động (Task Templates)</strong> giúp tự tạo task khi Admin tạo dự án theo loại ngành (IT/Software, Marketing, Nội thất).</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">System Features</div>
+                                    <div class="grid-value">Tự động tính toán tiến độ dự án theo tỷ lệ % số task hoàn thành (Done / Tổng số task). Thống kê nhanh số dự án đang chạy và số task trễ hạn (overdue). Tự động gieo các task mẫu và tính toán deadline động.</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">User Features</div>
+                                    <div class="grid-value">Giao diện Project Directory Card. Bộ lọc dự án theo trạng thái. Nút tạo dự án mới kèm cấu hình chọn loại mẫu công việc (chỉ hiện cho Admin).</div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="module-group">
                             <div class="module-header">📦 Module 2: Project Detail & Task Management (Kanban / List)</div>
                             <div class="module-desc">Nơi quản lý công việc chi tiết của từng dự án theo dạng bảng Kanban hoặc danh sách List.</div>
-                            <ul class="rules-list">
-                                <li><strong>Business Rules</strong>: PM chỉ được thêm, sửa, xóa, phân công task trong dự án được chỉ định. Mỗi task bắt buộc có tiêu đề, độ ưu tiên (High/Medium/Low), deadline (Due date) và tối đa 1 người thực hiện (Assignee).</li>
-                                <li><strong>System Features</strong>: Tự động đánh dấu màu đỏ hoặc cảnh báo đối với các task quá hạn (Overdue) chưa hoàn thành. Sắp xếp danh sách công việc theo mức độ ưu tiên hoặc hạn chót.</li>
-                                <li><strong>User Features</strong>: Chế độ xem linh hoạt Kanban Board (kéo thả trạng thái) và List View. Bộ lọc công việc nhanh theo Assignee, Độ ưu tiên, Trạng thái.</li>
-                            </ul>
+                            <div class="module-grid">
+                                <div class="grid-row">
+                                    <div class="grid-label">Business Rules</div>
+                                    <div class="grid-value">PM chỉ được thêm, sửa, xóa, phân công task trong dự án được chỉ định. Mỗi task bắt buộc có tiêu đề, độ ưu tiên (High/Medium/Low), deadline (Due date) và tối đa 1 người thực hiện (Assignee).</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">System Features</div>
+                                    <div class="grid-value">Tự động đánh dấu màu đỏ hoặc cảnh báo đối với các task quá hạn (Overdue) chưa hoàn thành. Sắp xếp danh sách công việc theo mức độ ưu tiên hoặc hạn chót.</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">User Features</div>
+                                    <div class="grid-value">Chế độ xem linh hoạt Kanban Board (kéo thả trạng thái) và List View. Bộ lọc công việc nhanh theo Assignee, Độ ưu tiên, Trạng thái.</div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="module-group">
                             <div class="module-header">📦 Module 3: Task Detail & Activity Log / Comments</div>
                             <div class="module-desc">Hiển thị thông tin chi tiết của từng đầu việc, cho phép lưu vết hoạt động và trao đổi thảo luận.</div>
-                            <ul class="rules-list">
-                                <li><strong>Business Rules</strong>: Mọi người dùng đều có quyền bình luận trong task mình được xem. Không ai được sửa hoặc xóa bình luận của người khác (kể cả Admin) để đảm bảo tính minh bạch. Mọi thay đổi trạng thái và Assignee phải ghi log tự động.</li>
-                                <li><strong>System Features</strong>: Tự động tạo bản ghi log trong Task: "[Thời gian] - [Tên User] đã chuyển trạng thái từ [Trạng thái cũ] sang [Trạng thái mới]".</li>
-                                <li><strong>User Features</strong>: Modal xem chi tiết task khi click vào Task Card. Hiển thị bình luận theo trình tự thời gian. Tab lịch sử hoạt động (Activity Log).</li>
-                            </ul>
+                            <div class="module-grid">
+                                <div class="grid-row">
+                                    <div class="grid-label">Business Rules</div>
+                                    <div class="grid-value">Mọi người dùng đều có quyền bình luận trong task mình được xem. Không ai được sửa hoặc xóa bình luận của người khác (kể cả Admin) để đảm bảo tính minh bạch. Mọi thay đổi trạng thái và Assignee phải ghi log tự động.</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">System Features</div>
+                                    <div class="grid-value">Tự động tạo bản ghi log trong Task: "[Thời gian] - [Tên User] đã chuyển trạng thái từ [Trạng thái cũ] sang [Trạng thái mới]".</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">User Features</div>
+                                    <div class="grid-value">Modal xem chi tiết task khi click vào Task Card. Hiển thị bình luận theo trình tự thời gian. Tab lịch sử hoạt động (Activity Log).</div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="module-group">
                             <div class="module-header">📦 Module 4: Approval Flow (Luồng phê duyệt công việc)</div>
                             <div class="module-desc">Kiểm soát chặt chẽ việc hoàn thành công việc thông qua việc phê duyệt của quản lý.</div>
-                            <ul class="rules-list">
-                                <li><strong>Business Rules</strong>: Staff không thể tự ý chuyển task sang Done. Staff phải bấm "Gửi duyệt" (chuyển sang Reviewing) kèm báo cáo và link tài liệu. Chỉ PM phụ trách dự án hoặc Admin mới có quyền Approve (chuyển sang Done) hoặc Reject (chuyển lại In Progress kèm lý do bắt buộc).</li>
-                                <li><strong>System Features</strong>: Ghi nhận chi tiết lịch sử phê duyệt (người duyệt, thời gian, lý do từ chối nếu có) vào Activity Log của task.</li>
-                                <li><strong>User Features</strong>: Hộp thoại phê duyệt dành cho PM/Admin. Danh sách "Công việc chờ duyệt" (Approval Queue) hiển thị trên màn hình Dashboard của PM và Admin.</li>
-                            </ul>
+                            <div class="module-grid">
+                                <div class="grid-row">
+                                    <div class="grid-label">Business Rules</div>
+                                    <div class="grid-value">Staff không thể tự ý chuyển task sang Done. Staff phải bấm "Gửi duyệt" (chuyển sang Reviewing) kèm báo cáo và link tài liệu. Chỉ PM phụ trách dự án hoặc Admin mới có quyền Approve (chuyển sang Done) hoặc Reject (chuyển lại In Progress kèm lý do bắt buộc).</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">System Features</div>
+                                    <div class="grid-value">Ghi nhận chi tiết lịch sử phê duyệt (người duyệt, thời gian, lý do từ chối nếu có) vào Activity Log của task.</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">User Features</div>
+                                    <div class="grid-value">Hộp thoại phê duyệt dành cho PM/Admin. Danh sách "Công việc chờ duyệt" (Approval Queue) hiển thị trên màn hình Dashboard của PM và Admin.</div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="module-group">
                             <div class="module-header">📦 Module 5: RBAC & Employee Management</div>
                             <div class="module-desc">Phân chia quyền hạn hệ thống cho từng tài khoản nhân sự trong văn phòng.</div>
-                            <ul class="rules-list">
-                                <li><strong>Business Rules</strong>: Admin có quyền thay đổi vai trò hệ thống của bất kỳ ai ngoại trừ chính bản thân. Danh sách nhân viên và phân quyền hiển thị công khai để đảm bảo minh bạch.</li>
-                                <li><strong>System Features</strong>: Chặn truy cập hoặc từ chối hành động ở client-side nếu vai trò của user hiện tại không khớp với quyền hạn hành động.</li>
-                                <li><strong>User Features</strong>: Giao diện Danh bạ nhân viên (Employee Directory). Màn hình gán vai trò người dùng (chỉ Admin truy cập).</li>
-                            </ul>
+                            <div class="module-grid">
+                                <div class="grid-row">
+                                    <div class="grid-label">Business Rules</div>
+                                    <div class="grid-value">Admin có quyền thay đổi vai trò hệ thống của bất kỳ ai ngoại trừ chính bản thân. Danh sách nhân viên và phân quyền hiển thị công khai để đảm bảo minh bạch.</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">System Features</div>
+                                    <div class="grid-value">Chặn truy cập hoặc từ chối hành động ở client-side nếu vai trò của user hiện tại không khớp với quyền hạn hành động.</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">User Features</div>
+                                    <div class="grid-value">Giao diện Danh bạ nhân viên (Employee Directory). Màn hình gán vai trò người dùng (chỉ Admin truy cập).</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

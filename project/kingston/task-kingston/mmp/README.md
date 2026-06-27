@@ -4,7 +4,7 @@ Tài liệu này đặc tả lộ trình phát triển dài hạn (Post-MVP Road
 
 ---
 
-## 1. Lộ Trình Phân Kỳ Phát Triển Dài Hạn (Phases 6 - 10)
+## 1. Lộ Trình Phân Kỳ Phát Triển Dài Hạn (Phases 6 - 11)
 
 ### 📅 Phase 6: Tích Hợp Hệ Thống Thông Báo Đa Kênh
 - **Mục tiêu**: Thay thế thông báo giả lập trên giao diện bằng thông báo thời gian thực và gửi trực tiếp qua email/Slack.
@@ -41,6 +41,12 @@ Tài liệu này đặc tả lộ trình phát triển dài hạn (Post-MVP Road
   - Tích hợp Push Notifications gốc trên iOS và Android.
   - Hỗ trợ chế độ làm việc ngoại tuyến (Offline-first Mode) và tự động đồng bộ khi có mạng lại.
 
+### 📅 Phase 11: Quản Lý Mẫu Công Việc Động & Tự Động Hóa (Task Templates Builder)
+- **Mục tiêu**: Cho phép Quản trị viên tự thiết kế, tuỳ chỉnh các mẫu nhiệm vụ linh hoạt thay vì cấu hình tĩnh.
+- **Các đầu việc chính**:
+  - Xây dựng giao diện thiết kế mẫu công việc (Dynamic Template Builder UI) để quản lý các đầu việc chuẩn, checklists, và deadline tương đối.
+  - Tích hợp cơ chế tự động phân bổ nguồn lực và gán việc dựa trên vai trò của nhân viên trong từng dự án mới.
+
 ---
 
 ## 2. So Sánh Động Lực Phát Triển (MVP vs Dài Hạn)
@@ -52,3 +58,4 @@ Tài liệu này đặc tả lộ trình phát triển dài hạn (Post-MVP Road
 | **Thông báo** | Giả lập chuông báo nội bộ trên Web UI. | Realtime WebSockets, Email, Slack, Telegram, Mobile Push. |
 | **Đính kèm tài liệu** | Chỉ dán Link liên kết ngoài. | Lưu trữ file vật lý trực tiếp trên AWS S3, phân quyền xem file. |
 | **Quản trị & Báo cáo** | Thống kê số lượng dạng số đơn giản. | Gantt chart, Burn-down chart, Báo cáo năng suất nhân sự nâng cao. |
+| **Mẫu nhiệm vụ (Templates)** | Cấu hình tĩnh phía client-side chọn từ dropdown. | Trình kéo thả thiết kế mẫu (Template Builder UI) động, lưu trữ DB SQL. |

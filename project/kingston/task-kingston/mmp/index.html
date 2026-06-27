@@ -36,9 +36,9 @@
         <nav>
             <a class="nav-link active" onclick="navTo('why')">1. Định Hướng Phát Triển</a>
             <a class="nav-link" onclick="navTo('arch')">2. Sơ Đồ Hệ Thống Dài Hạn</a>
-            <a class="nav-link" onclick="navTo('features')">3. Tính Năng Ngoài Phạm Vi MVP</a>
-            <a class="nav-link" onclick="navTo('timeline')">4. Lộ Trình Chi Tiết Phases 6-10</a>
-            <a class="nav-link" onclick="navTo('techstack')">5. Stack Doanh Nghiệp Đề Xuất</a>
+            <a class="nav-link" onclick="navTo('architecture')">3. Kiến Trúc Post-MVP</a>
+            <a class="nav-link" onclick="navTo('timeline')">4. Lộ Trình Chi Tiết Phases 6-11</a>
+            <a class="nav-link" onclick="navTo('techstack')">5. Stack Kỹ Thuật Doanh Nghiệp Đề Xuất</a>
         </nav>
     </aside>
 
@@ -182,15 +182,20 @@
                                 <td>Hỗ trợ đăng nhập qua Google Workspace, Active Directory hoặc Azure AD nội bộ của doanh nghiệp.</td>
                                 <td>Đồng bộ tài khoản nhân sự tự động, tăng cường an ninh bảo mật Enterprise.</td>
                             </tr>
+                            <tr>
+                                <td><strong>Cấu hình mẫu nhiệm vụ động</strong></td>
+                                <td>Giao diện thiết kế mẫu công việc (Dynamic Template Builder UI) cho phép Admin tự tạo, sửa đổi danh sách các đầu việc chuẩn và deadline.</td>
+                                <td>Tự do tùy biến mẫu dự án theo quy trình doanh nghiệp, lưu trữ trong CSDL thay vì code cứng ở MVP.</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- 4. TIMELINE PHASES 6-10 -->
+        <!-- 4. TIMELINE PHASES 6-11 -->
         <section id="timeline">
-            <h2 class="section-heading">4. Lộ Trình Phân Kỳ Dài Hạn (Phases 6 - 10)</h2>
+            <h2 class="section-heading">4. Lộ Trình Phân Kỳ Dài Hạn (Phases 6 - 11)</h2>
             <div class="timeline">
                 <div class="timeline-item">
                     <span class="timeline-dot"></span>
@@ -278,6 +283,24 @@
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
                                 <input type="checkbox" disabled>
                                 <span>Đẩy thông báo đẩy native (Push notifications) khi có công việc mới</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 11 — Quản Lý Mẫu Công Việc Động & Tự Động Hóa (Task Templates Builder)</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Trình thiết kế mẫu công việc (Dynamic Template Builder UI) cho Admin tùy biến đầu việc/checklists</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tự động gán người thực hiện (assignee) theo vai trò và kiểm tra tải công việc (workload) khi tạo dự án mới</span>
                             </label>
                         </div>
                     </div>

@@ -72,13 +72,15 @@ graph TD
   - Chỉ có Admin mới được tạo dự án mới và gán PM.
   - Các dự án có 3 trạng thái: `Active` (Đang chạy), `On Hold` (Tạm ngưng), `Completed` (Đã hoàn thành).
   - Khi một dự án chuyển sang `Completed`, tất cả các công việc chưa hoàn thành trong dự án đó sẽ tự động bị đóng băng (không cho sửa đổi trạng thái).
+  - **Mẫu công việc tự động (Task Templates)**: Khi tạo dự án mới, Admin có thể chọn mẫu công việc tương ứng với loại dự án (IT/Software Development, Marketing Campaign, Office Renovation). Hệ thống sẽ tự động gieo các công việc mẫu tiêu chuẩn vào cột `To Do` của dự án với hạn chót được tính toán tự động (ngày tạo + số ngày hoàn thành).
 - **System Features**:
   - Tự động tính toán tiến độ dự án dựa trên tỷ lệ % số task có trạng thái `Done` trên tổng số task của dự án đó.
   - Hiển thị thống kê nhanh: Tổng số dự án, số task trễ hạn (vượt quá due date mà chưa ở trạng thái `Done`).
+  - Tự động khởi tạo và gieo các task mẫu dựa theo lựa chọn loại dự án của Admin, tính toán thời hạn deadline chính xác cho từng task mẫu.
 - **User Features**:
   - Giao diện danh sách dự án (Project List Card).
   - Bộ lọc dự án theo trạng thái.
-  - Nút "Tạo dự án mới" (chỉ hiển thị cho Admin).
+  - Nút "Tạo dự án mới" kèm cấu hình chọn loại mẫu công việc (chỉ hiển thị cho Admin).
 
 ### 📦 Module 2: Project Detail & Task Management (Kanban & List)
 - **Business Rules**:

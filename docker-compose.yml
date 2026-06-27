@@ -5,7 +5,7 @@ services:
     image: nginx:alpine-slim
     restart: unless-stopped
     volumes:
-      - ./mvp/v2:/usr/share/nginx/html
+      - ./project:/usr/share/nginx/html
       - ./default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - kingston-net

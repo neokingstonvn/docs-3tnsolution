@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  docs-solando:
+  docs-3tnsolution:
     image: nginx:alpine-slim
     restart: unless-stopped
     volumes:

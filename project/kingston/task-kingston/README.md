@@ -13,12 +13,14 @@ Dưới đây là bảng so sánh chi tiết phạm vi tính năng triển khai 
 | **Quản lý dự án** | **✅** | | Tạo mới dự án, gán Project Manager, theo dõi trạng thái dự án (Active/Completed/On Hold). |
 | **Quản lý công việc (Tasks)** | **✅** | | Xem dưới dạng Kanban Board và danh sách List. Hỗ trợ lọc theo trạng thái, người thực hiện, độ ưu tiên. |
 | **Luồng phê duyệt (Approval)** | **✅** | | Luồng chuyển trạng thái: To Do -> In Progress -> Reviewing -> Done hoặc Rejected. Staff gửi link báo cáo, PM/Admin nhấn duyệt hoặc trả về. |
+| **Trợ lý Chat Agent** | **✅** | | Panel Chat tích hợp trong Web UI giúp giao việc, tra cứu và duyệt task bằng tiếng Việt tự nhiên thông qua Regex/Keyword Parser. |
 | **Lịch sử hoạt động (Logs)** | **✅** | | Ghi lại lịch sử chỉnh sửa cơ bản (ai chuyển trạng thái công việc, vào lúc nào) và lưu trữ bình luận (Comments) trong chi tiết công việc. |
 | **Phân quyền RBAC** | **✅** | | Quản lý danh sách nhân viên nội bộ và gán 1 trong 3 vai trò: Admin, PM, Staff. Mỗi vai trò có quyền truy cập hạn chế tương ứng. |
 | **Lưu trữ dữ liệu** | **✅** | | Lưu trữ giả lập qua `localStorage` phía client để giữ trạng thái khi tải lại trang mà không cần Server backend. |
 | **Đính kèm tài liệu** | | **❌** | Không hỗ trợ tải trực tiếp file vật lý lên hệ thống. Thay vào đó, người dùng sẽ dán link tài liệu từ Google Drive/OneDrive. |
 | **Hệ thống thông báo** | | **❌** | Không gửi email hoặc tin nhắn Slack thật. Chỉ thông báo giả lập trên giao diện người dùng (App Notification Bell). |
 | **Biểu đồ Gantt & Phân tích** | | **❌** | Không có biểu đồ Gantt hay báo cáo phân tích năng suất nâng cao. |
+| **Tích hợp Zalo/Telegram Bot** | | **❌** | Kết nối API thật qua Webhook với Zalo, Telegram, Rocket.Chat và tích hợp NLP Engine nâng cao ở backend. |
 
 ---
 
@@ -38,6 +40,7 @@ Hệ thống quản lý quyền hạn chặt chẽ dựa trên 3 vai trò hệ t
 | **Phê duyệt / Từ chối task** | **✅** | **✅** *(Chỉ dự án phụ trách)* | ❌ |
 | **Viết bình luận (Comments)** | **✅** | **✅** | **✅** |
 | **Xem logs hoạt động** | **✅** | **✅** *(Chỉ dự án phụ trách)* | **✅** *(Chỉ task của mình)* |
+| **Sử dụng Chat Agent giao việc** | **✅** *(Mọi dự án & vai trò)* | **✅** *(Chỉ dự án phụ trách)* | **✅** *(Chỉ cập nhật & tra cứu task mình)* |
 
 ---
 
@@ -61,6 +64,12 @@ graph TD
     ApprovalFlow -->|Từ chối| TaskRejected[Trạng thái: Rejected - chuyển về In Progress kèm lý do]
     
     Task -->|Tự động ghi nhận| ActivityLog[Activity Log & Comments]
+
+    %% Chat Agent Flow
+    ChatUser[Người dùng: Admin/PM/Staff] -->|Chat lệnh tự nhiên| ChatAgent[Trợ lý Chat Agent]
+    ChatAgent -->|Phân tích & Tác động CSDL| EmployeeDB
+    ChatAgent -->|Cập nhật giao diện| Task
+    ChatAgent -->|Ghi log hoạt động| ActivityLog
 ```
 
 ---
@@ -85,13 +94,21 @@ graph TD
 ### 📦 Module 2: Project Detail & Task Management (Kanban & List)
 - **Business Rules**:
   - PM chỉ được quản lý công việc (thêm, sửa, xóa, phân công) đối với các dự án mà họ được Admin gán quyền phụ trách.
-  - Mỗi công việc (Task) bắt buộc phải có: Tiêu đề, Dự án trực thuộc, Mức độ ưu tiên (`High`/`Medium`/`Low`), và Hạn chót (`Due Date`).
+  - Mỗi công việc (Task) bắt buộc phải có: Tiêu đề, Dự án trực thuộc, Mức độ ưu tiên (`High`/`Medium`/`Low`), Hạn chót (`Due Date`) và Ngày bắt đầu dự kiến (`Plan Start Date`).
   - Một task chỉ được phân công cho tối đa 1 người thực hiện (Assignee).
+  - **Logic Cảnh Báo Thời Gian Thực Thi (Execution Timing Badges)**:
+    - **Bắt đầu Sớm (Early Start)**: Ngày bắt đầu thực tế (`actual_start_date`) trước ngày dự kiến (`plan_start_date`).
+    - **Bắt đầu Muộn (Late Start)**: Ngày bắt đầu thực tế sau ngày dự kiến, hoặc hiện tại đã quá ngày dự kiến mà task vẫn ở trạng thái `To Do`.
+    - **Hoàn thành Sớm (Early End)**: Ngày hoàn thành thực tế (`actual_end_date`) trước hạn chót (`due_date`) khi task ở trạng thái `Done`.
+    - **Hoàn thành Muộn / Trễ hạn (Late End / Overdue)**: Ngày hoàn thành thực tế sau hạn chót, hoặc hiện tại đã quá hạn chót mà task vẫn chưa ở trạng thái `Done`.
 - **System Features**:
-  - Tự động đánh dấu màu đỏ hoặc nhấp nháy đối với các task đã quá hạn chót (Overdue) mà trạng thái chưa đạt `Done`.
+  - Tự động đánh dấu nhãn cảnh báo thời gian thực thi (Bắt đầu sớm/muộn, Kết thúc sớm/muộn) bằng các nhãn màu sắc trực quan tương ứng trên thẻ công việc.
+  - Tự động ghi nhận `actual_start_date` khi trạng thái task chuyển sang `In Progress` lần đầu tiên.
+  - Tự động ghi nhận `actual_end_date` khi PM/Admin nhấn phê duyệt task sang `Done`.
   - Tự động sắp xếp task theo mức độ ưu tiên giảm dần hoặc theo hạn chót gần nhất.
 - **User Features**:
   - Tab chuyển đổi linh hoạt giữa giao diện **Kanban Board** (cột trạng thái) và **List View** (dạng bảng chi tiết).
+  - Bộ hiển thị các nhãn Badge cảnh báo thời gian thực thi ngay trên Kanban Card và List view.
   - Bộ lọc công việc nhanh theo Assignee, Mức độ ưu tiên, hoặc Trạng thái.
 
 ### 📦 Module 3: Task Detail & Activity Log / Comments
@@ -127,6 +144,41 @@ graph TD
   - Giao diện danh sách nhân sự (Employee Directory) kèm vai trò (Role Badge) và thông tin liên hệ tĩnh.
   - Màn hình cấu hình phân quyền (chỉ Admin truy cập) để thay đổi role.
 
+### 📦 Module 6: Trợ lý Chat Agent
+- **Business Rules**:
+  - Người dùng chat trực tiếp với trợ lý ảo bằng ngôn ngữ tự nhiên để thao tác nhanh.
+  - Chat Agent phải tuân thủ phân quyền RBAC: Nhân viên Staff không thể tạo dự án, PM không thể tạo task của dự án khác, Staff chỉ được cập nhật/tra cứu task của chính mình.
+  - Các lệnh hội thoại hợp lệ:
+    - **Tạo dự án**: *"Tạo dự án [Tên dự án] PM [Tên PM]"* (Chỉ Admin).
+    - **Tạo & giao task**: *"Tạo task [Tên task] gán cho [Tên Staff] deadline [YYYY-MM-DD]"* (Admin/PM).
+    - **Cập nhật task**: *"Cập nhật task [Mã task] sang [Trạng thái]"*.
+    - **Phê duyệt**: *"Duyệt task [Mã task]"* hoặc *"Từ chối task [Mã task]"* (Admin/PM).
+    - **Tra cứu**: *"Xem danh sách task của tôi"* hoặc *"Liệt kê task dự án [Tên dự án]"*.
+    - **Phân tích hiệu suất**: *"Phân tích hiệu suất"* hoặc *"Phân tích dự án"* -> Bot tính toán và trả về tổng hợp số lượng task sớm/muộn/trễ hạn.
+- **System Features**:
+  - Sử dụng bộ phân tích Regex và từ khóa để giải cấu trúc ngôn ngữ tự nhiên thành các tham số CRUD.
+  - Cập nhật đồng bộ dữ liệu trong `localStorage` và phát tín hiệu render lại UI lập tức.
+  - Trả lời bằng ngôn ngữ tự nhiên tiếng Việt, mô phỏng cảm giác chat real-time (typing state).
+- **User Features**:
+  - Giao diện Panel Chat đầy đủ: Khung tin nhắn hội thoại cuộn tự động, bong bóng tin nhắn (User và Bot), input nhập lệnh.
+  - Hiển thị các câu lệnh gợi ý ngay trên màn hình chat để người dùng dễ thao tác.
+
+### 📦 Module 7: Model Context Protocol (MCP) Server
+- **Business Rules**:
+  - Hệ thống xuất bản một endpoint giao thức MCP phục vụ tích hợp với các AI Agent lập trình bên ngoài (như Cursor, Claude Desktop, Gemini Code Assist).
+  - Mọi thao tác qua MCP Server đều phải được kiểm tra xác thực qua Token/Email của người dùng và tuân thủ phân quyền RBAC nghiêm ngặt.
+- **System Features**:
+  - Định nghĩa các MCP Tools với JSON Schema chi tiết:
+    - `list_projects`: Xem danh sách dự án hiện có.
+    - `create_project(name, pm_email, description)`: Tạo dự án mới (Admin).
+    - `create_task(project_id, title, assignee_email, plan_start, due_date, description)`: Tạo và gán task (PM/Admin).
+    - `update_task_status(task_id, status)`: Cập nhật tiến độ task (Staff/PM/Admin).
+    - `submit_approval(task_id, report_text, report_link)`: Gửi duyệt hoàn thành (Staff).
+    - `review_approval(task_id, action, feedback)`: Duyệt hoặc từ chối task (PM/Admin).
+  - Trả về kết quả dưới dạng cấu trúc JSON chuẩn RPC 2.0. Đồng bộ hóa trực tiếp các cập nhật vào cơ sở dữ liệu hệ thống.
+- **User Features**:
+  - Màn hình cấu hình MCP Server cho Admin (hiển thị Token truy cập, file cấu hình mẫu `mcp-config.json` để sao chép nhanh vào IDE).
+
 ---
 
 ## 5. Luồng Nghiệp Vụ Chính & Kiểm Thử (Happy Paths)
@@ -152,3 +204,15 @@ graph TD
 2. **Bước 2**: PM click vào để xem link Figma và báo cáo của Staff.
 3. **Bước 3** (Nhánh Approve): PM thấy chất lượng tốt $\rightarrow$ Click **Approve** $\rightarrow$ Task chuyển sang trạng thái `Done`. Dòng log tự động ghi nhận task hoàn thành.
 4. **Bước 4** (Nhánh Reject): PM thấy thiếu kích thước banner $\rightarrow$ Click **Reject** $\rightarrow$ Nhập phản hồi: `"Cần bổ sung thêm phiên bản kích thước Mobile"` $\rightarrow$ Task tự động quay về cột `In Progress`. Staff nhận được phản hồi và thông báo.
+
+### 🎯 Luồng 5: Tương tác qua Trợ lý Chat Agent (Giao việc bằng chat)
+1. **Bước 1**: Admin hoặc PM truy cập tab **Trợ lý Task Agent**.
+2. **Bước 2**: Nhập câu lệnh: `"Tạo task Viết tài liệu API gán cho Nguyễn Văn Staff deadline 2026-07-08"` $\rightarrow$ Bấm Gửi.
+3. **Bước 3**: Chat Agent phân tích cú pháp, xác thực vai trò PM và dự án được giao $\rightarrow$ Thực hiện tạo task trong database $\rightarrow$ Gửi thông báo cho Staff $\rightarrow$ Phản hồi trong chat: `"Đã tạo thành công task 'Viết tài liệu API' gán cho Nguyễn Văn Staff, hạn chót 08/07/2026."`
+4. **Bước 4**: Task mới lập tức hiển thị ở cột `To Do` trên Kanban Board khi người dùng chuyển sang tab Kanban.
+
+### 🎯 Luồng 6: AI Agent gọi MCP Server để giao việc tự động
+1. **Bước 1**: AI Agent của nhà phát triển phát hiện một lỗi Bug trong build log hoặc trong mã nguồn vừa phân tích ➔ Tự động kết nối tới Task Kingston MCP Server.
+2. **Bước 2**: AI Agent gọi tool `create_task` với tham số: `{ project_id: "PROJ_1", title: "Sửa lỗi crash Router", assignee_email: "staff1@kingston.vn", due_date: "2026-07-04" }`.
+3. **Bước 3**: MCP Server xác thực quyền hạn và ghi nhận task mới vào CSDL ➔ Trả về phản hồi JSON thành công cho AI Agent.
+4. **Bước 4**: Thẻ task `"Sửa lỗi crash Router"` tự động xuất hiện trên Kanban Board của dự án, nhân viên Staff được phân công lập tức thấy công việc trên Portal của mình.

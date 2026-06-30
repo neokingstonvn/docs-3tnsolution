@@ -173,6 +173,11 @@
                                 <td>Đảm bảo PM phê duyệt nhanh chóng, thành viên nhận thông tin phản hồi tức thì.</td>
                             </tr>
                             <tr>
+                                <td><strong>Tích hợp Chat Bot đa kênh</strong></td>
+                                <td>Tích hợp API/Webhook chính thức của Zalo, Telegram, Rocket.Chat. Cho phép giao việc, tra cứu và quản lý task trực tiếp từ ứng dụng chat bên ngoài.</td>
+                                <td>Giúp nhân sự giao việc và cập nhật tiến độ siêu tốc không cần mở Web app, tối ưu hóa thời gian phản hồi.</td>
+                            </tr>
+                            <tr>
                                 <td><strong>Biểu đồ Gantt trực quan</strong></td>
                                 <td>Giao diện biểu đồ thanh ngang Gantt hỗ trợ kéo thả ngày bắt đầu/kết thúc công việc và liên kết phụ thuộc.</td>
                                 <td>PM dễ dàng theo dõi đường găng (critical path) của toàn bộ dự án.</td>
@@ -201,9 +206,17 @@
                     <span class="timeline-dot"></span>
                     <div class="ve-card ve-card--elevated" style="margin-left: 16px; margin-bottom: 0;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                            <h3 style="font-size: 15px; font-weight: 700;">Phase 6 — Thông Báo Đa Kênh (Slack / Email)</h3>
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 6 — Tích Hợp Chat Bot & Thông Báo Đa Kênh (Telegram/Zalo/Rocket.Chat)</h3>
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Phát triển Telegram Bot, Zalo Official Account Bot và Rocket.Chat integration với đầy đủ Webhook API</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Hiện thực cơ chế Account Linking (Liên kết tài khoản chat với User ID Task Kingston) bảo mật bằng OTP/Token</span>
+                            </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
                                 <input type="checkbox" disabled>
                                 <span>Tích hợp Nodemailer/SendGrid gửi email nhắc deadline tự động</span>
@@ -246,7 +259,11 @@
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
                                 <input type="checkbox" disabled>
-                                <span>Xây dựng dashboard đo lường KPI và mức độ hoàn thành task của nhân viên</span>
+                                <span>Xây dựng dashboard đo lường KPI, xếp hạng năng suất dựa trên tỷ lệ task bắt đầu/kết thúc sớm và hạn chế trễ hạn</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Phân tích và tự động đề xuất PM cấu hình lại plan_start/due_date của các task tương tự dựa trên lịch sử thực tế (Early/Late logs)</span>
                             </label>
                         </div>
                     </div>
@@ -341,6 +358,11 @@
                                 <td><strong>SSO Gateway</strong></td>
                                 <td>Keycloak / Auth0</td>
                                 <td>Tiêu chuẩn bảo mật chuyên nghiệp hỗ trợ OAuth2, OIDC, quản trị tập trung tất cả user công ty.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Model Context Protocol</strong></td>
+                                <td>@modelcontextprotocol/sdk</td>
+                                <td>Cho phép xuất bản cổng dịch vụ MCP chuẩn hóa, giúp mọi Agent lập trình bên ngoài dễ dàng tích hợp và gọi Tools.</td>
                             </tr>
                         </tbody>
                     </table>

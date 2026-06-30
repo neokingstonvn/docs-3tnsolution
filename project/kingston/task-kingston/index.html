@@ -95,6 +95,16 @@
                                     <td>Quản lý danh sách nhân viên nội bộ và gán vai trò: Admin, PM, Staff. Mỗi vai trò có quyền truy cập hạn chế tương ứng.</td>
                                 </tr>
                                 <tr>
+                                    <td><strong>Trợ lý Chat Agent (Mock AI)</strong></td>
+                                    <td style="text-align: center;"><span class="in-scope">✅ MVP</span></td>
+                                    <td>Panel Chat tích hợp trong Web UI giúp giao việc, tra cứu và duyệt task bằng tiếng Việt tự nhiên thông qua Regex/Keyword Parser.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MCP Server cho AI Agents</strong></td>
+                                    <td style="text-align: center;"><span class="in-scope">✅ MVP</span></td>
+                                    <td>Xuất bản endpoint giao thức Model Context Protocol (MCP) để các AI Agent lập trình bên ngoài kết nối và tương tác CRUD qua Tool Calling.</td>
+                                </tr>
+                                <tr>
                                     <td><strong>Đính kèm tài liệu trực tiếp</strong></td>
                                     <td style="text-align: center;"><span class="out-scope">❌ Sau MVP</span></td>
                                     <td>Không hỗ trợ tải trực tiếp file vật lý lên hệ thống. Người dùng sẽ dán link tài liệu từ Google Drive/OneDrive.</td>
@@ -108,6 +118,11 @@
                                     <td><strong>Biểu đồ Gantt & Phân tích nâng cao</strong></td>
                                     <td style="text-align: center;"><span class="out-scope">❌ Sau MVP</span></td>
                                     <td>Không có biểu đồ Gantt hay báo cáo phân tích năng suất nâng cao.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tích hợp Zalo/Telegram Bot</strong></td>
+                                    <td style="text-align: center;"><span class="out-scope">❌ Sau MVP</span></td>
+                                    <td>Kết nối API thật qua Webhook với Zalo, Telegram, Rocket.Chat và tích hợp NLP Engine nâng cao ở backend.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -136,6 +151,7 @@
                                             <li>Xem và chỉnh sửa danh sách nhân viên, gán vai trò hệ thống (RBAC Management).</li>
                                             <li>Có quyền phê duyệt (Approve) hoặc từ chối (Reject) bất kỳ công việc nào trong hệ thống.</li>
                                             <li>Xem toàn bộ logs lịch sử của hệ thống.</li>
+                                            <li>Sử dụng Trợ lý Chat Agent để tạo dự án, gieo task, giao việc, cập nhật trạng thái và duyệt task trên mọi dự án.</li>
                                         </ul>
                                     </td>
                                 </tr>
@@ -147,6 +163,7 @@
                                             <li>Quản lý công việc (thêm, sửa, xóa, phân công task) trong phạm vi dự án phụ trách.</li>
                                             <li>Phê duyệt (Approve) hoặc từ chối (Reject) báo cáo công việc của Staff trong dự án phụ trách.</li>
                                             <li>Xem logs lịch sử hoạt động và bình luận trong dự án phụ trách.</li>
+                                            <li>Sử dụng Trợ lý Chat Agent để tạo task, giao việc, cập nhật trạng thái và duyệt task trong các dự án mình làm PM.</li>
                                         </ul>
                                     </td>
                                 </tr>
@@ -158,6 +175,7 @@
                                             <li>Chuyển trạng thái công việc từ To Do sang In Progress.</li>
                                             <li>Khi hoàn thành, gửi yêu cầu duyệt (Reviewing) kèm nội dung báo cáo và link tài liệu đính kèm.</li>
                                             <li>Viết bình luận trao đổi thông tin trong các task được quyền truy cập.</li>
+                                            <li>Sử dụng Trợ lý Chat Agent để tra cứu danh sách task cá nhân và cập nhật trạng thái của task được giao cho mình.</li>
                                         </ul>
                                     </td>
                                 </tr>
@@ -266,6 +284,44 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 6: Trợ lý Chat Agent</div>
+                            <div class="module-desc">Giao việc, tra cứu thông tin và quản lý dự án thông qua hội thoại tự nhiên tiếng Việt.</div>
+                            <div class="module-grid">
+                                <div class="grid-row">
+                                    <div class="grid-label">Business Rules</div>
+                                    <div class="grid-value">Tuân thủ phân quyền RBAC: Staff không thể tạo dự án, PM không thể tạo task của dự án khác, Staff chỉ được cập nhật/tra cứu task của mình. Các câu lệnh hợp lệ gồm: Tạo dự án, Tạo và giao task, Cập nhật trạng thái task, Duyệt/Từ chối task, Tra cứu danh sách, Phân tích hiệu suất.</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">System Features</div>
+                                    <div class="grid-value">Bộ phân tích ngôn ngữ tự nhiên rút gọn (Regex/Keyword Parser) ở client-side để giải cấu trúc câu lệnh hội thoại, thực hiện thay đổi dữ liệu trong LocalStorage trực tiếp và kích hoạt render UI. Giả lập hiệu ứng đang gõ chữ (typing state).</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">User Features</div>
+                                    <div class="grid-value">Panel Chat tích hợp đầy đủ: Sidebar menu "Trợ lý Task Agent", bong bóng chat, gợi ý mẫu câu lệnh, ô nhập liệu và nút gửi tin nhắn.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 7: Model Context Protocol (MCP) Server</div>
+                            <div class="module-desc">Xuất bản cổng kết nối MCP để các AI Agent lập trình bên ngoài kết nối và quản trị dự án tự động.</div>
+                            <div class="module-grid">
+                                <div class="grid-row">
+                                    <div class="grid-label">Business Rules</div>
+                                    <div class="grid-value">Xác thực Token/Email của AI Agent trước khi gọi công cụ. Tuân thủ ma trận phân quyền RBAC nghiêm ngặt của hệ thống.</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">System Features</div>
+                                    <div class="grid-value">Cổng kết nối stdio/SSE tuân thủ JSON-RPC 2.0. Định nghĩa 6 tools (list_projects, create_project, create_task, update_task_status, submit_approval, review_approval) kèm JSON Schema.</div>
+                                </div>
+                                <div class="grid-row">
+                                    <div class="grid-label">User Features</div>
+                                    <div class="grid-value">Màn hình xem cấu hình MCP Server dành cho Admin (hiển thị Client Config, sample JSON và Token truy cập).</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -330,6 +386,32 @@
                                 <div class="flow-node">PM đánh giá báo cáo</div>
                                 <span class="flow-arrow">➔</span>
                                 <div class="flow-node">Approve (Task chuyển sang "Done") HOẶC Reject (Nhập phản hồi & Task quay lại "In Progress")</div>
+                            </div>
+                        </div>
+
+                        <div class="happy-path-box">
+                            <h4>🎯 Luồng 5: Tương tác và giao việc qua Trợ lý Chat Agent</h4>
+                            <div class="happy-path-flow">
+                                <div class="flow-node">Admin/PM vào tab "Trợ lý Task Agent"</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Nhập câu lệnh tự nhiên: "Tạo task Soạn báo cáo gán cho staff1 deadline 2026-07-05"</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Bấm gửi -> Bot phân tích, ghi nhận vào LocalStorage & Phản hồi thành công</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Task mới xuất hiện trực tiếp trên Kanban Board và danh sách việc của Staff</div>
+                            </div>
+                        </div>
+
+                        <div class="happy-path-box">
+                            <h4>🎯 Luồng 6: AI Agent gọi MCP Server để giao việc tự động</h4>
+                            <div class="happy-path-flow">
+                                <div class="flow-node">AI Agent phát hiện Bug trong Build log / Code review</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Kết nối tới Task Kingston MCP Server & Gọi tool 'create_task'</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">MCP Server xác thực quyền hạn và ghi nhận task vào database</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Thẻ task mới xuất hiện trên Kanban Board & Staff lập tức thấy việc được giao</div>
                             </div>
                         </div>
                     </div>

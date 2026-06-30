@@ -148,31 +148,34 @@
             <section id="arch">
                 <h2 class="section-heading">3. Sơ Đồ Khung Kết Nối Giao Tiếp</h2>
                 <div class="ve-card ve-card--recessed">
-                    <pre style="font-family: 'Fira Code', monospace; font-size: 12px; white-space: pre; overflow-x: auto; line-height: 1.6; color: var(--text);">
-┌────────────────────────────────────────────────────────┐
-│                      GATEWAY PORTAL                    │
-│           (Đăng nhập / Lựa chọn Vai trò Người dùng)    │
-└──────────────────────────┬─────────────────────────────┘
-                           │
-         ┌─────────────────┼─────────────────┐
-         ▼                 ▼                 ▼
-┌────────────────┐ ┌────────────────┐ ┌────────────────┐
-│  ADMIN PORTAL  │ │   PM PORTAL    │ │  STAFF PORTAL  │
-│- Tạo/Sửa Dự án │ │- Tạo/Sửa Task  │ │- Nhận việc     │
-│- Gán PM        │ │- Gán việc/Prior│ │- Đổi trạng thái│
-│- Quản lý RBAC  │ │- Duyệt báo cáo │ │- Gửi yêu cầu   │
-└────────┬───────┘ └────────┬───────┘ └────────┬───────┘
-         │                  │                  │
-         └──────────────────┼──────────────────┘
-                            ▼
-           ┌─────────────────────────────────┐
-           │        CSDL LOCALSTORAGE        │
-           │ (Mock Entities: users, projects)│
-           └─────────────────────────────────┘
+                    <pre style="font-family: 'Fira Code', monospace; font-size: 11px; white-space: pre; overflow-x: auto; line-height: 1.6; color: var(--text);">
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                                     GATEWAY PORTAL                                     │
+│                        (Đăng nhập / Lựa chọn Vai trò Người dùng)                       │
+└──────────────────────────────────────────┬─────────────────────────────────────────────┘
+                                           │
+         ┌─────────────────┬───────────────┴───────────────┬────────────────┬──────────────────┐
+         ▼                 ▼                               ▼                ▼                  ▼
+┌────────────────┐ ┌────────────────┐             ┌────────────────┐ ┌──────────────┐ ┌────────────────┐
+│  ADMIN PORTAL  │ │   PM PORTAL    │             │  STAFF PORTAL  │ │  CHAT PANEL  │ │   MCP SERVER   │
+│- Tạo/Sửa Dự án │ │- Tạo/Sửa Task  │             │- Nhận việc     │ │- Giao việc   │ │- List Projects │
+│- Gán PM        │ │- Gán việc/Prior│             │- Đổi trạng thái│ │- Tra cứu task│ │- Create Task   │
+│- Quản lý RBAC  │ │- Duyệt báo cáo │             │- Gửi yêu cầu   │ │- Duyệt task  │ │- Update Status │
+└────────┬───────┘ └────────┬───────┘             └────────┬───────┘ └──────┬───────┘ └────────┬───────┘
+         │                  │                              │                │                  │
+         │                  │                              │                │                  │  [External Agents]
+         │                  │                              │                │                  │  (Cursor, Claude
+         │                  │                              │                │                  │   IDE Tools)
+         └──────────────────┼──────────────────────────────┼────────────────┴──────────────────┼───────────┘
+                            ▼                              ▼                                   ▼
+                           ┌────────────────────────────────────────────────────────────────────┐
+                           │                         CSDL LOCALSTORAGE                          │
+                           │     (Mock: users, projects, tasks, activity_logs, chat_logs)       │
+                           └────────────────────────────────────────────────────────────────────┘
                     </pre>
                 </div>
             </section>
-
+            
             <!-- 4. DATABASE RÚT GỌN -->
             <section id="database">
                 <h2 class="section-heading">4. Thiết Kế Cơ Sở Dữ Liệu Rút Gọn</h2>
@@ -198,7 +201,10 @@
 - title: VARCHAR(255) NOT NULL
 - assignee_id: UUID REFERENCES users(id) ON DELETE SET NULL
 - priority: VARCHAR(20) CHECK (priority IN ('High', 'Medium', 'Low'))
-- due_date: TIMESTAMP
+- plan_start_date: TIMESTAMP (Ngày bắt đầu dự kiến)
+- actual_start_date: TIMESTAMP (Ngày bắt đầu thực tế)
+- due_date: TIMESTAMP (Hạn chót)
+- actual_end_date: TIMESTAMP (Ngày hoàn thành thực tế)
 - status: VARCHAR(20) CHECK (status IN ('To Do', 'In Progress', 'Reviewing', 'Done'))
 
 <strong>4. Table `approval_requests` (Hàng đợi Phê Duyệt Trạng Thái)</strong>
@@ -215,6 +221,14 @@
 - task_id: UUID REFERENCES tasks(id) ON DELETE CASCADE
 - user_id: UUID REFERENCES users(id)
 - action: TEXT (Hành động hoặc nội dung bình luận)
+- created_at: TIMESTAMP DEFAULT NOW()
+
+<strong>6. Table `chat_logs` (Lịch sử hội thoại của Chat Agent)</strong>
+- id: UUID PRIMARY KEY
+- user_id: UUID REFERENCES users(id) (Người gửi tin)
+- message: TEXT (Nội dung người dùng gửi)
+- response: TEXT (Phản hồi từ Chat Agent)
+- intent: VARCHAR(50) (Ý định nhận diện được: CREATE_TASK, UPDATE_STATUS, etc.)
 - created_at: TIMESTAMP DEFAULT NOW()
                     </pre>
                 </div>
@@ -241,6 +255,12 @@
                             <h4 style="font-size: 14.5px; font-weight: 700; color: var(--indigo); margin-bottom: 8px;">Luồng C: Đệ trình & Phê duyệt Hoàn thành</h4>
                             <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">
                                 Khi làm xong, Staff điền Link báo cáo và nội dung giải trình ➔ Nhấn gửi duyệt để đưa trạng thái sang <strong>Reviewing</strong> (Khóa quyền sửa/kéo thả của Staff) ➔ PM/Admin nhận thông báo trong Hàng đợi, bấm <strong>Approve</strong> (Task chuyển sang <strong>Done</strong> và tự động tính lại % tiến độ dự án) hoặc <strong>Reject</strong> (Task trả về <strong>In Progress</strong> kèm phản hồi lý do).
+                            </p>
+                        </div>
+                        <div style="border-top: 1px solid var(--border); padding-top: 16px;">
+                            <h4 style="font-size: 14.5px; font-weight: 700; color: var(--pink); margin-bottom: 8px;">Luồng D: Tương tác qua Trợ lý Chat Agent</h4>
+                            <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">
+                                Người dùng (Admin/PM/Staff) mở tab <strong>Trợ lý Task Agent</strong> ➔ Nhập câu lệnh bằng ngôn ngữ tự nhiên ➔ Agent phân tích cú pháp bằng Regex/Keyword Parser và xác thực phân quyền ➔ Trực tiếp CRUD vào LocalStorage ➔ Trả lời kết quả bằng văn bản và kích hoạt hiển thị UI Kanban/List đồng bộ.
                             </p>
                         </div>
                     </div>
@@ -300,9 +320,16 @@
                     </div>
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        <h4 style="font-size: 14px; font-weight: 700; margin-left: 20px;">Phase 5: Kiểm Thử UAT & Bàn Giao</h4>
+                        <h4 style="font-size: 14px; font-weight: 700; margin-left: 20px;">Phase 5: Trợ lý Chat Agent Giao Việc (Mock AI)</h4>
                         <p style="font-size: 12.5px; color: var(--text-dim); margin-left: 20px; margin-top: 4px;">
-                            Chạy kịch bản kiểm thử Happy Paths và hoàn thành các cổng Portal UAT tương tác hoàn chỉnh.
+                            Xây dựng Panel Chat UI, hiện thực Regex/Keyword Parser và tích hợp logic CRUD LocalStorage đồng bộ giao diện người dùng.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4 style="font-size: 14px; font-weight: 700; margin-left: 20px;">Phase 6: Kiểm Thử UAT & Bàn Giao</h4>
+                        <p style="font-size: 12.5px; color: var(--text-dim); margin-left: 20px; margin-top: 4px;">
+                            Chạy kịch bản kiểm thử các luồng nghiệp vụ Happy Paths bao gồm luồng giao việc qua chat, hoàn thiện UAT Unified Portal.
                         </p>
                     </div>
                 </div>

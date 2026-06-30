@@ -165,7 +165,33 @@
             </div>
         </section>
 
-        <!-- Slide 6: Lộ trình & Kế hoạch Dài hạn (Post-MVP) -->
+        <!-- Slide 6: Trợ lý Chat Agent -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide__label">Tính năng đột phá</span>
+                <h2 class="slide__heading">🤖 Trợ lý Chat Agent - Giao việc thông minh</h2>
+                <div class="grid-2" style="margin-top: 1.5rem; gap: 1.5rem;">
+                    <div class="glass-card" style="border-left: 4px solid var(--accent); padding: 1.25rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 16px; color: var(--text);">Hội thoại tự nhiên tiếng Việt</h3>
+                        <p style="font-size: 12.5px; color: var(--text-dim); line-height: 1.6;">
+                            • Nhập câu lệnh trực quan để tạo dự án và task.<br>
+                            • Tự động phân công, gán deadline và độ ưu tiên.<br>
+                            • Hỗ trợ tra cứu danh sách task cá nhân và cập nhật trạng thái.
+                        </p>
+                    </div>
+                    <div class="glass-card" style="border-left: 4px solid var(--pink); padding: 1.25rem;">
+                        <h3 style="margin-bottom: 0.5rem; font-size: 16px; color: var(--text);">Phân quyền RBAC hội thoại</h3>
+                        <p style="font-size: 12.5px; color: var(--text-dim); line-height: 1.6;">
+                            • Đảm bảo bảo mật bằng cách kiểm tra quyền của người chat.<br>
+                            • Staff chỉ được xem/sửa task của mình.<br>
+                            • PM quản lý trong dự án phụ trách; Admin quản lý toàn hệ thống.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Lộ trình & Kế hoạch Dài hạn (Post-MVP) -->
         <section class="slide slide--content">
             <div class="slide__container">
                 <span class="slide__label">Định hướng tương lai</span>
@@ -191,7 +217,7 @@
             </div>
         </section>
 
-        <!-- Slide 7: Timeline phát triển MVP -->
+        <!-- Slide 8: Timeline phát triển MVP -->
         <section class="slide slide--content">
             <div class="slide__container">
                 <span class="slide__label">Roadmap phát triển</span>
@@ -201,7 +227,7 @@
                         <span class="slide-timeline-badge">Phase 1</span>
                         <div class="slide-timeline-text">
                             <h4>Setup Nền tảng & Cấu trúc</h4>
-                            <p>Cài đặt Clean Architecture, tạo database DDL SQL 6 bảng, middleware RBAC.</p>
+                            <p>Cài đặt Clean Architecture, tạo database DDL SQL 7 bảng, middleware RBAC.</p>
                         </div>
                         <span class="slide-timeline-status" style="background: var(--green-dim); color: #059669;">Done</span>
                     </div>
@@ -214,10 +240,26 @@
                         <span class="slide-timeline-status animate-pulse" style="background: var(--amber-dim); color: #d97706;">In Dev</span>
                     </div>
                     <div class="slide-timeline-item">
-                        <span class="slide-timeline-badge">Phase 4-5</span>
+                        <span class="slide-timeline-badge">Phase 4</span>
                         <div class="slide-timeline-text">
-                            <h4>Luồng Phê Duyệt & Go-live</h4>
-                            <p>Phát triển Approval Queue, kiểm thử UAT, mock localStorage và bàn giao prototype.</p>
+                            <h4>Luồng Phê Duyệt & Hàng Đợi</h4>
+                            <p>Phát triển Approval Queue, khóa quyền tự ý đổi trạng thái Done của Staff.</p>
+                        </div>
+                        <span class="slide-timeline-status" style="background: rgba(0, 0, 0, 0.02); color: var(--text-dim);">Next</span>
+                    </div>
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">Phase 5</span>
+                        <div class="slide-timeline-text">
+                            <h4>Trợ lý Chat Agent Giao Việc</h4>
+                            <p>Xây dựng Chat UI, Regex/Keyword Parser và tích hợp logic CRUD LocalStorage đồng bộ.</p>
+                        </div>
+                        <span class="slide-timeline-status" style="background: rgba(0, 0, 0, 0.02); color: var(--text-dim);">Next</span>
+                    </div>
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">Phase 6</span>
+                        <div class="slide-timeline-text">
+                            <h4>Kiểm Thử UAT & Go-live</h4>
+                            <p>Chạy kịch bản Happy Paths, kiểm duyệt toàn bộ Portal UAT và bàn giao prototype.</p>
                         </div>
                         <span class="slide-timeline-status" style="background: rgba(0, 0, 0, 0.02); color: var(--text-dim);">Next</span>
                     </div>

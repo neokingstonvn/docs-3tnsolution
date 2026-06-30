@@ -44,6 +44,7 @@ const menuProjects = document.getElementById('menu-projects');
 const menuKanban = document.getElementById('menu-kanban');
 const menuApprovals = document.getElementById('menu-approvals');
 const menuRbac = document.getElementById('menu-rbac');
+const menuAgent = document.getElementById('menu-agent');
 
 // Notification elements
 const btnNotiBell = document.getElementById('btn-noti-bell');
@@ -57,7 +58,8 @@ const panels = {
     'view-projects': document.getElementById('view-projects'),
     'view-kanban': document.getElementById('view-kanban'),
     'view-approvals': document.getElementById('view-approvals'),
-    'view-rbac': document.getElementById('view-rbac')
+    'view-rbac': document.getElementById('view-rbac'),
+    'view-agent': document.getElementById('view-agent')
 };
 
 // ============================================================================
@@ -106,7 +108,8 @@ function setupNavigation() {
         { btn: menuProjects, id: 'view-projects', title: 'Thư mục Dự án' },
         { btn: menuKanban, id: 'view-kanban', title: 'Bảng Công Việc' },
         { btn: menuApprovals, id: 'view-approvals', title: 'Hàng Đợi Phê Duyệt' },
-        { btn: menuRbac, id: 'view-rbac', title: 'Nhân Sự & Phân Quyền (RBAC)' }
+        { btn: menuRbac, id: 'view-rbac', title: 'Nhân Sự & Phân Quyền (RBAC)' },
+        { btn: menuAgent, id: 'view-agent', title: 'Trợ Lý Chat Agent' }
     ];
 
     navItems.forEach(item => {
@@ -178,6 +181,8 @@ function refreshCurrentTabData() {
         renderApprovalsView();
     } else if (currentTab === 'view-rbac') {
         renderRBACView();
+    } else if (currentTab === 'view-agent') {
+        renderAgentView();
     }
 }
 
@@ -238,6 +243,7 @@ function adjustMenuVisibility() {
         menuKanban.style.display = 'flex';
         menuApprovals.style.display = 'flex';
         menuRbac.style.display = 'flex';
+        menuAgent.style.display = 'flex';
         
         document.getElementById('label-projects').textContent = 'Quản lý dự án';
         document.getElementById('label-kanban').textContent = 'Xem mọi task dự án';
@@ -249,6 +255,7 @@ function adjustMenuVisibility() {
         menuKanban.style.display = 'flex';
         menuApprovals.style.display = 'flex';
         menuRbac.style.display = 'none';
+        menuAgent.style.display = 'flex';
 
         document.getElementById('label-projects').textContent = 'Dự án quản lý';
         document.getElementById('label-kanban').textContent = 'Kanban & Giao việc';
@@ -260,6 +267,7 @@ function adjustMenuVisibility() {
         menuKanban.style.display = 'flex';
         menuApprovals.style.display = 'none';
         menuRbac.style.display = 'none';
+        menuAgent.style.display = 'flex';
 
         document.getElementById('label-projects').textContent = 'Danh sách dự án';
         document.getElementById('label-kanban').textContent = 'Công việc cá nhân';
@@ -513,6 +521,36 @@ function getFilteredTasks() {
     return tasks;
 }
 
+// Hàm đối chiếu và sinh nhãn cảnh báo tiến độ thực thi
+function getTaskTimingBadges(task) {
+    const todayStr = new Date().toISOString().split('T')[0];
+    let badgesHtml = '';
+    
+    // 1. Kiểm tra ngày bắt đầu (Start)
+    if (task.actual_start_date) {
+        if (task.actual_start_date < task.plan_start_date) {
+            badgesHtml += `<span class="badge-timing badge-early-start" title="Thực tế bắt đầu ngày ${task.actual_start_date}">🚀 Start Sớm</span>`;
+        } else if (task.actual_start_date > task.plan_start_date) {
+            badgesHtml += `<span class="badge-timing badge-late-start" title="Thực tế bắt đầu trễ so với dự kiến ${task.plan_start_date}">⚠️ Start Muộn</span>`;
+        }
+    } else if (task.status === 'To Do' && task.plan_start_date && task.plan_start_date < todayStr) {
+        badgesHtml += `<span class="badge-timing badge-late-start" title="Quá hạn bắt đầu dự kiến ${task.plan_start_date}">⚠️ Start Trễ</span>`;
+    }
+    
+    // 2. Kiểm tra ngày hoàn thành (End)
+    if (task.status === 'Done' && task.actual_end_date) {
+        if (task.actual_end_date < task.due_date) {
+            badgesHtml += `<span class="badge-timing badge-early-end" title="Hoàn thành sớm ngày ${task.actual_end_date}">🎉 Xong Sớm</span>`;
+        } else if (task.actual_end_date > task.due_date) {
+            badgesHtml += `<span class="badge-timing badge-overdue" title="Hoàn thành trễ hạn chót ${task.due_date}">🚨 Trễ Hạn</span>`;
+        }
+    } else if (task.status !== 'Done' && task.due_date && task.due_date < todayStr) {
+        badgesHtml += `<span class="badge-timing badge-overdue" title="Quá hạn hoàn thành ${task.due_date}">🚨 Trễ Hạn</span>`;
+    }
+    
+    return badgesHtml;
+}
+
 // Render giao diện Kanban
 function renderKanbanTasks() {
     const tasks = getFilteredTasks();
@@ -554,6 +592,9 @@ function renderKanbanTasks() {
         card.innerHTML = `
             <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase;">${project ? project.name : 'Không có'}</span>
             <h4 style="margin: 0.25rem 0; font-size: 0.85rem; font-weight: 700; line-height: 1.3;">${task.title}</h4>
+            <div style="margin-top: 0.25rem; display: flex; flex-wrap: wrap;">
+                ${getTaskTimingBadges(task)}
+            </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.72rem;">
                 <span style="color: ${pColor}; font-weight: 700;">● ${task.priority}</span>
                 <span style="color: var(--text-dim);">Due: ${task.due_date || 'N/A'}</span>
@@ -723,7 +764,12 @@ function renderListTasks() {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td><code style="font-size:0.75rem;">${task.id}</code></td>
-            <td><strong>${task.title}</strong></td>
+            <td>
+                <strong>${task.title}</strong>
+                <div style="display: flex; flex-wrap: wrap; margin-top: 2px;">
+                    ${getTaskTimingBadges(task)}
+                </div>
+            </td>
             <td><span style="font-size: 0.8rem;">${project ? project.name : 'N/A'}</span></td>
             <td><span style="font-size: 0.8rem;">${assignee ? assignee.full_name : 'Chưa phân công'}</span></td>
             <td><span style="font-weight:600;">${task.priority}</span></td>
@@ -764,11 +810,25 @@ window.showTaskDetailModal = function(taskId) {
     const editAssigneeSelect = document.getElementById('td-edit-assignee');
     const editPrioritySelect = document.getElementById('td-edit-priority');
     const editDueDateInput = document.getElementById('td-edit-due-date');
+    const editPlanStartInput = document.getElementById('td-edit-plan-start');
 
     editTitle.value = task.title;
     editDesc.value = task.description || '';
     editPrioritySelect.value = task.priority;
     editDueDateInput.value = task.due_date || '';
+    if (editPlanStartInput) {
+        editPlanStartInput.value = task.plan_start_date || '';
+    }
+
+    // Gán nhãn ngày thực tế
+    const actualStartLabel = document.getElementById('td-modal-actual-start-label');
+    if (actualStartLabel) {
+        actualStartLabel.textContent = task.actual_start_date || 'Chưa bắt đầu';
+    }
+    const actualEndLabel = document.getElementById('td-modal-actual-end-label');
+    if (actualEndLabel) {
+        actualEndLabel.textContent = task.actual_end_date || 'Chưa hoàn thành';
+    }
 
     // Load danh sách Assignee vào modal sửa
     editAssigneeSelect.innerHTML = '<option value="">Chưa phân công</option>';
@@ -792,6 +852,10 @@ window.showTaskDetailModal = function(taskId) {
         editAssigneeSelect.disabled = false;
         editPrioritySelect.disabled = false;
         editDueDateInput.disabled = false;
+        if (editPlanStartInput) {
+            editPlanStartInput.disabled = false;
+            editPlanStartInput.style.display = 'block';
+        }
         
         // Hiện nút Lưu thay đổi
         document.getElementById('td-edit-actions').style.display = 'flex';
@@ -800,6 +864,8 @@ window.showTaskDetailModal = function(taskId) {
         document.getElementById('td-modal-assignee-label').style.display = 'none';
         document.getElementById('td-modal-priority-label').style.display = 'none';
         document.getElementById('td-modal-due-date-label').style.display = 'none';
+        const planStartLabel = document.getElementById('td-modal-plan-start-label');
+        if (planStartLabel) planStartLabel.style.display = 'none';
     } else {
         // Không cho phép sửa
         editTitle.disabled = true;
@@ -807,6 +873,10 @@ window.showTaskDetailModal = function(taskId) {
         editAssigneeSelect.disabled = true;
         editPrioritySelect.disabled = true;
         editDueDateInput.disabled = true;
+        if (editPlanStartInput) {
+            editPlanStartInput.disabled = true;
+            editPlanStartInput.style.display = 'none';
+        }
         
         // Ẩn nút lưu thay đổi
         document.getElementById('td-edit-actions').style.display = 'none';
@@ -827,6 +897,12 @@ window.showTaskDetailModal = function(taskId) {
         dueDateLabel.textContent = task.due_date || 'N/A';
         dueDateLabel.style.display = 'block';
         editDueDateInput.style.display = 'none';
+
+        const planStartLabel = document.getElementById('td-modal-plan-start-label');
+        if (planStartLabel) {
+            planStartLabel.textContent = task.plan_start_date || 'N/A';
+            planStartLabel.style.display = 'block';
+        }
     }
 
     // Xử lý hiển thị panel Hành động của Staff
@@ -1292,13 +1368,17 @@ function setupBusinessEventListeners() {
                 return;
             }
 
+            const todayStr = new Date().toISOString().split('T')[0];
             const record = dbCreate('tasks', {
                 project_id: projectId,
                 title: title,
                 description: desc,
                 assignee_id: assigneeId,
                 priority: priority,
+                plan_start_date: todayStr,
+                actual_start_date: null,
                 due_date: dueDate,
+                actual_end_date: null,
                 status: 'To Do'
             });
 
@@ -1333,6 +1413,7 @@ function setupBusinessEventListeners() {
             const newAssigneeId = document.getElementById('td-edit-assignee').value;
             const newPriority = document.getElementById('td-edit-priority').value;
             const newDueDate = document.getElementById('td-edit-due-date').value;
+            const newPlanStart = document.getElementById('td-edit-plan-start').value;
 
             const oldAssigneeId = activeDetailTask.assignee_id;
 
@@ -1342,6 +1423,7 @@ function setupBusinessEventListeners() {
                 description: newDesc,
                 assignee_id: newAssigneeId,
                 priority: newPriority,
+                plan_start_date: newPlanStart,
                 due_date: newDueDate
             });
 
@@ -1499,3 +1581,531 @@ function showToast(message, icon = '✅') {
         }, 3000);
     }
 }
+
+// ============================================================================
+// 6. CHAT AGENT INTEGRATION FUNCTIONS
+// ============================================================================
+function renderAgentView() {
+    const chatMessagesContainer = document.getElementById('chat-messages-container');
+    if (chatMessagesContainer) {
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    }
+}
+
+function sendChatMessage() {
+    const chatInput = document.getElementById('chat-input');
+    const chatMessagesContainer = document.getElementById('chat-messages-container');
+    
+    if (!chatInput || !chatMessagesContainer) return;
+    
+    const rawText = chatInput.value.trim();
+    if (!rawText) return;
+    
+    // Clear input
+    chatInput.value = '';
+    
+    // Append User Message
+    appendChatBubble('user', currentUser.full_name, rawText);
+    
+    // Auto scroll
+    chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    
+    // Show typing indicator
+    const typingIndicator = showChatTypingIndicator();
+    
+    // Simulate thinking delay
+    setTimeout(() => {
+        // Remove typing indicator
+        typingIndicator.remove();
+        
+        // Process message
+        const responseText = processAgentCommand(rawText);
+        
+        // Append Bot Response
+        appendChatBubble('bot', 'Task Agent', responseText);
+        
+        // Auto scroll again
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+        
+        // Refresh tabs if any database change happened
+        refreshCurrentTabData();
+    }, 850);
+}
+
+function appendChatBubble(sender, name, text) {
+    const container = document.getElementById('chat-messages-container');
+    if (!container) return;
+    
+    const bubble = document.createElement('div');
+    bubble.className = `chat-bubble ${sender}`;
+    
+    if (sender === 'user') {
+        bubble.innerHTML = `
+            <div class="user-title">
+                <span>👤 ${name}</span>
+            </div>
+            <div>${text}</div>
+        `;
+    } else {
+        bubble.innerHTML = `
+            <div style="font-weight: 700; font-size: 0.72rem; color: var(--accent); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 4px;">
+                <span>🤖 ${name}</span>
+            </div>
+            <div>${text}</div>
+        `;
+    }
+    
+    container.appendChild(bubble);
+}
+
+function showChatTypingIndicator() {
+    const container = document.getElementById('chat-messages-container');
+    const indicator = document.createElement('div');
+    indicator.className = 'chat-bubble bot';
+    
+    indicator.innerHTML = `
+        <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    `;
+    container.appendChild(indicator);
+    return indicator;
+}
+
+function processAgentCommand(text) {
+    const lowerText = text.toLowerCase().trim();
+    const db = getDB();
+    const userRole = currentUser.role; // Admin, Project Manager, Staff
+    const userId = currentUser.id;
+    
+    // Helper to find a user by name (case-insensitive fuzzy match)
+    function findUserByName(name) {
+        if (!name) return null;
+        const normName = name.toLowerCase().trim();
+        return db.users.find(u => u.full_name.toLowerCase().includes(normName) || u.email.toLowerCase().includes(normName));
+    }
+    
+    // Helper to find a project by name (case-insensitive fuzzy match)
+    function findProjectByName(name) {
+        if (!name) return null;
+        const normName = name.toLowerCase().trim();
+        return db.projects.find(p => p.name.toLowerCase().includes(normName));
+    }
+    
+    // Helper to find a task by ID or title
+    function findTaskByIdOrTitle(query) {
+        if (!query) return null;
+        const normQuery = query.toUpperCase().trim();
+        // search by ID first
+        let task = db.tasks.find(t => t.id === normQuery || t.id.replace('MOCK_TAS_', '') === normQuery || t.id.replace('TASK_', '') === normQuery);
+        if (!task) {
+            // search by title
+            const normTitle = query.toLowerCase().trim();
+            task = db.tasks.find(t => t.title.toLowerCase().includes(normTitle));
+        }
+        return task;
+    }
+    
+    // ----------------------------------------------------
+    // 1. COMMAND: CREATE PROJECT
+    // Format: "tạo dự án [Tên dự án] pm [Tên PM]"
+    // ----------------------------------------------------
+    if (lowerText.startsWith("tạo dự án ")) {
+        if (userRole !== 'Admin') {
+            return "❌ <strong>Lỗi phân quyền:</strong> Chỉ có Admin mới được khởi tạo dự án mới trên hệ thống.";
+        }
+        
+        const pattern = /tạo dự án (.+?) pm (.+)/i;
+        const match = text.match(pattern);
+        
+        if (!match) {
+            return "❌ <strong>Cú pháp không hợp lệ.</strong> Vui lòng nhập đúng dạng: <i>\"Tạo dự án [Tên dự án] PM [Tên PM]\"</i>";
+        }
+        
+        const projName = match[1].trim();
+        const pmSearch = match[2].trim();
+        const pmUser = findUserByName(pmSearch);
+        
+        if (!pmUser || pmUser.role !== 'Project Manager') {
+            return `❌ Không tìm thấy Project Manager nào có tên hoặc email khớp với: <strong>${pmSearch}</strong>. Vui lòng thử lại.`;
+        }
+        
+        // Create project
+        const newProj = dbCreate('projects', {
+            name: projName,
+            description: `Dự án được khởi tạo nhanh qua trợ lý ảo bởi ${currentUser.full_name}.`,
+            pm_id: pmUser.id,
+            status: "Active"
+        });
+        
+        // Log activity
+        dbCreate('activity_logs', {
+            user_id: userId,
+            action: `Đã tạo dự án mới "${projName}" và gán PM ${pmUser.full_name} qua Chat Agent.`
+        });
+        
+        // Send notification
+        sendNotification(pmUser.id, `Bạn được gán làm PM cho dự án mới '${projName}' bởi Admin.`);
+        
+        return `✅ <strong>Khởi tạo dự án thành công!</strong><br>
+                • <b>Tên dự án:</b> ${newProj.name}<br>
+                • <b>Mã dự án:</b> ${newProj.id}<br>
+                • <b>PM phụ trách:</b> ${pmUser.full_name} (${pmUser.email})<br>
+                • <b>Trạng thái:</b> Active`;
+    }
+    
+    // ----------------------------------------------------
+    // 2. COMMAND: CREATE TASK
+    // Format: "tạo task [Tên task] gán cho [Tên Staff] deadline [YYYY-MM-DD]"
+    // ----------------------------------------------------
+    if (lowerText.startsWith("tạo task ") || lowerText.startsWith("tạo công việc ")) {
+        if (userRole !== 'Admin' && userRole !== 'Project Manager') {
+            return "❌ <strong>Lỗi phân quyền:</strong> Chỉ có Admin hoặc Project Manager mới có quyền tạo và giao việc.";
+        }
+        
+        const pattern = /(?:tạo task|tạo công việc) (.+?) gán cho (.+?) deadline (.+)/i;
+        const match = text.match(pattern);
+        
+        if (!match) {
+            return "❌ <strong>Cú pháp không hợp lệ.</strong> Vui lòng nhập đúng dạng: <i>\"Tạo task [Tên task] gán cho [Tên Staff] deadline [YYYY-MM-DD]\"</i>";
+        }
+        
+        const taskTitle = match[1].trim();
+        const staffSearch = match[2].trim();
+        const deadline = match[3].trim();
+        
+        const staffUser = findUserByName(staffSearch);
+        if (!staffUser || staffUser.role !== 'Staff') {
+            return `❌ Không tìm thấy nhân viên (Staff) nào có tên hoặc email khớp với: <strong>${staffSearch}</strong>.`;
+        }
+        
+        // Validate date format YYYY-MM-DD
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(deadline)) {
+            return `❌ Định dạng ngày deadline không hợp lệ (yêu cầu dạng YYYY-MM-DD, ví dụ: 2026-07-05).`;
+        }
+        
+        // Determine project context
+        let projId = "";
+        let projName = "";
+        if (activeKanbanProject && activeKanbanProject !== 'all') {
+            const p = dbFindById('projects', activeKanbanProject);
+            if (p) {
+                projId = p.id;
+                projName = p.name;
+            }
+        }
+        
+        if (!projId) {
+            // Find first active project where currentUser is PM, or first active project if Admin
+            const activeProjects = dbFindAll('projects').filter(p => p.status === 'Active');
+            const targetProj = userRole === 'Admin' ? activeProjects[0] : activeProjects.find(p => p.pm_id === userId);
+            
+            if (targetProj) {
+                projId = targetProj.id;
+                projName = targetProj.name;
+            } else {
+                return `❌ Hệ thống không tìm thấy dự án Active nào để tạo task. Vui lòng tạo dự án trước.`;
+            }
+        }
+        
+        // Validate PM assignment permission
+        if (userRole === 'Project Manager') {
+            const p = dbFindById('projects', projId);
+            if (p && p.pm_id !== userId) {
+                return `❌ <strong>Lỗi phân quyền:</strong> Bạn chỉ được phép tạo task trong dự án mà bạn phụ trách làm PM.`;
+            }
+        }
+        
+        // Create task
+        const newTask = dbCreate('tasks', {
+            project_id: projId,
+            title: taskTitle,
+            description: `Nhiệm vụ được giao tự động qua Trợ lý Chat Agent bởi ${currentUser.full_name}.`,
+            assignee_id: staffUser.id,
+            priority: "Medium",
+            due_date: deadline,
+            status: "To Do"
+        });
+        
+        // Log activity
+        createActivityLog(newTask.id, userId, `Đã tạo công việc và phân công cho ${staffUser.full_name} qua Chat Agent.`);
+        
+        // Send notification
+        sendNotification(staffUser.id, `Bạn được giao công việc mới '${taskTitle}' trong dự án '${projName}' bởi ${currentUser.full_name}.`);
+        
+        return `✅ <strong>Giao công việc thành công!</strong><br>
+                • <b>Dự án:</b> ${projName}<br>
+                • <b>Mã Task:</b> ${newTask.id}<br>
+                • <b>Nhiệm vụ:</b> ${newTask.title}<br>
+                • <b>Người thực hiện:</b> ${staffUser.full_name}<br>
+                • <b>Hạn chót:</b> ${deadline}`;
+    }
+    
+    // ----------------------------------------------------
+    // 3. COMMAND: UPDATE TASK STATUS
+    // Format: "cập nhật task [Mã task/Tên task] sang [Trạng thái]"
+    // ----------------------------------------------------
+    if (lowerText.startsWith("cập nhật task ") || lowerText.startsWith("chuyển task ")) {
+        const pattern = /(?:cập nhật task|chuyển task) (.+?) sang (.+)/i;
+        const match = text.match(pattern);
+        
+        if (!match) {
+            return "❌ <strong>Cú pháp không hợp lệ.</strong> Vui lòng nhập đúng dạng: <i>\"Cập nhật task [Mã task/Tên task] sang [To Do / In Progress]\"</i>";
+        }
+        
+        const taskSearch = match[1].trim();
+        const statusRaw = match[2].trim().toLowerCase();
+        
+        const task = findTaskByIdOrTitle(taskSearch);
+        if (!task) {
+            return `❌ Không tìm thấy công việc nào khớp với mã hoặc tiêu đề: <strong>${taskSearch}</strong>.`;
+        }
+        
+        // Map status
+        let targetStatus = "";
+        if (statusRaw.includes("to do") || statusRaw.includes("chờ làm")) targetStatus = "To Do";
+        else if (statusRaw.includes("progress") || statusRaw.includes("đang làm") || statusRaw.includes("thực hiện")) targetStatus = "In Progress";
+        else if (statusRaw.includes("review") || statusRaw.includes("gửi duyệt") || statusRaw.includes("đợi duyệt")) targetStatus = "Reviewing";
+        else if (statusRaw.includes("done") || statusRaw.includes("hoàn thành") || statusRaw.includes("duyệt xong")) targetStatus = "Done";
+        
+        if (!targetStatus) {
+            return `❌ Trạng thái không hợp lệ: <strong>${match[2]}</strong>. Hỗ trợ: To Do, In Progress, Reviewing, Done.`;
+        }
+        
+        // Check permissions
+        if (userRole === 'Staff' && task.assignee_id !== userId) {
+            return `❌ <strong>Lỗi phân quyền:</strong> Bạn không được phép cập nhật công việc giao cho người khác.`;
+        }
+        
+        // Staff cannot set status directly to Done
+        if (userRole === 'Staff' && targetStatus === 'Done') {
+            return `❌ <strong>Ngăn chặn nghiệp vụ:</strong> Nhân sự (Staff) không thể tự chuyển task sang Done. Vui lòng dùng lệnh: <i>\"Cập nhật task [Mã] sang Reviewing\"</i> hoặc nộp báo cáo duyệt.`;
+        }
+        
+        // PM cannot update status if not assigned and not PM of that project
+        if (userRole === 'Project Manager') {
+            const p = dbFindById('projects', task.project_id);
+            if (p && p.pm_id !== userId && task.assignee_id !== userId) {
+                return `❌ <strong>Lỗi phân quyền:</strong> Bạn chỉ được cập nhật task thuộc dự án phụ trách hoặc task giao cho mình.`;
+            }
+        }
+        
+        // Update task status
+        const oldStatus = task.status;
+        dbUpdate('tasks', task.id, { status: targetStatus });
+        
+        // Write log
+        createActivityLog(task.id, userId, `Đã chuyển trạng thái từ ${oldStatus} sang ${targetStatus} qua Chat Agent.`);
+        
+        return `✅ <strong>Cập nhật trạng thái thành công!</strong><br>
+                • <b>Mã Task:</b> ${task.id}<br>
+                • <b>Nhiệm vụ:</b> ${task.title}<br>
+                • <b>Trạng thái:</b> ${oldStatus} ➔ <b>${targetStatus}</b>`;
+    }
+    
+    // ----------------------------------------------------
+    // 4. COMMAND: APPROVE TASK
+    // Format: "duyệt task [Mã task/Tên task]"
+    // ----------------------------------------------------
+    if (lowerText.startsWith("duyệt task ") || lowerText.startsWith("phê duyệt task ")) {
+        if (userRole !== 'Admin' && userRole !== 'Project Manager') {
+            return "❌ <strong>Lỗi phân quyền:</strong> Chỉ có Admin hoặc Project Manager mới có quyền phê duyệt công việc.";
+        }
+        
+        const pattern = /(?:duyệt task|phê duyệt task) (.+)/i;
+        const match = text.match(pattern);
+        
+        if (!match) return "❌ Cú pháp không hợp lệ.";
+        
+        const taskSearch = match[1].trim();
+        const task = findTaskByIdOrTitle(taskSearch);
+        
+        if (!task) {
+            return `❌ Không tìm thấy công việc nào khớp với mã hoặc tiêu đề: <strong>${taskSearch}</strong>.`;
+        }
+        
+        if (task.status !== 'Reviewing') {
+            return `❌ Công việc <strong>${task.id}</strong> đang ở trạng thái <b>${task.status}</b>, không phải chờ duyệt (Reviewing).`;
+        }
+        
+        // Check PM permission on project
+        if (userRole === 'Project Manager') {
+            const p = dbFindById('projects', task.project_id);
+            if (p && p.pm_id !== userId) {
+                return `❌ <strong>Lỗi phân quyền:</strong> Bạn chỉ được phê duyệt công việc thuộc dự án bạn quản lý.`;
+            }
+        }
+        
+        // Update task and approvals
+        dbUpdate('tasks', task.id, { status: 'Done' });
+        
+        const appReq = dbFindAll('approval_requests').find(r => r.task_id === task.id && r.status === 'Pending');
+        if (appReq) {
+            dbUpdate('approval_requests', appReq.id, {
+                status: 'Approved',
+                feedback: 'Phê duyệt nhanh qua Chat Agent.',
+                approver_id: userId
+            });
+        }
+        
+        // Log & Noti
+        createActivityLog(task.id, userId, `Phê duyệt công việc sang trạng thái Done qua Chat Agent.`);
+        if (task.assignee_id) {
+            sendNotification(task.assignee_id, `PM ${currentUser.full_name} đã phê duyệt task '${task.title}' của bạn sang Done.`);
+        }
+        
+        return `✅ <strong>Phê duyệt thành công!</strong><br>
+                • <b>Mã Task:</b> ${task.id}<br>
+                • <b>Nhiệm vụ:</b> ${task.title}<br>
+                • <b>Trạng thái mới:</b> <span class="status-badge badge-success">Done</span>`;
+    }
+    
+    // ----------------------------------------------------
+    // 5. COMMAND: REJECT TASK
+    // Format: "từ chối task [Mã task/Tên task] lý do [Lý do]"
+    // ----------------------------------------------------
+    if (lowerText.startsWith("từ chối task ") || lowerText.startsWith("reject task ")) {
+        if (userRole !== 'Admin' && userRole !== 'Project Manager') {
+            return "❌ <strong>Lỗi phân quyền:</strong> Chỉ có Admin hoặc Project Manager mới có quyền từ chối phê duyệt.";
+        }
+        
+        const pattern = /(?:từ chối task|reject task) (.+?)(?: lý do | lý do là | vì )(.+)/i;
+        const match = text.match(pattern);
+        
+        if (!match) {
+            return "❌ <strong>Cú pháp không hợp lệ.</strong> Vui lòng nhập dạng: <i>\"Từ chối task [Mã task] lý do [Lý do cụ thể]\"</i>";
+        }
+        
+        const taskSearch = match[1].trim();
+        const feedbackText = match[2].trim();
+        
+        const task = findTaskByIdOrTitle(taskSearch);
+        if (!task) {
+            return `❌ Không tìm thấy công việc nào khớp với mã hoặc tiêu đề: <strong>${taskSearch}</strong>.`;
+        }
+        
+        if (task.status !== 'Reviewing') {
+            return `❌ Công việc <strong>${task.id}</strong> không ở trạng thái chờ duyệt (Reviewing).`;
+        }
+        
+        // Check PM permission on project
+        if (userRole === 'Project Manager') {
+            const p = dbFindById('projects', task.project_id);
+            if (p && p.pm_id !== userId) {
+                return `❌ <strong>Lỗi phân quyền:</strong> Bạn chỉ được phê duyệt/từ chối công việc thuộc dự án bạn quản lý.`;
+            }
+        }
+        
+        // Update task and approvals
+        dbUpdate('tasks', task.id, { status: 'In Progress' });
+        
+        const appReq = dbFindAll('approval_requests').find(r => r.task_id === task.id && r.status === 'Pending');
+        if (appReq) {
+            dbUpdate('approval_requests', appReq.id, {
+                status: 'Rejected',
+                feedback: feedbackText,
+                approver_id: userId
+            });
+        }
+        
+        // Log & Noti
+        createActivityLog(task.id, userId, `Từ chối phê duyệt task, phản hồi: "${feedbackText}" qua Chat Agent.`);
+        if (task.assignee_id) {
+            sendNotification(task.assignee_id, `PM ${currentUser.full_name} từ chối task '${task.title}', yêu cầu: "${feedbackText}".`);
+        }
+        
+        return `⚠️ <strong>Đã từ chối hoàn thành công việc!</strong><br>
+                • <b>Mã Task:</b> ${task.id}<br>
+                • <b>Nhiệm vụ:</b> ${task.title}<br>
+                • <b>Trạng thái mới:</b> <span class="status-badge badge-warning">In Progress</span><br>
+                • <b>Lý do:</b> ${feedbackText}`;
+    }
+    
+    // ----------------------------------------------------
+    // 6. COMMAND: LIST MY TASKS
+    // Format: "xem danh sách task của tôi" hoặc "danh sách task"
+    // ----------------------------------------------------
+    if (lowerText.includes("danh sách task của tôi") || lowerText.includes("task của tôi") || (lowerText.includes("danh sách task") && userRole === 'Staff')) {
+        const myTasks = dbFindAll('tasks').filter(t => t.assignee_id === userId);
+        
+        if (myTasks.length === 0) {
+            return "💬 Hiện tại bạn không có công việc nào được gán.";
+        }
+        
+        let listHtml = `💬 <strong>Danh sách công việc được giao cho bạn (${myTasks.length} task):</strong><br><br>`;
+        myTasks.forEach((t, i) => {
+            const proj = dbFindById('projects', t.project_id);
+            const projName = proj ? proj.name : 'Dự án khác';
+            const badgeClass = t.status === 'Done' ? 'badge-success' : t.status === 'Reviewing' ? 'badge-indigo' : t.status === 'In Progress' ? 'badge-warning' : 'badge-info';
+            listHtml += `${i + 1}. [${t.id}] <b>${t.title}</b><br>
+                         &nbsp;&nbsp;&nbsp;&nbsp;• <i>Dự án:</i> ${projName}<br>
+                         &nbsp;&nbsp;&nbsp;&nbsp;• <i>Trạng thái:</i> <span class="status-badge ${badgeClass}">${t.status}</span> | <i>Deadline:</i> ${t.due_date}<br><br>`;
+        });
+        
+        return listHtml;
+    }
+    
+    // ----------------------------------------------------
+    // 7. COMMAND: ANALYZE PERFORMANCE (TIMING ANALYTICS)
+    // Format: "phân tích hiệu suất" hoặc "phân tích dự án"
+    // ----------------------------------------------------
+    if (lowerText.includes("phân tích hiệu suất") || lowerText.includes("phân tích dự án")) {
+        const tasks = dbFindAll('tasks');
+        const projects = dbFindAll('projects');
+        
+        let targetTasks = tasks;
+        if (currentRole === 'Project Manager') {
+            const managedProjIds = projects.filter(p => p.pm_id === userId).map(p => p.id);
+            targetTasks = tasks.filter(t => managedProjIds.includes(t.project_id));
+        } else if (currentRole === 'Staff') {
+            targetTasks = tasks.filter(t => t.assignee_id === userId);
+        }
+        
+        const total = targetTasks.length;
+        if (total === 0) {
+            return "📈 Không tìm thấy dữ liệu công việc nào để phân tích.";
+        }
+        
+        const todayStr = new Date().toISOString().split('T')[0];
+        let earlyStartCount = 0;
+        let lateStartCount = 0;
+        let earlyEndCount = 0;
+        let lateEndCount = 0;
+        
+        targetTasks.forEach(task => {
+            if (task.actual_start_date) {
+                if (task.actual_start_date < task.plan_start_date) earlyStartCount++;
+                else if (task.actual_start_date > task.plan_start_date) lateStartCount++;
+            } else if (task.status === 'To Do' && task.plan_start_date && task.plan_start_date < todayStr) {
+                lateStartCount++;
+            }
+            
+            if (task.status === 'Done' && task.actual_end_date) {
+                if (task.actual_end_date < task.due_date) earlyEndCount++;
+                else if (task.actual_end_date > task.due_date) lateEndCount++;
+            } else if (task.status !== 'Done' && task.due_date && task.due_date < todayStr) {
+                lateEndCount++;
+            }
+        });
+        
+        return `📊 <strong>Báo cáo phân tích hiệu suất thực thi công việc:</strong><br>
+                • <b>Tổng số nhiệm vụ đang theo dõi:</b> ${total}<br>
+                • 🚀 <b>Bắt đầu sớm (Early Start):</b> ${earlyStartCount} task<br>
+                • ⚠️ <b>Bắt đầu muộn (Late Start):</b> ${lateStartCount} task<br>
+                • 🎉 <b>Hoàn thành sớm (Early End):</b> ${earlyEndCount} task<br>
+                • 🚨 <b>Trễ hạn / Hoàn thành muộn (Overdue):</b> ${lateEndCount} task<br><br>
+                <i>Nhận xét: ${lateEndCount > 0 ? "Vẫn còn công việc bị trễ hạn chót, PM cần đôn đốc và phân bổ lại nguồn lực." : "Tuyệt vời! Tất cả công việc đều đang kiểm soát đúng tiến độ."}</i>`;
+    }
+    
+    // Default reply
+    return `🤖 <strong>Task Agent:</strong> Tôi không hiểu câu lệnh của bạn. Vui lòng thử các câu lệnh mẫu sau:<br>
+            • <i>"Tạo task [Tên] gán cho [Staff] deadline [YYYY-MM-DD]"</i><br>
+            • <i>"Cập nhật task [Mã] sang [Trạng thái]"</i><br>
+            • <i>"Xem danh sách task của tôi"</i><br>
+            • <i>"Phân tích hiệu suất"</i><br>
+            • <i>"Duyệt task [Mã]"</i>`;
+}
+

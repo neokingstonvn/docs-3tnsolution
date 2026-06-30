@@ -17,10 +17,10 @@ const INITIAL_DB = {
         { id: "PROJ_3", name: "Thiết kế nội thất sảnh chính", description: "Cải tạo lại toàn bộ không gian tiếp khách và trưng bày tại sảnh văn phòng.", pm_id: "USER_ADMIN_1", status: "On Hold" }
     ],
     tasks: [
-        { id: "TASK_1", project_id: "PROJ_1", title: "Thiết kế Banner quảng cáo sảnh", description: "Thiết kế bộ banner khổ lớn để treo tại sảnh chính và đăng web.", assignee_id: "USER_STAFF_1", priority: "High", due_date: "2026-06-30", status: "In Progress" },
-        { id: "TASK_2", project_id: "PROJ_1", title: "Viết bài PR khai trương", description: "Soạn thảo bài viết quảng bá đăng trên các báo điện tử Dân trí, VnExpress.", assignee_id: "USER_STAFF_2", priority: "Medium", due_date: "2026-07-05", status: "To Do" },
-        { id: "TASK_3", project_id: "PROJ_2", title: "Thiết lập CSDL PostgreSQL", description: "Chạy các script DDL và seed data chuẩn bị cho môi trường staging.", assignee_id: "USER_STAFF_1", priority: "High", due_date: "2026-06-25", status: "Done" },
-        { id: "TASK_4", project_id: "PROJ_3", title: "Vẽ layout 3D mặt bằng", description: "Sử dụng SketchUp dựng trước phối cảnh 3D nội thất.", assignee_id: "", priority: "Low", due_date: "2026-07-15", status: "To Do" }
+        { id: "TASK_1", project_id: "PROJ_1", title: "Thiết kế Banner quảng cáo sảnh", description: "Thiết kế bộ banner khổ lớn để treo tại sảnh chính và đăng web.", assignee_id: "USER_STAFF_1", priority: "High", plan_start_date: "2026-06-25", actual_start_date: "2026-06-27", due_date: "2026-06-30", actual_end_date: null, status: "In Progress" },
+        { id: "TASK_2", project_id: "PROJ_1", title: "Viết bài PR khai trương", description: "Soạn thảo bài viết quảng bá đăng trên các báo điện tử Dân trí, VnExpress.", assignee_id: "USER_STAFF_2", priority: "Medium", plan_start_date: "2026-07-02", actual_start_date: null, due_date: "2026-07-05", actual_end_date: null, status: "To Do" },
+        { id: "TASK_3", project_id: "PROJ_2", title: "Thiết lập CSDL PostgreSQL", description: "Chạy các script DDL và seed data chuẩn bị cho môi trường staging.", assignee_id: "USER_STAFF_1", priority: "High", plan_start_date: "2026-06-20", actual_start_date: "2026-06-22", due_date: "2026-06-25", actual_end_date: "2026-06-24", status: "Done" },
+        { id: "TASK_4", project_id: "PROJ_3", title: "Vẽ layout 3D mặt bằng", description: "Sử dụng SketchUp dựng trước phối cảnh 3D nội thất.", assignee_id: "", priority: "Low", plan_start_date: "2026-07-10", actual_start_date: null, due_date: "2026-07-15", actual_end_date: null, status: "To Do" }
     ],
     comments: [
         { id: "COMM_1", task_id: "TASK_1", user_id: "USER_PM_1", content: "Hãy chú ý dùng đúng tone màu của thương hiệu Kingston nhé.", createdAt: "2026-06-27T09:00:00.000Z" },
@@ -108,6 +108,17 @@ function dbUpdate(table, id, updatedFields) {
     const index = list.findIndex(item => item.id === id);
     
     if (index !== -1) {
+        // Tự động cập nhật ngày bắt đầu/kết thúc thực tế của task
+        if (table === 'tasks') {
+            const todayStr = new Date().toISOString().split('T')[0];
+            if (updatedFields.status === 'In Progress' && !list[index].actual_start_date) {
+                updatedFields.actual_start_date = todayStr;
+            }
+            if (updatedFields.status === 'Done' && !list[index].actual_end_date) {
+                updatedFields.actual_end_date = todayStr;
+            }
+        }
+        
         list[index] = { ...list[index], ...updatedFields, updatedAt: new Date().toISOString() };
         db[table] = list;
         saveDB(db);

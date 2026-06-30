@@ -134,7 +134,8 @@
 │   │   ├── User.js                 # Thực thể User
 │   │   ├── Project.js              # Thực thể Project
 │   │   ├── Task.js                 # Thực thể Task
-│   │   └── ApprovalRequest.js      # Thực thể Yêu cầu phê duyệt
+│   │   ├── ApprovalRequest.js      # Thực thể Yêu cầu phê duyệt
+│   │   └── ChatLog.js              # Thực thể Nhật ký Chat Agent
 │   └── value-objects/
 │       ├── Priority.js             # High / Medium / Low
 │       └── TaskStatus.js           # To Do / In Progress / Reviewing / Done
@@ -142,16 +143,22 @@
 │   ├── project/
 │   │   ├── CreateProject.js
 │   │   └── AssignPM.js
-│   └── task/
-│       ├── CreateTask.js
-│       ├── SubmitApproval.js
-│       └── ReviewTask.js
+│   ├── task/
+│   │   ├── CreateTask.js
+│   │   ├── SubmitApproval.js
+│   │   └── ReviewTask.js
+│   └── chat/
+│       ├── ParseChatCommand.js     # Giải cú pháp NLP / Regex câu lệnh
+│       └── ExecuteChatAction.js    # Thực thi CRUD tương ứng với câu lệnh
 └── infrastructure/                 # Lớp Chi Tiết Công Nghệ (Adapters & External Services)
     ├── database/
     │   ├── PostgreSQLRepository.js
     │   └── LocalStorageRepository.js
-    └── security/
-        └── RBACMiddleware.js</pre>
+    ├── security/
+    │   └── RBACMiddleware.js
+    └── webhooks/
+        ├── TelegramWebhook.js      # Endpoint tiếp nhận chat Telegram
+        └── ZaloWebhook.js          # Endpoint tiếp nhận chat Zalo</pre>
             </div>
         </section>
 
@@ -194,10 +201,15 @@
                                <td>Yêu cầu phê duyệt</td>
                                <td>Lưu ID, Task ID, Submitter ID, Báo cáo, Link tài liệu, Approver ID, Trạng thái (Pending/Approved/Rejected), Phản hồi.</td>
                            </tr>
-                           <tr>
+                            <tr>
                                <td><strong>activity_logs</strong></td>
                                <td>Lịch sử hoạt động</td>
                                <td>Lưu ID, Task ID, User ID, Mô tả hành động (Action), Thời gian.</td>
+                           </tr>
+                           <tr>
+                               <td><strong>chat_logs</strong></td>
+                               <td>Lịch sử chat ảo</td>
+                               <td>Lưu ID, User ID, tin nhắn message, phản hồi response, intent nhận diện được, Thời gian.</td>
                            </tr>
                         </tbody>
                     </table>
@@ -230,7 +242,10 @@ CREATE TABLE tasks (
     description TEXT,
     assignee_id UUID REFERENCES users(id) ON DELETE SET NULL,
     priority VARCHAR(20) NOT NULL CHECK (priority IN ('High', 'Medium', 'Low')),
+    plan_start_date DATE,
+    actual_start_date DATE,
     due_date DATE NOT NULL,
+    actual_end_date DATE,
     status VARCHAR(50) NOT NULL DEFAULT 'To Do' CHECK (status IN ('To Do', 'In Progress', 'Reviewing', 'Done')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -263,6 +278,16 @@ CREATE TABLE activity_logs (
     task_id UUID REFERENCES tasks(id) ON DELETE CASCADE NOT NULL,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
     action TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- BẢNG CHAT_LOGS
+CREATE TABLE chat_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    message TEXT NOT NULL,
+    response TEXT NOT NULL,
+    intent VARCHAR(50) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );</code></pre>
                 </div>
@@ -491,6 +516,12 @@ CREATE TABLE activity_logs (
                         <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/tasks</code> - Tạo task mới (PM phụ trách, Admin)</li>
                         <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/tasks/:id/submit-approval</code> - Gửi yêu cầu duyệt (Staff)</li>
                         <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/approvals/:id/review</code> - Duyệt/Từ chối task (PM, Admin)</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/chat/command</code> - Gửi tin nhắn dạng text trực tiếp đến Chat Agent trên Web (Xử lý NLP)</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/chat/webhook/telegram</code> - Webhook nhận tin nhắn từ Telegram Bot</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/chat/webhook/zalo</code> - Webhook nhận tin nhắn từ Zalo Official Account Bot</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/chat/webhook/rocketchat</code> - Webhook nhận tin nhắn từ Rocket.Chat Bot</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>POST /api/mcp/v1/call</code> - Cổng kết nối SSE (Server-Sent Events) dành cho MCP Server Client</li>
+                        <li style="font-size: 12px; margin-bottom: 4px;"><code>mcp-stdio-server</code> - Command-line binary của MCP Server chạy qua Standard I/O (IDE Integration)</li>
                     </ul>
                 </div>
                 <div class="table-wrap">
@@ -520,6 +551,55 @@ CREATE TABLE activity_logs (
                            </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. MCP SERVER SCHEMAS & SEQUENCE -->
+        <section id="mcp-server">
+            <h2 class="section-heading">6. Đặc Tả MCP Server Tools & Sơ Đồ Gọi Tự Động</h2>
+            <div class="ve-card" style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 14.5px; font-weight: 700; color: var(--accent); margin-bottom: 8px;">Ví dụ cấu hình kết nối MCP Client (`mcp-config.json`):</h3>
+                <pre style="font-family: 'Fira Code', monospace; font-size: 11px; white-space: pre; overflow-x: auto; background: var(--surface-hover); padding: 12px; border-radius: 6px; border: 1px solid var(--border); line-height: 1.5; color: var(--text);">
+{
+  "mcpServers": {
+    "task-kingston-mcp": {
+      "command": "node",
+      "args": ["/path/to/task-kingston/mcp-stdio-server.js"],
+      "env": {
+        "KINGSTON_API_URL": "http://localhost:3000/api",
+        "KINGSTON_USER_TOKEN": "admin-token-xyz-123"
+      }
+    }
+  }
+}
+                </pre>
+            </div>
+            
+            <div class="ve-card">
+                <h3 style="font-size: 14.5px; font-weight: 700; color: var(--accent); margin-bottom: 8px;">Sơ đồ Sequence: AI Agent tự động giao việc khi phát hiện Bug qua MCP Server</h3>
+                <div class="mermaid-wrap" style="margin-top: 1rem;">
+                    <div class="mermaid">
+                        sequenceDiagram
+                            autonumber
+                            participant IDE as AI Coding Agent (Cursor/Claude)
+                            participant MCP as MCP Client
+                            participant Serv as Task Kingston MCP Server
+                            participant DB as PostgreSQL DB
+                            participant Staff as Nguyễn Văn Staff
+
+                            IDE->>IDE: Phân tích mã nguồn / Phát hiện Bug
+                            Note over IDE: Xác định cần giao task<br/>sửa bug cho lập trình viên
+                            IDE->>MCP: Gọi công cụ: create_task(...)
+                            MCP->>Serv: Gửi JSON-RPC 2.0 request (mcp:call_tool)
+                            Note over Serv: Xác thực token & kiểm tra RBAC
+                            Serv->>DB: INSERT INTO tasks (title, assignee_id, priority, plan_start_date, due_date)
+                            DB-->>Serv: Trả về Record mới (TASK_102)
+                            Serv-->>MCP: Gửi JSON-RPC 2.0 response (thành công)
+                            MCP-->>IDE: Trả về kết quả JSON chi tiết
+                            Note over IDE: Hiển thị task ID cho developer
+                            Note over Staff: Nhận thông báo việc mới<br/>trên Kanban Board
+                    </div>
                 </div>
             </div>
         </section>

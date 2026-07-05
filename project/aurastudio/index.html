@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặc Tả MVP — AuraStudio</title>
+    <!-- Google Fonts: JetBrains Mono + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Link to external stylesheet for separation of concerns -->
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">✨</span>
+            <div class="logo-text">
+                <h1>AuraStudio</h1>
+                <p>Tài Liệu Đặc Tả MVP</p>
+            </div>
+        </div>
+        <div class="sidebar-nav">
+            <p class="menu-title">Đặc tả MVP</p>
+            <a class="nav-item active" onclick="scrollToSec('intro')">📌 Giới Thiệu Chung</a>
+            <a class="nav-item" onclick="scrollToSec('scope')">📊 Phạm Vi MVP</a>
+            <a class="nav-item" onclick="scrollToSec('roles')">👥 Vai Trò Người Dùng</a>
+            <a class="nav-item" onclick="scrollToSec('modules')">📦 Module Chức Năng</a>
+            <a class="nav-item" onclick="scrollToSec('testing')">🏁 Luồng Kiểm Thử</a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+        <div class="top-bar">
+            <span class="breadcrumb">Đặc Tả MVP v2 / AuraStudio</span>
+            <div class="quick-links">
+                <a href="./presentation/index.html" class="btn-link">📺 Trình chiếu Slide</a>
+                <a href="./mvp/plan-high-level/index.html" class="btn-link">🧭 Kế hoạch MVP</a>
+                <a href="./mvp/plan-detailed/index.html" class="btn-link">🔌 Triển khai chi tiết</a>
+                <a href="./mmp/index.html" class="btn-link">🚀 Lộ trình dài hạn</a>
+                <a href="./prototype/index.html" class="btn-link highlight">🖥️ Trải nghiệm UAT Prototype</a>
+            </div>
+        </div>
+
+        <div class="content-area">
+            
+            <!-- SECTION 1: INTRO -->
+            <section id="intro">
+                <div class="glass-card intro-title">
+                    <span class="status-badge badge-indigo" style="margin-bottom: 0.75rem;">Đặc tả MVP chính thức</span>
+                    <h1>AuraStudio</h1>
+                    <p>Hệ thống tự động hóa quy trình thiết kế hình ảnh marketing/e-commerce bằng AI. Tách nền sản phẩm thông minh, tự động lồng ghép bóng đổ vật lý thực tế dưới đáy sản phẩm và ghép hoàn thiện vào các vị trí an toàn (Safe Zone) được cấu hình sẵn trên template.</p>
+                </div>
+            </section>
+
+            <!-- SECTION 2: SCOPE -->
+            <section id="scope">
+                <div class="glass-card">
+                    <h2>📊 1. Phạm Vi MVP (In-scope vs Out-of-scope)</h2>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40%;">Nhóm tính năng</th>
+                                    <th style="width: 20%; text-align: center;">MVP?</th>
+                                    <th>Ghi chú / Quy mô triển khai</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tiếp nhận & Tải ảnh Raw</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-green">MVP (✅)</span></td>
+                                    <td>Hỗ trợ tải tệp ảnh từ thiết bị với định dạng PNG, JPG, JPEG, WEBP. Dung lượng tối đa 10MB.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>AI Tách Nền & Mịn Biên</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-green">MVP (✅)</span></td>
+                                    <td>Tự động nhận diện và cô lập sản phẩm, làm mượt biên (Edge Smoothing) chống răng cưa và dính vệt màu nền cũ.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Thư viện Template & Phân loại</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-green">MVP (✅)</span></td>
+                                    <td>Kho mẫu template mặc định, phân loại theo tỷ lệ (1:1, 4:3, 16:9) và chủ đề ngành hàng.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cấu hình Template & Bounding Box</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-green">MVP (✅)</span></td>
+                                    <td>Admin tải template mới lên và cấu hình vùng an toàn (x, y, width, height) để tự động căn chỉnh sản phẩm.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tự động Phối Cảnh & Đổ bóng</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-green">MVP (✅)</span></td>
+                                    <td>Tự động co giãn phù hợp Safe Zone và render bóng đổ vật lý (Drop Shadow) dưới chân sản phẩm. Merchant được tùy chỉnh 2 chế độ bóng (mềm/sâu) và độ mờ.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tiến trình & Hàng Đợi AI</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-green">MVP (✅)</span></td>
+                                    <td>Hiển thị thanh tiến trình xử lý từng bước (Tách nền -> Đổ bóng -> Render). Giao diện xếp hàng đợi hiển thị vị trí chờ khi máy chủ quá tải.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Xem trước (Preview) & Tải về</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-green">MVP (✅)</span></td>
+                                    <td>Thanh trượt (Slider) so sánh Trước/Sau. Cho phép tải ảnh thành phẩm chất lượng cao PNG/JPG.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cấu hình thứ tự Layer</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-green">MVP (✅)</span></td>
+                                    <td>Đảm bảo sản phẩm lồng ghép đúng lớp (dưới logo đè nhưng trên hình nền template).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Vẽ Safe Zone bằng kéo thả (Admin)</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-red">MMP (❌)</span></td>
+                                    <td>Tính năng vẽ vùng an toàn bằng kéo thả chuột trực tiếp trên giao diện sẽ phát triển sau MVP.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Chỉnh sửa ảnh chuyên sâu</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-red">MMP (❌)</span></td>
+                                    <td>Công cụ vẽ tay, đổi màu sắc chủ thể, chèn sticker tùy ý được chuyển sang lộ trình dài hạn.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Đăng tải trực tiếp lên Sàn TMĐT</strong></td>
+                                    <td style="text-align: center;"><span class="status-badge badge-red">MMP (❌)</span></td>
+                                    <td>Liên kết API đăng ảnh trực tiếp lên Shopee, Lazada, TikTok Shop sẽ thực hiện sau MVP.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: ROLES -->
+            <section id="roles">
+                <div class="glass-card">
+                    <h2>👥 2. Vai Trò & Phân Quyền Người Dùng</h2>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">Vai trò (Role)</th>
+                                    <th>Quyền hạn & Phạm vi thao tác chính</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: rgba(139, 92, 246, 0.05);">
+                                    <td colspan="2" style="padding: 1rem; border: 1px solid var(--accent); border-radius: 0.5rem; color: var(--accent);">
+                                        <strong>⚠️ LƯU Ý PHẠM VI MVP:</strong> Phiên bản MVP **không phân chia vai trò người dùng (no RBAC)** trên giao diện. Một tài khoản duy nhất được sử dụng toàn quyền tất cả chức năng (AI Studio, Thư viện, Kho mẫu, Logs). Cơ chế phân quyền dưới đây được quy hoạch cho lộ trình phát triển dài hạn (MMP Roadmap).
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Admin (Quản trị viên)</strong></td>
+                                    <td>
+                                        <ul style="padding-left: 1.25rem;">
+                                            <li>Quản trị kho template, danh mục tỷ lệ ảnh (1:1, 4:3, 16:9).</li>
+                                            <li>Cấu hình tọa độ vùng an toàn (Safe Zone Coordinates) cho từng template.</li>
+                                            <li>Cấu hình thứ tự hiển thị layer của template (nằm trên nền nhưng nằm dưới logo/văn bản overlay).</li>
+                                            <li>Theo dõi trạng thái hoạt động của hệ thống, hàng đợi xử lý AI và logs hiệu năng.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Merchant (Nhà bán hàng)</strong></td>
+                                    <td>
+                                        <ul style="padding-left: 1.25rem;">
+                                            <li>Tải lên ảnh sản phẩm thô (Raw image) dạng PNG, JPG, JPEG, WEBP.</li>
+                                            <li>Lựa chọn mẫu template từ thư viện sẵn có của hệ thống.</li>
+                                            <li>Điều chỉnh nhẹ vị trí (x, y) sản phẩm trong vùng an toàn và tùy chỉnh bóng đổ vật lý (Drop Shadow).</li>
+                                            <li>Xem trước kết quả so sánh trước/sau và tải ảnh hoàn thiện chất lượng gốc về máy.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: MODULES -->
+            <section id="modules">
+                <div class="glass-card">
+                    <h2>📦 3. Đặc Tả Chi Tiết Module Nghiệp Vụ</h2>
+                    <div class="modules-container">
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 1: Kho Sản Phẩm Đã Tách Nền (Product Library)</div>
+                            <div class="module-desc">Cung cấp kho lưu trữ tập trung các sản phẩm của người dùng, hỗ trợ tải lên folder hàng loạt để tự động gọi API AI tách nền và cập nhật trạng thái kho.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules:</strong> Chỉ chấp nhận định dạng ảnh PNG, JPG, JPEG, WEBP. Dung lượng mỗi tệp tối đa 10MB. Mỗi ảnh tải lên được tự động đưa vào hàng đợi xử lý AI.</li>
+                                <li><strong>System Features:</strong> Lưu trữ ảnh gốc thô và ảnh trong suốt đã xử lý vào bảng cơ sở dữ liệu `product_images` cho tài khoản Merchant.</li>
+                                <li><strong>User Features:</strong> Giao diện kho sản phẩm hiển thị trực quan các tệp tin dưới dạng lưới thumbnail, kèm theo các trạng thái xử lý AI thời gian thực.</li>
+                            </ul>
+                        </div>
+
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 2: AI Tách Nền & Tối Ưu Đường Viền (Background Removal)</div>
+                            <div class="module-desc">Tự động nhận diện và cô lập chủ thể sản phẩm khỏi nền cũ thông qua tích hợp API bên thứ ba.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules:</strong> <b>Giải pháp Tách nền chính thức (MVP):</b> Tích hợp qua API bên thứ ba (Remove.bg / Photoroom API) để đạt độ chính xác 99% mà không tốn chi phí hạ tầng GPU. Nhận diện tự động hoàn toàn không cần khoanh vùng chủ thể. Làm mịn biên (Edge Smoothing) chống răng cưa.</li>
+                                <li><strong>System Features:</strong> Tách nền ảnh thô qua REST API, làm mượt biên và lưu trữ thành phẩm trong suốt hoàn thiện.</li>
+                                <li><strong>User Features:</strong> Giao diện hiển thị trạng thái xử lý chi tiết (VD: "Tách nền AI..." -> "API OK" màu xanh hiển thị thành phẩm trong suốt).</li>
+                            </ul>
+                        </div>
+
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 3: Thư Viện Template & Cấu Hình Hình Mẫu Con</div>
+                            <div class="module-desc">Quản lý các Template nhóm chứa nhiều Hình Mẫu con (Layouts) có thông số kỹ thuật và vùng an toàn riêng biệt.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules:</strong> Một Template chứa nhiều Hình Mẫu con. Mỗi Hình Mẫu quy định rõ tỷ lệ ảnh, phông nền và vùng an toàn (Safe Zone Coordinates) cùng thông số kỹ thuật (Title, Description, Type - Studio, Outdoor, Action, Abstract, Holiday).</li>
+                                <li><strong>System Features:</strong> Lưu trữ thông số tọa độ an toàn và thông tin kỹ thuật hình mẫu trong database. Tự động truy xuất danh sách hình mẫu thuộc Template.</li>
+                                <li><strong>User Features (Admin):</strong> Tạo template nhóm, tải hình mẫu con lên, điền thông số Safe Zone và nhập thông số kỹ thuật mặc định của hình mẫu.</li>
+                            </ul>
+                        </div>
+
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 4: Phối Cảnh & Chỉnh Sửa Metadata theo Mã SKU</div>
+                            <div class="module-desc">Giao diện phối cảnh ánh xạ ảnh sản phẩm vào hình mẫu thông qua bộ chọn tuần tự hai bước (SKU sản phẩm -> góc chụp), cho phép Merchant chỉnh sửa lại tiêu đề, mô tả và loại hình mẫu trước khi render.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules:</strong> Chọn phối cảnh bằng bộ chọn tuần tự: chọn Mã sản phẩm trước, sau đó chọn cụ thể ảnh góc chụp đã tách nền tương ứng. Các chỉnh sửa thông số kỹ thuật (Title, Description, Type) của hình mẫu được lưu riêng vào kết quả phối cảnh (Compositions).</li>
+                                <li><strong>System Features:</strong> Tính toán tỷ lệ scale tối ưu cho sản phẩm vào vùng an toàn của mẫu. Render bóng đổ vật lý và lưu trữ kết quả cấu hình tùy biến.</li>
+                                <li><strong>User Features (Merchant):</strong> Lưới thiết lập hình mẫu: Mỗi thẻ mẫu hiển thị ảnh nền, bộ chọn SKU sản phẩm (Bước 1), bộ chọn ảnh góc chụp đã tách nền (Bước 2), form sửa Title, Description, Type và nút Render phối cảnh riêng lẻ.</li>
+                            </ul>
+                        </div>
+
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 5: Quản Lý Hàng Đợi & Tiến Trình Xử Lý</div>
+                            <div class="module-desc">Quản lý hiệu năng khi có nhiều yêu cầu xử lý đồng thời, hiển thị trạng thái chờ và thời gian xử lý dự kiến.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules:</strong> Có giới hạn xử lý đồng thời (Concurrency Limit). Đẩy yêu cầu vượt quá giới hạn vào hàng đợi FIFO. Thời gian chờ tối đa không quá 60 giây.</li>
+                                <li><strong>System Features:</strong> Phân bổ tác vụ vào hàng đợi, tính toán thời gian chờ dự kiến dựa trên số tác vụ trong hàng đợi.</li>
+                                <li><strong>User Features:</strong> Giao diện loading state chi tiết. Hiển thị thông báo vị trí hàng đợi khi quá tải (VD: "Vị trí hàng đợi: #2. Vui lòng chờ khoảng 15 giây...").</li>
+                            </ul>
+                        </div>
+
+                        <div class="module-group">
+                            <div class="module-header">📦 Module 6: Xem Trước & Xuất Bản Thành Phẩm</div>
+                            <div class="module-desc">Cho phép xem trước kết quả so sánh trước/sau khi ghép và tải ảnh chất lượng gốc về máy.</div>
+                            <ul class="rules-list">
+                                <li><strong>Business Rules:</strong> Ảnh xuất ra phải giữ nguyên độ phân giải sắc nét của ảnh gốc tải lên. Hỗ trợ xuất định dạng PNG/JPG.</li>
+                                <li><strong>System Features:</strong> Tổng hợp các lớp ảnh (Nền -> Bóng đổ -> Sản phẩm -> Overlay) thành tệp phẳng (Flat image) độ phân giải cao.</li>
+                                <li><strong>User Features:</strong> Thanh trượt so sánh (Before/After Slider) chia đôi màn hình. Nút tải xuống (Download) kích hoạt tải ảnh chất lượng cao.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: TESTING -->
+            <section id="testing">
+                <div class="glass-card">
+                    <h2>🏁 4. Luồng Nghiệp Vụ Happy Path & Kiểm Thử</h2>
+                    <div class="happy-paths-container">
+                        <div class="happy-path-box">
+                            <h4>🎯 Luồng 1: Quy trình Thiết kế ảnh "Zero-click" (Merchant)</h4>
+                            <div class="happy-path-flow">
+                                <div class="flow-node">Tải lên Ảnh thô (Raw Image)</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Chọn Template E-commerce 1:1</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Hệ thống xử lý AI (Tách nền -> Phối cảnh -> Tạo bóng)</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Kéo Slider so sánh chất lượng Before/After</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Tải ảnh thành phẩm chất lượng cao</div>
+                            </div>
+                        </div>
+
+                        <div class="happy-path-box">
+                            <h4>🎯 Luồng 2: Cấu hình Template mới (Admin)</h4>
+                            <div class="happy-path-flow">
+                                <div class="flow-node">Vào Admin Portal -> Chọn Tải lên Template</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Tải tệp template lên (bao gồm nền & text overlay)</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Nhập tọa độ Safe Zone (X, Y, W, H)</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Chọn thứ tự hiển thị Layer (quy định sản phẩm nằm dưới text)</div>
+                                <span class="flow-arrow">➔</span>
+                                <div class="flow-node">Bấm Lưu Template -> Hiển thị ngay ở kho mẫu Merchant</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Link to external script file for separation of concerns -->
+    <script src="./index.js"></script>
+</body>
+</html>

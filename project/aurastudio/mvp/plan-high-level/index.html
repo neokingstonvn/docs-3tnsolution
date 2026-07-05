@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch MVP Tổng Thể — AuraStudio</title>
+    <!-- Google Fonts: Plus Jakarta Sans + Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Link to external stylesheet for separation of concerns -->
+    <link rel="stylesheet" href="../../plan-dashboard.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span style="color: var(--accent); font-size: 1.5rem;">🚀</span>
+            <div class="logo-text">
+                <h1>AuraStudio</h1>
+                <p>Kế Hoạch MVP Tổng Thể</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="../../presentation/index.html" class="btn">📺 Slide Trình Chiếu</a>
+            <a href="../../index.html" class="btn btn-purple">📋 Đặc Tả MVP</a>
+            <a href="../../prototype/index.html" class="btn btn-emerald">🖥️ Chạy Prototype UAT</a>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+        <p class="sidebar-title">Kế hoạch tổng thể</p>
+        <nav>
+            <a class="nav-link active" onclick="navTo('why')">1. Phân Tích Logic Nghiệp Vụ</a>
+            <a class="nav-link" onclick="navTo('arch')">2. Kiến Trúc Clean Architecture</a>
+            <a class="nav-link" onclick="navTo('db')">3. Database Schema (DDL)</a>
+            <a class="nav-link" onclick="navTo('timeline')">4. Timeline Phân Kỳ (Phases)</a>
+            <a class="nav-link" onclick="navTo('techstack')">5. Stack Kỹ Thuật Đề Xuất</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <div class="alert-box">
+            <strong>🎯 Mục tiêu Kế hoạch:</strong>
+            Thiết kế kiến trúc phân lớp Clean Architecture, mô hình cơ sở dữ liệu PostgreSQL, sơ đồ luồng hệ thống và lộ trình phân kỳ phát triển MVP cho dự án AuraStudio (không chứa mốc thời gian cụ thể theo đúng chuẩn quy trình).
+        </div>
+
+        <!-- 1. WHY CUSTOM -->
+        <section id="why">
+            <h2 class="section-heading">1. Phân Tích Logic Nghiệp Vụ Cốt Lõi</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%;">Tiêu Chí Nghiệp Vụ</th>
+                                <th>Giải Thích & Lợi Ích Lâu Dài Cho Dự Án</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Tại sao chọn PostgreSQL?</strong></td>
+                                <td>PostgreSQL cung cấp hiệu năng truy vấn cao, hỗ trợ kiểu dữ liệu JSONB linh hoạt (phù hợp để lưu thông số coordinates bổ sung của safe zone) và tính toàn vẹn dữ liệu cực kỳ tốt.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cấu hình Safe Zone động</strong></td>
+                                <td>MVP thiết kế hệ thống tọa độ Safe Zone động (x, y, w, h) dưới dạng tỷ lệ phần trăm so với kích thước gốc của template. Giúp ảnh sản phẩm tự động co giãn vừa vặn trên mọi kích thước ảnh render.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Xếp hàng FIFO xử lý AI</strong></td>
+                                <td>Giúp hệ thống tránh bị quá tải tài nguyên GPU khi nhiều người dùng gửi yêu cầu cùng lúc. Đảm bảo tính ổn định và cung cấp thông tin thời gian chờ dự kiến thực tế cho người dùng.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phân lớp Layer rõ ràng</strong></td>
+                                <td>Đảm bảo tính mỹ thuật của ảnh sản phẩm (chủ thể nằm dưới logo, text trang trí nhưng nằm trên phông nền template).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ARCHITECTURE -->
+        <section id="arch">
+            <h2 class="section-heading">2. Kiến Trúc Clean Architecture</h2>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">
+                Mô hình sơ đồ thiết kế kiến trúc phân lớp. Rê chuột / cuộn chuột để zoom và di chuyển sơ đồ:
+            </p>
+            
+            <div class="diagram-shell">
+                <div class="diagram-shell__hint">
+                    <span>SƠ ĐỒ HỆ THỐNG (MERMAID)</span>
+                    <span>Cuộn chuột để zoom • Kéo thả để pan • Click đúp để đặt lại</span>
+                </div>
+                <div class="mermaid-wrap">
+                    <div class="zoom-controls">
+                        <span class="zoom-label" id="zoom-value">100%</span>
+                        <button type="button" onclick="zoomIn()" title="Phóng to">+</button>
+                        <button type="button" onclick="zoomOut()" title="Thu nhỏ">&minus;</button>
+                        <button type="button" onclick="zoomReset()" title="Reset">&#8634;</button>
+                    </div>
+                    <div class="mermaid-viewport" id="mermaid-viewport">
+                        <div class="mermaid-canvas" id="mermaid-canvas">
+                            <div class="mermaid">
+flowchart TD
+    subgraph Client
+        UI[AuraStudio React Frontend]
+    end
+    subgraph Backend Services
+        API[NestJS API Gateway]
+        Queue[Redis Task Queue]
+        Workers[AI Image Processor Workers]
+    end
+    subgraph Storage
+        DB[(PostgreSQL Database)]
+        S3[(AWS S3 Object Storage)]
+    end
+
+    UI -->|1. Tải ảnh & Gửi lệnh| API
+    API -->|2. Lưu metadata| DB
+    API -->|3. Lưu tệp ảnh thô| S3
+    API -->|4. Thêm job xử lý| Queue
+    Queue -->|5. Nhận job| Workers
+    Workers -->|6. Xử lý tách nền & bóng đổ| Workers
+    Workers -->|7. Lưu kết quả| S3
+    Workers -->|8. Cập nhật trạng thái| DB
+    API -->|9. Thao tác template| DB
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ve-card ve-card--recessed">
+                <pre>
+src/
+├── domain/                      # Quy tắc nghiệp vụ cốt lõi (Entities, Value Objects)
+│   ├── entities/
+│   │   ├── user.entity.ts
+│   │   ├── template.entity.ts
+│   │   └── composition.entity.ts
+│   └── interfaces/
+├── usecases/                    # Logic ứng dụng cụ thể (Use Cases)
+│   ├── background-removal/
+│   ├── template-management/
+│   └── image-composition/
+└── infrastructure/              # Chi tiết kỹ thuật & Framework (DB, Web Server, AI Workers)
+    ├── database/
+    │   ├── prisma/
+    │   └── repositories/
+    ├── queue/                   # Redis queue adapter
+    ├── ai-engine/               # Tích hợp API tách nền
+    └── webserver/               # NestJS Controllers
+                </pre>
+            </div>
+        </section>
+
+        <!-- 3. DATABASE SCHEMA -->
+        <section id="db">
+            <h2 class="section-heading">3. Database Schema (PostgreSQL DDL)</h2>
+            <div class="ve-card">
+                <div class="table-wrap" style="margin-bottom: 1rem;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Tên bảng</th>
+                                <th style="width: 25%;">Thực thể chính</th>
+                                <th>Mục tiêu lưu vết nghiệp vụ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>users</strong></td>
+                                <td>User</td>
+                                <td>Lưu trữ thông tin tài khoản người dùng và gán vai trò quyền hạn (Admin, Merchant).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>templates</strong></td>
+                                <td>Template</td>
+                                <td>Lưu trữ tệp template thiết kế và các bối cảnh hình mẫu con.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>products</strong></td>
+                                <td>Product</td>
+                                <td>Quản lý danh mục sản phẩm của Merchant theo Mã sản phẩm (SKU).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>product_images</strong></td>
+                                <td>ProductImage</td>
+                                <td>Quản lý danh sách ảnh góc chụp thô và ảnh đã tách nền AI tương ứng với từng mã sản phẩm (SKU).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>compositions</strong></td>
+                                <td>Composition</td>
+                                <td>Lưu vết quá trình phối cảnh sản phẩm, loại bóng đổ và tệp ảnh render cuối cùng.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>processing_queues</strong></td>
+                                <td>QueueTask</td>
+                                <td>Điều phối hàng đợi xử lý AI khi hệ thống bị quá tải.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>audit_logs</strong></td>
+                                <td>AuditLog</td>
+                                <td>Lưu trữ nhật ký thao tác nghiệp vụ và bảo mật.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ve-card ve-card--recessed" style="padding: 1rem; margin-bottom: 0;">
+                    <pre><code class="language-sql">
+-- PostgreSQL DDL Schema for AuraStudio
+-- (Chi tiết mã SQL được đồng bộ tại .agents/output/db_schema.sql)
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL CHECK (role IN ('Admin', 'Merchant')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+-- ... (Các bảng khác xem tại db_schema.sql)
+                    </code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TIMELINE -->
+        <section id="timeline">
+            <h2 class="section-heading">4. Timeline Phân Kỳ Phát Triển (Phases)</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 1 — Khởi Tạo Dự Án & Thiết Lập Nền Tảng</h3>
+                            <span class="badge badge--blue">Phân Kỳ 1</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled checked>
+                                <span>Khởi tạo cấu trúc Clean Architecture cho dự án backend.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled checked>
+                                <span>Thiết lập PostgreSQL database và Prisma ORM migrations.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled checked>
+                                <span>Xây dựng APIs cơ bản cho tài khoản người dùng và xác thực.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 2 — AI Background Removal Engine</h3>
+                            <span class="badge badge--blue">Phân Kỳ 2</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp REST API tách nền bên thứ ba (Remove.bg / Photoroom API).</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Xây dựng bộ lọc làm mịn đường biên tiếp xúc (Edge Smoothing).</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Cơ chế tải lên và lưu trữ ảnh thô vào cache server.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 3 — Template Group & Layout Engine</h3>
+                            <span class="badge badge--blue">Phân Kỳ 3</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Xây dựng Template nhóm và các Hình Mẫu con (Layouts).</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Cơ chế cấu hình Safe Zone và nhập thông số kỹ thuật (Title, Description, Type) của hình mẫu.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Cấu hình lớp Layer phân cấp hiển thị cho từng hình mẫu.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 4 — Batch Composition & Custom Metadata</h3>
+                            <span class="badge badge--blue">Phân Kỳ 4</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Thuật toán co giãn, phối cảnh sản phẩm thô hàng loạt vào Hình Mẫu.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Cơ chế ghép cặp sản phẩm với hình mẫu và cho phép chỉnh sửa thông tin kỹ thuật.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tự động tạo bóng đổ vật lý (Drop Shadow) dưới đáy sản phẩm.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 5 — Giao Diện UAT & Tích Hợp Hoàn Thiện</h3>
+                            <span class="badge badge--blue">Phân Kỳ 5</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Kết nối giao diện Merchant portal với các API xử lý ảnh.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp thanh loading hiển thị tiến trình chi tiết trạng thái xử lý AI.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp giao diện hàng đợi và cho phép xuất bản tải ảnh chất lượng gốc.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. TECH STACK -->
+        <section id="techstack">
+            <h2 class="section-heading">5. Stack Kỹ Thuật Lựa Chọn</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Thành phần</th>
+                                <th style="width: 25%;">Công nghệ đề xuất</th>
+                                <th>Mô tả vai trò kỹ thuật chính</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Frontend</strong></td>
+                                <td>ReactJS + Tailwind CSS</td>
+                                <td>Xây dựng giao diện nhanh, linh hoạt, hỗ trợ slider và drag-drop mượt mà.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Backend Framework</strong></td>
+                                <td>NestJS (TypeScript)</td>
+                                <td>Framework cấu trúc tốt, hỗ trợ Dependency Injection chuẩn cho Clean Architecture.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Database</strong></td>
+                                <td>PostgreSQL + Prisma ORM</td>
+                                <td>Hệ quản trị CSDL quan hệ tin cậy, lưu trữ JSONB linh hoạt, kiểm soát kiểu dữ liệu tốt.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Queue System</strong></td>
+                                <td>Redis (BullMQ)</td>
+                                <td>Quản lý hàng đợi tác vụ AI tách nền và render phối cảnh bất đồng bộ.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Object Storage</strong></td>
+                                <td>AWS S3 / MinIO</td>
+                                <td>Lưu trữ các tệp ảnh thô ban đầu và ảnh thành phẩm độ phân giải cao.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Load Mermaid.js -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+
+    <!-- Link to external script file for separation of concerns -->
+    <script src="../../plan-dashboard.js"></script>
+</body>
+</html>

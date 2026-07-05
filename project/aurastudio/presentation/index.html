@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình Chiếu Kế Hoạch — AuraStudio</title>
+    <!-- Google Fonts: Instrument Serif + JetBrains Mono + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Link to external stylesheet for separation of concerns -->
+    <link rel="stylesheet" href="./presentation.css">
+</head>
+<body>
+
+    <!-- Floating Top Presentation Bar -->
+    <header class="presentation-bar">
+        <div class="logo-section">
+            <span class="logo-icon">✨</span>
+            <div class="logo-content">
+                <h1>AuraStudio</h1>
+                <p>Kế hoạch triển khai & Nghiệp vụ</p>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <a href="../index.html" class="slide-link">📋 Đặc tả MVP</a>
+            <a href="../mvp/plan-high-level/index.html" class="slide-link">🧭 Kế hoạch MVP</a>
+            <a href="../mvp/plan-detailed/index.html" class="slide-link">🔌 Triển khai chi tiết</a>
+            <a href="../mmp/index.html" class="slide-link">🚀 Lộ trình dài hạn</a>
+            <a href="../prototype/index.html" class="slide-link highlight">🖥️ Trải nghiệm UAT Prototype</a>
+            <button onclick="toggleFullScreen()" class="fullscreen-btn" title="Toàn màn hình">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:18px;height:18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l-5 5m11 5v-4m0 0h-4m4 0l-5 5" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Slide Deck Scroll Snap Container -->
+    <div class="deck" id="slide-deck">
+        
+        <!-- Slide 1: Welcome -->
+        <section class="slide slide--title">
+            <div class="slide__container" style="text-align: center;">
+                <span class="slide-badge">Giới thiệu dự án</span>
+                <h1 class="slide__display">AuraStudio</h1>
+                <p class="slide__body" style="margin: 0 auto; font-style: italic; font-family: var(--font-serif); font-size: 1.5rem;">
+                    Hệ thống tự động hóa tách nền & lồng ghép template ảnh sản phẩm bằng AI
+                </p>
+                <div style="margin-top: 2rem; color: var(--text-dim); font-size: 0.8rem; font-family: var(--font-mono);">
+                    Cuộn chuột hoặc bấm phím Arrow Right [→] để chuyển slide
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: Problem statement -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide-badge">Bài toán thực tế</span>
+                <h2 class="slide__heading">Nỗi đau trong quy trình thiết kế hiện tại</h2>
+                <div class="grid-3" style="margin-top: 1.5rem;">
+                    <div class="glass-card">
+                        <div class="card-num-badge">01</div>
+                        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Tách nền thủ công phức tạp</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Designer mất nhiều thời gian dùng Canva hoặc các phần mềm bên ngoài để cô lập sản phẩm thô.</p>
+                    </div>
+                    <div class="glass-card">
+                        <div class="card-num-badge">02</div>
+                        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Kéo thả, co giãn thủ công</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Ghép sản phẩm vào template bằng tay dễ bị lệch tỷ lệ, tràn viền hoặc không cân xứng.</p>
+                    </div>
+                    <div class="glass-card">
+                        <div class="card-num-badge">03</div>
+                        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Thiếu bóng đổ vật lý</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Ảnh ghép thường bị giả, thiếu chiều sâu. Việc tự tạo bóng đổ chân thực trong Photoshop tốn nhiều công sức.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Solution -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide-badge">Giải pháp</span>
+                <h2 class="slide__heading">Quy trình "Zero-Click" tự động hóa toàn diện</h2>
+                <div class="slide__inner" style="margin-top: 1rem;">
+                    <div>
+                        <p class="slide__body">
+                            AuraStudio tối ưu hóa quy trình thiết kế hình ảnh marketing/e-commerce bằng cách thay thế toàn bộ thao tác kéo thả phức tạp chỉ bằng tối đa 3 lần tương tác.
+                        </p>
+                        <ul class="slide__bullets">
+                            <li><strong>AI Background Removal:</strong> Tự động tách nền và xử lý mượt biên đường tiếp xúc.</li>
+                            <li><strong>Auto Anchoring:</strong> Tự động co giãn và căn giữa sản phẩm vào vùng an toàn (Safe Zone) của template.</li>
+                            <li><strong>Auto Drop Shadow:</strong> Tự động phân tích khối và tạo bóng đổ vật lý chân thực dưới đáy sản phẩm.</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card" style="text-align: center; padding: 2rem;">
+                        <span style="font-size: 3rem;">✨</span>
+                        <h4 style="margin-top: 1rem; font-weight: 700;">Tăng tốc thiết kế gấp 10 lần</h4>
+                        <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">Sản xuất hàng loạt ảnh thành phẩm trong vòng dưới 60 giây.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Roles & RBAC -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide-badge">Phân quyền vai trò</span>
+                <h2 class="slide__heading">Vai trò & Phân quyền người dùng (RBAC)</h2>
+                <div class="grid-2" style="margin-top: 1.5rem;">
+                    <div class="glass-card" style="border-left: 4px solid var(--accent);">
+                        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem;">👤 Admin (Quản trị viên)</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1rem;">Đảm bảo hệ thống vận hành và duy trì tài nguyên kho mẫu thiết kế.</p>
+                        <ul class="slide__bullets">
+                            <li>Quản trị danh mục và tải lên template thiết kế mới.</li>
+                            <li>Cấu hình tọa độ vùng an toàn (Safe Zone Bounding Box).</li>
+                            <li>Thiết lập thứ tự hiển thị layer của template.</li>
+                            <li>Giám sát hiệu năng xử lý hệ thống và hàng đợi.</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card" style="border-left: 4px solid var(--green);">
+                        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem;">🛍️ Merchant (Nhà bán hàng)</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1rem;">Trực tiếp sản xuất hình ảnh quảng bá cho sản phẩm.</p>
+                        <ul class="slide__bullets">
+                            <li>Tải lên ảnh sản phẩm thô (Raw image) từ thiết bị.</li>
+                            <li>Lựa chọn template mẫu từ thư viện ngành hàng.</li>
+                            <li>Tinh chỉnh nhẹ tọa độ sản phẩm và điều chỉnh bóng đổ.</li>
+                            <li>Xem trước Before/After và tải ảnh chất lượng gốc về máy.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: MVP Scope -->
+        <section class="slide slide--table">
+            <div class="slide__container">
+                <span class="slide-badge">Phạm vi MVP</span>
+                <h2 class="slide__heading">Phân định phạm vi In-scope & Out-of-scope</h2>
+                <div class="slide-table-card" style="margin-top: 1rem;">
+                    <table class="slide-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Tính năng làm trong MVP (In-scope)</th>
+                                <th>Tính năng chuyển sang MMP (Out-of-scope)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>✅ Tải ảnh thô định dạng PNG, JPG, JPEG, WEBP tối đa 10MB.</td>
+                                <td>❌ Vẽ vùng an toàn trực tiếp trên giao diện bằng kéo thả chuột.</td>
+                            </tr>
+                            <tr>
+                                <td>✅ Tự động tách nền AI và làm mượt biên chống răng cưa.</td>
+                                <td>❌ Biên tập nâng cao (chèn text động, vẽ tay, chèn sticker).</td>
+                            </tr>
+                            <tr>
+                                <td>✅ Tự động co giãn ghép sản phẩm vào Safe Zone theo lớp layer.</td>
+                                <td>❌ Xử lý hình ảnh hàng loạt (tải 100 ảnh ghép cùng lúc).</td>
+                            </tr>
+                            <tr>
+                                <td>✅ Tạo bóng đổ vật lý (Shadow) chân thực dưới chân sản phẩm.</td>
+                                <td>❌ Liên kết API đăng ảnh trực tiếp lên Shopee, TikTok Shop.</td>
+                            </tr>
+                            <tr>
+                                <td>✅ Hàng đợi xử lý FIFO và thanh tiến trình loading chi tiết.</td>
+                                <td>❌ Serverless auto-scaling worker pools.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: User Flow -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide-badge">Luồng nghiệp vụ</span>
+                <h2 class="slide__heading">Luồng nghiệp vụ thiết kế "Zero-click"</h2>
+                <div class="slide-horizontal-flow" style="margin-top: 2rem;">
+                    <div class="flow-step-box">
+                        <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent);">BƯỚC 1</span>
+                        <strong>Tải ảnh thô</strong>
+                        <p style="font-size: 0.7rem; color: var(--text-dim);">Merchant kéo thả ảnh sản phẩm gốc.</p>
+                    </div>
+                    <span class="flow-step-arrow">➔</span>
+                    <div class="flow-step-box">
+                        <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent);">BƯỚC 2</span>
+                        <strong>Chọn template</strong>
+                        <p style="font-size: 0.7rem; color: var(--text-dim);">Chọn tỷ lệ (1:1/16:9) & ngành hàng.</p>
+                    </div>
+                    <span class="flow-step-arrow">➔</span>
+                    <div class="flow-step-box">
+                        <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent);">BƯỚC 3</span>
+                        <strong>AI xử lý & Ghép</strong>
+                        <p style="font-size: 0.7rem; color: var(--text-dim);">Hệ thống chạy ngầm tách nền, tạo bóng.</p>
+                    </div>
+                    <span class="flow-step-arrow">➔</span>
+                    <div class="flow-step-box">
+                        <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent);">BƯỚC 4</span>
+                        <strong>Xem & Tải về</strong>
+                        <p style="font-size: 0.7rem; color: var(--text-dim);">Kéo slider so sánh và tải tệp chất lượng gốc.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Technical Roadmap -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide-badge">Lộ trình MVP</span>
+                <h2 class="slide__heading">Timeline Phân Kỳ Phát Triển MVP (5 Giai đoạn)</h2>
+                <div class="slide-timeline" style="margin-top: 1rem;">
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">PHASE 1</span>
+                        <div class="slide-timeline-text">
+                            <h4>Khởi tạo & Nền tảng hạ tầng</h4>
+                            <p>Thiết lập khung Clean Architecture backend, kết nối cơ sở dữ liệu PostgreSQL và APIs Auth.</p>
+                        </div>
+                    </div>
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">PHASE 2</span>
+                        <div class="slide-timeline-text">
+                            <h4>Tích hợp API Tách Nền Bên Thứ Ba</h4>
+                            <p>Tích hợp REST API tách nền bên thứ ba (Remove.bg / Photoroom API) và bộ lọc mịn viền đường biên.</p>
+                        </div>
+                    </div>
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">PHASE 3</span>
+                        <div class="slide-timeline-text">
+                            <h4>Template Group & Layout Engine</h4>
+                            <p>Xây dựng Template nhóm và các Hình Mẫu con (Layouts) cùng cấu hình Safe Zone, thông số kỹ thuật mặc định.</p>
+                        </div>
+                    </div>
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">PHASE 4</span>
+                        <div class="slide-timeline-text">
+                            <h4>Batch Composition & Custom Spec</h4>
+                            <p>Xây dựng bộ máy phối cảnh hàng loạt, ghép cặp sản phẩm với Hình Mẫu và tùy biến thông tin kỹ thuật.</p>
+                        </div>
+                    </div>
+                    <div class="slide-timeline-item">
+                        <span class="slide-timeline-badge">PHASE 5</span>
+                        <div class="slide-timeline-text">
+                            <h4>Tích hợp hoàn thiện & Chạy thử UAT</h4>
+                            <p>Thiết lập giao diện chờ hàng đợi, thanh trượt Before/After và thử nghiệm hệ thống.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: MMP Roadmap -->
+        <section class="slide slide--content">
+            <div class="slide__container">
+                <span class="slide-badge">Kế hoạch tương lai</span>
+                <h2 class="slide__heading">Tầm nhìn dài hạn (Roadmap MMP)</h2>
+                <div class="grid-3" style="margin-top: 1.5rem;">
+                    <div class="glass-card" style="border-top: 3px solid var(--accent);">
+                        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Vẽ Safe Zone trực quan</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Phát triển Canvas Editor giúp Admin vẽ trực tiếp vùng an toàn bằng chuột lên Template.</p>
+                    </div>
+                    <div class="glass-card" style="border-top: 3px solid var(--green);">
+                        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Xử lý hàng loạt</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Merchant tải lên 100 ảnh cùng lúc, AI tự động tách nền và áp chung vào 1 template đã chọn.</p>
+                    </div>
+                    <div class="glass-card" style="border-top: 3px solid var(--amber);">
+                        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Đồng bộ sàn TMĐT</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Liên kết trực tiếp tài khoản Shopee, TikTok Shop để cập nhật ảnh sản phẩm trực tiếp.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: End slide -->
+        <section class="slide slide--title">
+            <div class="slide__container" style="text-align: center;">
+                <span class="slide-badge">Lời kết</span>
+                <h1 class="slide__display" style="font-family: var(--font-serif); font-size: 3rem;">Trân trọng cảm ơn!</h1>
+                <p class="slide__body" style="margin: 0 auto; max-width: 500px;">
+                    AuraStudio cam kết mang lại giải pháp thiết kế hình ảnh tự động đột phá, hiện đại và chuẩn hóa chuyên nghiệp.
+                </p>
+                <div style="margin-top: 2rem;">
+                    <a href="../prototype/index.html" class="slide-link highlight" style="padding: 0.85rem 2rem; font-size: 0.95rem; border-radius: 0.5rem;">
+                        🖥️ Khởi chạy UAT Prototype
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Link to external script file for separation of concerns -->
+    <script src="./presentation.js"></script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch Triển Khai Chi Tiết — AuraStudio</title>
+    <!-- Google Fonts: Plus Jakarta Sans + Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Link to external stylesheet for separation of concerns -->
+    <link rel="stylesheet" href="../../plan-dashboard.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span style="color: var(--accent); font-size: 1.5rem;">🔌</span>
+            <div class="logo-text">
+                <h1>AuraStudio</h1>
+                <p>Kế Hoạch Triển Khai Chi Tiết</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="../../presentation/index.html" class="btn">📺 Slide Trình Chiếu</a>
+            <a href="../../index.html" class="btn btn-purple">📋 Đặc Tả MVP</a>
+            <a href="../../prototype/index.html" class="btn btn-emerald">🖥️ Chạy Prototype UAT</a>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+        <p class="sidebar-title">Kế hoạch triển khai</p>
+        <nav>
+            <a class="nav-link active" onclick="navTo('why')">1. Thiết Kế RESTful APIs</a>
+            <a class="nav-link" onclick="navTo('arch')">2. API Sequence Flow</a>
+            <a class="nav-link" onclick="navTo('db')">3. API Endpoints Table</a>
+            <a class="nav-link" onclick="navTo('timeline')">4. Timeline 6 Tuần Chi Tiết</a>
+            <a class="nav-link" onclick="navTo('techstack')">5. Phân Công & Hoàn Thành</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <div class="alert-box">
+            <strong>🎯 Mục tiêu Kế hoạch:</strong>
+            Định hình cụ thể mốc thời gian (Dates), chi tiết các API Endpoints, cấu trúc payload JSON, sơ đồ tương tác API Sequence Flow và kế hoạch kiểm thử UAT cho dự án AuraStudio.
+        </div>
+
+        <!-- 1. WHY CUSTOM -->
+        <section id="why">
+            <h2 class="section-heading">1. Thiết Kế Logic RESTful APIs</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%;">Tiêu Chí Kỹ Thuật</th>
+                                <th>Giải Thích & Lợi Ích Lâu Dài Cho Dự Án</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Phản hồi HTTP 202 Accepted</strong></td>
+                                <td>Vì tác vụ xử lý AI tách nền và render tốn thời gian (lên đến 60s), API tạo phối cảnh sẽ trả về HTTP 202 ngay lập tức cùng với ID và thời gian chờ dự kiến, tránh làm nghẽn kết nối của Client.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mô hình Polling / WebSocket</strong></td>
+                                <td>Client sẽ gửi request polling hoặc kết nối socket để nhận cập nhật trạng thái realtime từ hàng đợi AI giúp tối ưu trải nghiệm.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bảo mật & Phân quyền</strong></td>
+                                <td>Mỗi API đều có middleware JWT xác thực. Admin mới có quyền POST/DELETE Template, Merchant chỉ có quyền CRUD trên ảnh sản phẩm và phối cảnh của chính họ.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. API SEQUENCE FLOW -->
+        <section id="arch">
+            <h2 class="section-heading">2. API Sequence Flow (Xử lý ảnh bất đồng bộ)</h2>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">
+                Quy trình tương tác giữa client, backend gateway, Redis queue và AI worker. Rê chuột để zoom/pan:
+            </p>
+            
+            <div class="diagram-shell">
+                <div class="diagram-shell__hint">
+                    <span>SƠ ĐỒ TƯƠNG TÁC API (MERMAID)</span>
+                    <span>Cuộn chuột để zoom • Kéo thả để pan • Click đúp để đặt lại</span>
+                </div>
+                <div class="mermaid-wrap">
+                    <div class="zoom-controls">
+                        <span class="zoom-label" id="zoom-value">100%</span>
+                        <button type="button" onclick="zoomIn()" title="Phóng to">+</button>
+                        <button type="button" onclick="zoomOut()" title="Thu nhỏ">&minus;</button>
+                        <button type="button" onclick="zoomReset()" title="Reset">&#8634;</button>
+                    </div>
+                    <div class="mermaid-viewport" id="mermaid-viewport">
+                        <div class="mermaid-canvas" id="mermaid-canvas">
+                            <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Merchant as Merchant Client
+    participant API as NestJS Gateway
+    participant Queue as Redis Queue
+    participant Worker as AI Worker
+    participant DB as PostgreSQL
+
+    Merchant->>API: POST /api/compositions (image_raw_id, template_id)
+    API->>DB: INSERT INTO compositions (status='Pending')
+    API->>Queue: Push Job (composition_id)
+    API->>DB: INSERT INTO processing_queues (status='Waiting')
+    API-->>Merchant: 202 Accepted (composition_id, queue_position=3, wait_time=45s)
+    
+    Note over Worker, Queue: Worker is listening to Redis queue
+    Queue->>Worker: Dispatch Job (composition_id)
+    Worker->>DB: UPDATE compositions & queues (status='Processing')
+    Worker->>Worker: Pull raw image & Template metadata
+    Worker->>Worker: AI Background Removal & Smooth edges
+    Worker->>Worker: Calculate scale & center into safe zone
+    Worker->>Worker: Render drop shadow & composite layers
+    Worker->>Worker: Save final image to S3
+    Worker->>DB: UPDATE compositions (status='Completed', url=final_url)
+    Worker->>DB: UPDATE processing_queues (status='Finished')
+    
+    Merchant->>API: GET /api/compositions/{id} (Polling/WebSocket)
+    API->>DB: Query status
+    API-->>Merchant: Status: Completed (final_image_url)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ve-card ve-card--recessed">
+                <pre>
+// Cấu trúc Payload JSON gửi lên tạo phối cảnh:
+POST /api/compositions
+Authorization: Bearer [JWT_TOKEN]
+{
+  "product_image_id": "8f3b92a4-569d-4e98-b80c-e2f67ac12345",
+  "template_id": "4c9b8d23-784f-4e92-bc90-d8f78ae54321",
+  "scale_factor": 1.2,
+  "offset_x": 10.0,
+  "offset_y": -5.0,
+  "shadow_type": "Soft",
+  "shadow_opacity": 0.6
+}
+
+// Phản hồi nhận về:
+HTTP/1.1 202 Accepted
+{
+  "id": "7b82ab34-90a1-4328-82ef-d78a9c123456",
+  "status": "Pending",
+  "queue_position": 3,
+  "estimated_wait_seconds": 45
+}
+                </pre>
+            </div>
+        </section>
+
+        <!-- 3. API ENDPOINTS TABLE -->
+        <section id="db">
+            <h2 class="section-heading">3. Danh Sách RESTful API Endpoints</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">Phương thức</th>
+                                <th style="width: 30%;">Đường dẫn (Endpoint)</th>
+                                <th style="width: 15%;">Quyền truy cập</th>
+                                <th>Mục tiêu & Chức năng xử lý chính</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span style="color: #2563eb; font-weight: bold;">POST</span></td>
+                                <td>`/api/auth/login`</td>
+                                <td>Public</td>
+                                <td>Xác thực thông tin đăng nhập và trả về mã JWT Token.</td>
+                            </tr>
+                            <tr>
+                                <td><span style="color: #059669; font-weight: bold;">GET</span></td>
+                                <td>`/api/templates`</td>
+                                <td>All Roles</td>
+                                <td>Truy xuất danh sách template mẫu (hỗ trợ lọc theo tỷ lệ 1:1, 16:9).</td>
+                            </tr>
+                            <tr>
+                                <td><span style="color: #2563eb; font-weight: bold;">POST</span></td>
+                                <td>`/api/templates`</td>
+                                <td>Admin</td>
+                                <td>Tải lên template thiết kế mới và lưu thông số Safe Zone.</td>
+                            </tr>
+                            <tr>
+                                <td><span style="color: #e11d48; font-weight: bold;">DELETE</span></td>
+                                <td>`/api/templates/:id`</td>
+                                <td>Admin</td>
+                                <td>Xóa template mẫu ra khỏi cơ sở dữ liệu.</td>
+                            </tr>
+                            <tr>
+                                <td><span style="color: #2563eb; font-weight: bold;">POST</span></td>
+                                <td>`/api/products`</td>
+                                <td>Merchant</td>
+                                <td>Đăng ký sản phẩm mới (Mã SKU định danh, tên sản phẩm).</td>
+                            </tr>
+                            <tr>
+                                <td><span style="color: #059669; font-weight: bold;">GET</span></td>
+                                <td>`/api/products`</td>
+                                <td>Merchant</td>
+                                <td>Xem danh mục sản phẩm (các SKU) đã đăng ký.</td>
+                            </tr>
+                            <tr>
+                                <td><span style="color: #2563eb; font-weight: bold;">POST</span></td>
+                                <td>`/api/products/:productId/images`</td>
+                                <td>Merchant</td>
+                                <td>Tải lên nhiều ảnh thô góc chụp cho mã sản phẩm, tự động gọi API AI tách nền và liên kết ảnh trong suốt.</td>
+                            </tr>
+                            <tr>
+                                <td><span style="color: #2563eb; font-weight: bold;">POST</span></td>
+                                <td>`/api/compositions`</td>
+                                <td>Merchant</td>
+                                <td>Yêu cầu phối cảnh ảnh sản phẩm (đẩy tác vụ vào hàng đợi AI).</td>
+                            </tr>
+                            <tr>
+                                <td><span style="color: #059669; font-weight: bold;">GET</span></td>
+                                <td>`/api/compositions/:id`</td>
+                                <td>Merchant</td>
+                                <td>Kiểm tra tiến trình và nhận link ảnh render cuối cùng.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TIMELINE -->
+        <section id="timeline">
+            <h2 class="section-heading">4. Kế Hoạch Triển Khai 6 Tuần Chi Tiết</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Tuần 1 — Nền Tảng Kỹ Thuật & Khởi Tạo</h3>
+                            <span class="badge badge--blue">06/07/2026 – 12/07/2026</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled checked>
+                                <span>Thiết lập Repo NestJS và định hình kiến trúc domain/usecase/infrastructure.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled checked>
+                                <span>Chạy migration CSDL PostgreSQL và cài đặt Prisma ORM.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled checked>
+                                <span>Hoàn thành API Auth, gán quyền Admin và Merchant.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Tuần 2 — Tách Nền Bằng AI Engine</h3>
+                            <span class="badge badge--blue">13/07/2026 – 19/07/2026</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp REST API tách nền bên thứ ba (Remove.bg / Photoroom API).</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Phát triển thuật toán làm mượt biên (Edge Smoothing filter).</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Viết unit test kiểm thử độ chính xác tách nền.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Tuần 3 — Thiết Kế Cấu Trúc Nhóm Template & Hình Mẫu</h3>
+                            <span class="badge badge--blue">20/07/2026 – 26/07/2026</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Xây dựng CSDL và API quản lý Template nhóm và các Hình Mẫu con (Layouts).</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp bảng nhập thông số kỹ thuật (Title, Description, Type) và tọa độ Safe Zone cho từng Hình Mẫu.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Kiểm tra lưu trữ và truy vấn danh sách hình mẫu của template.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Tuần 4 — Batch Composition & Đổ Bóng Vật Lý</h3>
+                            <span class="badge badge--blue">27/07/2026 – 02/08/2026</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Viết logic tự động scale ảnh lọt lòng Safe Zone của từng Hình Mẫu tương ứng.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Phát triển API ghép cặp ảnh sản phẩm thô với Hình Mẫu, tùy chỉnh thông số kỹ thuật và lưu vào compositions.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Phát triển thuật toán tạo bóng đổ vật lý (Drop Shadow) dưới chân sản phẩm.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Tuần 5 — Tải Folder Ảnh & Hàng Đợi Bất Đồng Bộ</h3>
+                            <span class="badge badge--blue">03/08/2026 – 09/08/2026</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Xây dựng luồng tải lên đồng thời nhiều tệp ảnh (upload folder) và hàng đợi Redis FIFO Queue.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Xây dựng UI hiển thị thanh tiến trình xử lý chi tiết và màn hình chờ hàng đợi.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp thanh trượt so sánh Before/After và tải ảnh thành phẩm.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Tuần 6 — Kiểm Thử UAT & Khởi Chạy Hệ Thống</h3>
+                            <span class="badge badge--blue">10/08/2026 – 16/08/2026</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Triển khai môi trường UAT kiểm thử toàn bộ tính năng và tải máy chủ.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tối ưu hóa thời gian xử lý AI đảm bảo luôn dưới 60 giây.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Đóng gói sản phẩm lên môi trường Staging/Production chính thức.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. TECH STACK -->
+        <section id="techstack">
+            <h2 class="section-heading">5. Phân Công & Hoàn Thành</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Thành viên</th>
+                                <th style="width: 25%;">Vai trò chính</th>
+                                <th>Tiêu chí hoàn thành (Definition of Done)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Backend Dev</strong></td>
+                                <td>NestJS, CSDL, AI SDK</td>
+                                <td>Tách nền chính xác, trả API 202 bất đồng bộ, đẩy job vào hàng đợi thành công. Tối ưu thời gian chạy dưới 60s.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Frontend Dev</strong></td>
+                                <td>React UI, Slider, Queue UI</td>
+                                <td>Tải ảnh mượt mà, hiển thị thanh chờ hàng đợi và loading trạng thái chuẩn xác, xuất bản và download ảnh độ phân giải gốc.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DevOps</strong></td>
+                                <td>Redis, S3 Storage, CI/CD</td>
+                                <td>Thiết lập S3/MinIO và Redis ổn định, tự động dọn dẹp cache sau 24h, cấu hình server AI chịu tải tốt.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Load Mermaid.js -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+
+    <!-- Link to external script file for separation of concerns -->
+    <script src="../../plan-dashboard.js"></script>
+</body>
+</html>

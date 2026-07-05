@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraStudio — UAT Demo Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* CSS bổ sung cho lưới upload sản phẩm hàng loạt và danh sách layout */
+        .product-thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .product-thumb-card {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px;
+            text-align: center;
+            background: var(--surface);
+            position: relative;
+        }
+
+        .product-thumb-card img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .product-thumb-card span {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        .layouts-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .layout-item-card {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+
+        .layout-editor-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .layout-item-card {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left Sidebar Layout -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">✨</span>
+            <div class="logo-text">
+                <h1>AuraStudio</h1>
+                <p>UAT Demo Console</p>
+            </div>
+        </div>
+        
+        <!-- DYNAMIC USER PROFILE -->
+        <div class="user-profile-mock">
+            <div class="avatar" id="sidebar-avatar">AS</div>
+            <div class="profile-info">
+                <span class="name" id="sidebar-user-name">AuraStudio Console</span>
+                <span style="font-size: 0.65rem; color: var(--text-dim);" id="sidebar-user-role">Toàn quyền hệ thống</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav">
+            <p class="menu-title">Chức năng</p>
+            <a class="nav-item active" id="menu-products" onclick="switchTab('products')">
+                <span class="nav-icon">📦</span>
+                <div class="nav-label"><strong>Kho Sản Phẩm</strong><span>Đã tách nền AI</span></div>
+            </a>
+            <a class="nav-item" id="menu-studio" onclick="switchTab('studio')">
+                <span class="nav-icon">🖌️</span>
+                <div class="nav-label"><strong>AI Studio</strong><span>Phối cảnh thiết kế</span></div>
+            </a>
+            <a class="nav-item" id="menu-gallery" onclick="switchTab('gallery')">
+                <span class="nav-icon">📁</span>
+                <div class="nav-label"><strong>Thư Viện Ảnh</strong><span>Lịch sử phối cảnh</span></div>
+            </a>
+            <a class="nav-item" id="menu-templates" onclick="switchTab('templates')">
+                <span class="nav-icon">🖼️</span>
+                <div class="nav-label"><strong>Kho Template</strong><span>Quản lý bối cảnh</span></div>
+            </a>
+            <a class="nav-item" id="menu-logs" onclick="switchTab('logs')">
+                <span class="nav-icon">📋</span>
+                <div class="nav-label"><strong>Audit Logs</strong><span>Nhật ký hệ thống</span></div>
+            </a>
+            
+            <p class="menu-title" style="margin-top: auto;">Cổng đặc tả</p>
+            <a href="../index.html" class="nav-item">
+                <span class="nav-icon">🚪</span>
+                <div class="nav-label"><strong>Thoát Portal</strong><span>Về Tài Liệu Đặc Tả</span></div>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Workspace -->
+    <main class="app-main">
+        
+        <div class="top-breadcrumb-bar">
+            <span class="breadcrumb" id="breadcrumb-title">Kho Sản Phẩm</span>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">
+                UAT Mode • LocalStorage DB (Tất cả tính năng đã gộp cho MVP)
+            </div>
+        </div>
+
+        <div class="dashboard-workspace">
+            <div class="control-panel-column">
+                
+                <!-- ================== MERCHANT PORTAL CONTENT ================== -->
+                
+                <!-- TAB 0: KHO SẢN PHẨM ĐÃ TÁCH NỀN -->
+                <div id="tab-products" class="tab-content">
+                    
+                    <!-- Form Tạo Sản Phẩm Mới -->
+                    <div class="glass-card">
+                        <h2>📦 1. Khởi Tạo Sản Phẩm Mới (Theo Mã SP)</h2>
+                        <p class="card-desc">Đăng ký mã định danh sản phẩm (SKU) và tên sản phẩm để bắt đầu quản lý các ảnh chụp.</p>
+                        <form id="create-product-form" onsubmit="handleCreateProduct(event)" style="display:flex; gap:12px; align-items:flex-end;">
+                            <div class="form-group" style="flex-grow:1; max-width: 200px;">
+                                <label for="prod-code">Mã Sản Phẩm (SKU)</label>
+                                <input type="text" id="prod-code" placeholder="VD: SP-003" required>
+                            </div>
+                            <div class="form-group" style="flex-grow:2;">
+                                <label for="prod-name">Tên Sản Phẩm</label>
+                                <input type="text" id="prod-name" placeholder="VD: Giày Thể Thao Nike Air" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="height:42px;">📦 Khởi Tạo</button>
+                        </form>
+                    </div>
+
+                    <!-- Danh sách các sản phẩm và hình ảnh tương ứng -->
+                    <div class="glass-card">
+                        <h2>🛍️ 2. Kho Sản Phẩm & Ảnh Đã Tách Nền</h2>
+                        <p class="card-desc">Danh sách sản phẩm theo mã. Tải lên folder hình ảnh thô cho từng sản phẩm để hệ thống tự động tách nền.</p>
+                        
+                        <div id="products-catalog-list" style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
+                            <!-- Products details dynamically rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TAB 1: AI STUDIO WORKSPACE (Batch Render) -->
+                <div id="tab-studio" class="tab-content" style="display:none;">
+                    
+                    <!-- BƯỚC 1: CHỌN TEMPLATE -->
+                    <div class="glass-card">
+                        <h2>1. Chọn Template Thiết Kế</h2>
+                        <p class="card-desc">Lựa chọn mẫu Template chủ đề chứa các bối cảnh hình mẫu thiết kế.</p>
+                        
+                        <div class="form-group" style="max-width: 400px;">
+                            <select id="select-merchant-template" onchange="loadTemplateLayoutsForMerchant()" style="width:100%; font-weight:700; border-color:var(--accent);">
+                                <option value="">-- Chọn Template --</option>
+                                <!-- Groups populated dynamically -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- BƯỚC 2: MÀN HÌNH RENDER LIST LAYOUTS -->
+                    <div id="merchant-layouts-section" style="display:none;">
+                        <h2 style="font-size:1.25rem; font-weight:800; margin-bottom:0.75rem; margin-top:1.5rem; display:flex; align-items:center; gap:8px;">
+                            🎨 2. Thiết Lập Phối Cảnh & Thông Số Kỹ Thuật
+                        </h2>
+                        <p class="card-desc" style="margin-bottom:1.5rem;">Cấu hình ghép cặp ảnh sản phẩm vào từng bối cảnh hình mẫu và chỉnh sửa metadata tùy ý.</p>
+                        
+                        <div class="layouts-grid" id="merchant-layouts-grid">
+                            <!-- Layout elements populated dynamically -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- TAB 2: GALLERY / LỊCH SỬ PHỐI CẢNH -->
+                <div id="tab-gallery" class="tab-content" style="display: none;">
+                    <div class="glass-card">
+                        <h2>📁 Thư Viện Kết Quả Phối Cảnh</h2>
+                        <p class="card-desc">Lưu trữ tất cả các tác vụ thiết kế và phối cảnh thành công trước đây của bạn.</p>
+                        
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ảnh Preview</th>
+                                        <th>Sản Phẩm</th>
+                                        <th>Hình Mẫu</th>
+                                        <th>Cấu Hình Bóng</th>
+                                        <th>Thông Số Kỹ Thuật (Title, Type, Description)</th>
+                                        <th>Thời Gian Tạo</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gallery-tbody">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ================== ADMIN PORTAL CONTENT ================== -->
+                
+                <!-- TAB 3: KHO TEMPLATE (Admin add groups & layouts) -->
+                <div id="tab-templates" class="tab-content" style="display: none;">
+                    
+                    <!-- Form 1: Tạo Template -->
+                    <div class="glass-card">
+                        <h2>📁 1. Tạo Template Mới</h2>
+                        <p class="card-desc">Tạo bộ khung Template lớn để chứa các hình mẫu thiết kế.</p>
+                        <form id="create-group-form" onsubmit="handleCreateGroup(event)" style="display:flex; gap:12px; align-items:flex-end;">
+                            <div class="form-group" style="flex-grow:1;">
+                                <label for="group-name">Tên Template</label>
+                                <input type="text" id="group-name" placeholder="VD: Fashion Summer Shoes 2026" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="height:42px;">📁 Tạo Template</button>
+                        </form>
+                    </div>
+
+                    <!-- Form 2: Tạo & Cấu hình Hình Mẫu Hàng Loạt -->
+                    <div class="glass-card">
+                        <h2>➕ 2. Tải Lên Folder Hình Mẫu & Cấu Hình Chi Tiết</h2>
+                        <p class="card-desc">Chọn Template cha, tải lên thư mục bối cảnh hình mẫu (nhiều tệp) và tiến hành cấu hình từng mẫu trên giao diện.</p>
+                        
+                        <div class="form-row" style="margin-bottom: 1.25rem;">
+                            <div class="form-group" style="max-width: 320px;">
+                                <label for="layout-group-select">Chọn Template Cha</label>
+                                <select id="layout-group-select" required>
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Drop zone upload folder hình mẫu -->
+                        <div class="upload-drop-zone" onclick="triggerAdminLayoutFileInput()" style="border-color: var(--accent); background: rgba(139, 92, 246, 0.02); margin-bottom: 1.5rem;">
+                            <span style="font-size: 2rem;">📁</span>
+                            <p><strong>Click để tải lên Folder hình mẫu</strong> hoặc Kéo Thả ảnh bối cảnh vào đây</p>
+                            <p style="font-size: 0.65rem; color: var(--text-dim);">Hỗ trợ tải lên hàng loạt ảnh nền bối cảnh mẫu.</p>
+                            <input type="file" id="admin-layout-file-input" style="display:none;" multiple onchange="handleAdminLayoutFolderSelect(event)">
+                        </div>
+
+                        <!-- Lưới cấu hình từng hình mẫu vừa tải lên -->
+                        <div id="admin-layouts-config-section" style="display:none;">
+                            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem;">
+                                🛠️ Cấu Hình Chi Tiết Các Hình Mẫu Vừa Tải Lên
+                            </h3>
+                            <div class="layouts-grid" id="admin-layouts-config-grid">
+                                <!-- Layout editor cards populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bảng danh sách layouts -->
+                    <div class="glass-card">
+                        <h2>🖼️ Danh Sách Hình Mẫu Đã Cấu Hình</h2>
+                        <p class="card-desc">Danh sách các bối cảnh hình mẫu đang hoạt động trên hệ thống.</p>
+                        
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ảnh Mẫu</th>
+                                        <th>Template</th>
+                                        <th>Tiêu Đề / Loại</th>
+                                        <th>Tỷ Lệ</th>
+                                        <th>Safe Zone Coordinates (X, Y, W, H)</th>
+                                        <th>Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="layouts-tbody">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: AUDIT LOGS -->
+                <div id="tab-logs" class="tab-content" style="display: none;">
+                    <div class="glass-card">
+                        <h2>📋 Nhật Ký Hoạt Động (Audit Logs)</h2>
+                        <p class="card-desc">Ghi lại toàn bộ hành động nghiệp vụ và thay đổi dữ liệu trong quá trình chạy demo UAT.</p>
+                        
+                        <div class="ui-table-wrap">
+                            <table class="ui-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">Thời Gian</th>
+                                        <th style="width: 15%;">Tài Khoản</th>
+                                        <th style="width: 25%;">Hành Động</th>
+                                        <th>Chi Tiết</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-tbody">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Scripts mock DB & logic -->
+    <script src="db.js"></script>
+    <script src="portal.js"></script>
+</body>
+</html>

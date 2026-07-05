@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế Hoạch Dài Hạn (MMP) — AuraStudio</title>
+    <!-- Google Fonts: Plus Jakarta Sans + Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Link to external stylesheet for separation of concerns -->
+    <link rel="stylesheet" href="../plan-dashboard.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="logo-area">
+            <span style="color: var(--accent); font-size: 1.5rem;">🚀</span>
+            <div class="logo-text">
+                <h1>AuraStudio</h1>
+                <p>Kế Hoạch Dài Hạn (MMP)</p>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="../presentation/index.html" class="btn">📺 Slide Trình Chiếu</a>
+            <a href="../index.html" class="btn btn-purple">📋 Đặc Tả MVP</a>
+            <a href="../prototype/index.html" class="btn btn-emerald">🖥️ Chạy Prototype UAT</a>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+        <p class="sidebar-title">Kế hoạch dài hạn</p>
+        <nav>
+            <a class="nav-link active" onclick="navTo('why')">1. Phân Tích Logic MMP</a>
+            <a class="nav-link" onclick="navTo('arch')">2. Kiến Trúc Mở Rộng</a>
+            <a class="nav-link" onclick="navTo('db')">3. Cấu Trúc Dữ Liệu Mở Rộng</a>
+            <a class="nav-link" onclick="navTo('timeline')">4. Lộ Trình Phân Kỳ (Phases)</a>
+            <a class="nav-link" onclick="navTo('techstack')">5. Công Nghệ Đề Xuất</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <div class="alert-box">
+            <strong>🎯 Mục tiêu Kế hoạch:</strong>
+            Lộ trình phát triển sau MVP hướng tới tối ưu hóa hiệu suất thiết kế hình ảnh (vẽ safe zone trực quan, chỉnh sửa ảnh nâng cao, xử lý hàng loạt và đồng bộ trực tiếp lên sàn TMĐT).
+        </div>
+
+        <!-- 1. WHY CUSTOM -->
+        <section id="why">
+            <h2 class="section-heading">1. Phân Tích Logic Nghiệp Vụ MMP</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%;">Tiêu Chí Nghiệp Vụ</th>
+                                <th>Giải Thích & Lợi Ích Lâu Dài Cho Dự Án</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Canvas vẽ Safe Zone trực quan</strong></td>
+                                <td>Giúp Admin dễ dàng tạo template mới bằng cách vẽ trực tiếp vùng an toàn lên canvas thay vì phải tính toán và gõ tọa độ số X, Y, W, H thủ công như ở MVP.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Xử lý ảnh hàng loạt (Batch processing)</strong></td>
+                                <td>Cho phép các nhà bán hàng tải lên 50-100 ảnh thô cùng lúc, hệ thống tự động chạy ngầm tách nền và ghép chung vào 1 mẫu template giúp tiết kiệm hàng giờ làm việc thủ công.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Đồng bộ trực tiếp lên sàn TMĐT</strong></td>
+                                <td>Liên kết trực tiếp tài khoản Shopee, TikTok Shop, Lazada để đẩy ảnh thành phẩm làm ảnh đại diện sản phẩm ngay trên hệ thống AuraStudio.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Chỉnh sửa sáng tạo nâng cao</strong></td>
+                                <td>Cung cấp công cụ chèn văn bản động (tự động lấy tên sản phẩm, giá bán), chèn icon khuyến mãi (Stickers) và các bộ lọc màu đồng bộ.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ARCHITECTURE -->
+        <section id="arch">
+            <h2 class="section-heading">2. Kiến Trúc Mở Rộng Hệ Thống</h2>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">
+                Thiết kế mở rộng tích hợp microservices xử lý tác vụ hàng loạt và APIs TMĐT. Rê chuột để zoom/pan:
+            </p>
+            
+            <div class="diagram-shell">
+                <div class="diagram-shell__hint">
+                    <span>SƠ ĐỒ HỆ THỐNG MỞ RỘNG (MERMAID)</span>
+                    <span>Cuộn chuột để zoom • Kéo thả để pan • Click đúp để đặt lại</span>
+                </div>
+                <div class="mermaid-wrap">
+                    <div class="zoom-controls">
+                        <span class="zoom-label" id="zoom-value">100%</span>
+                        <button type="button" onclick="zoomIn()" title="Phóng to">+</button>
+                        <button type="button" onclick="zoomOut()" title="Thu nhỏ">&minus;</button>
+                        <button type="button" onclick="zoomReset()" title="Reset">&#8634;</button>
+                    </div>
+                    <div class="mermaid-viewport" id="mermaid-viewport">
+                        <div class="mermaid-canvas" id="mermaid-canvas">
+                            <div class="mermaid">
+flowchart TD
+    subgraph Client App
+        UI[React Canvas WebApp]
+    end
+    subgraph Core Services
+        API[NestJS API Gateway]
+        DB[(PostgreSQL DB)]
+    end
+    subgraph Batch Process Microservice
+        BatchAPI[Batch Handler Service]
+        S3[(AWS S3 Storage)]
+    end
+    subgraph Serverless AI Worker Pool
+        Worker1[Tách nền Worker]
+        Worker2[Bóng đổ & Render Worker]
+    end
+    subgraph eCommerce Channels
+        Shopee[Shopee API]
+        TikTok[TikTok Shop API]
+    end
+
+    UI -->|1. Tác vụ thiết kế vẽ Safe Zone| API
+    UI -->|2. Tải 100 ảnh xử lý hàng loạt| BatchAPI
+    BatchAPI -->|3. Tách nhỏ job| Worker1
+    Worker1 -->|4. Lưu kết quả tạm| S3
+    Worker2 -->|5. Đổ bóng & Ghép template| S3
+    BatchAPI -->|6. Xuất bản hàng loạt| eCommerceChannels
+    API -->|7. Đăng tải trực tiếp| eCommerceChannels
+    eCommerceChannels --> Shopee
+    eCommerceChannels --> TikTok
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ve-card ve-card--recessed">
+                <pre>
+// Tích hợp APIs đa kênh TMĐT (Ví dụ: TikTok Shop Product Image update):
+PUT /api/ecommerce/products/image
+Authorization: Bearer [JWT_TOKEN]
+{
+  "channel_type": "TikTokShop",
+  "shop_id": "ts_shop_12345",
+  "product_id": "p_tiktok_998877",
+  "composition_id": "7b82ab34-90a1-4328-82ef-d78a9c123456",
+  "image_index": 0
+}
+                </pre>
+            </div>
+        </section>
+
+        <!-- 3. EXTENDED DATA STRUCTURE -->
+        <section id="db">
+            <h2 class="section-heading">3. Cấu Trúc Dữ Liệu Mở Rộng (Post-MVP Tables)</h2>
+            <div class="ve-card">
+                <div class="table-wrap" style="margin-bottom: 1rem;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Bảng mở rộng</th>
+                                <th style="width: 25%;">Kiểu dữ liệu chính</th>
+                                <th>Ý nghĩa lưu trữ & Nghiệp vụ phục vụ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>merchant_channels</strong></td>
+                                <td>OAuth Credentials</td>
+                                <td>Lưu trữ access token, refresh token và thông tin liên kết của người dùng với các sàn Shopee, TikTok Shop, Lazada.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>batch_jobs</strong></td>
+                                <td>Batch Tracking</td>
+                                <td>Quản lý tổng quan tiến trình của một yêu cầu tải lên và xử lý 100 ảnh cùng lúc (Pending, Processing, Completed).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>batch_items</strong></td>
+                                <td>Job Child Item</td>
+                                <td>Quản lý trạng thái xử lý chi tiết của từng ảnh nhỏ thuộc batch_job.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ve-card ve-card--recessed" style="padding: 1rem; margin-bottom: 0;">
+                    <pre><code class="language-sql">
+-- DDL SQL mở rộng cho MMP:
+CREATE TABLE merchant_channels (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    merchant_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    platform VARCHAR(50) NOT NULL CHECK (platform IN ('Shopee', 'TikTokShop', 'Lazada')),
+    shop_id VARCHAR(100) NOT NULL,
+    access_token TEXT NOT NULL,
+    refresh_token TEXT NOT NULL,
+    token_expires_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+                    </code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TIMELINE -->
+        <section id="timeline">
+            <h2 class="section-heading">4. Lộ Trình Phân Kỳ MMP (Phases)</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 1 — Công Cụ Canvas Vẽ Safe Zone Trực Quan (Admin)</h3>
+                            <span class="badge badge--blue">Lộ Trình MMP</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Phát triển thư viện Canvas kéo thả chuột để Admin tự khoanh vùng an toàn trên Template trực quan, không cần nhập tọa độ số.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tự động tính toán quy đổi tọa độ chuột thành phần trăm Bounding Box lưu vào DB.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 2 — Chỉnh Sửa Sáng Tạo & Biên Tập Ảnh Trực Tuyến</h3>
+                            <span class="badge badge--blue">Lộ Trình MMP</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp bộ chèn chữ tự động (Text Overlay) cho phép kéo thả sửa text khuyến mại.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Chèn nhãn dán sticker khuyến mại (Khung Sale, Freeship) và bộ lọc màu nghệ thuật đồng bộ.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 3 — Xử Lý Hình Ảnh Hàng Loạt (Batch Processing)</h3>
+                            <span class="badge badge--blue">Lộ Trình MMP</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Cho phép Merchant tải lên danh sách nhiều ảnh cùng lúc (tối đa 100 ảnh).</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Hàng đợi tự động xử lý song song và xuất bản thư mục zip chứa toàn bộ ảnh thành phẩm.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-dot"></span>
+                    <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 4 — Tích Hợp Đa Kênh Thương Mại Điện Tử</h3>
+                            <span class="badge badge--blue">Lộ Trình MMP</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Tích hợp OAuth2 và hệ thống API liên kết Shopee, Lazada, TikTok Shop.</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
+                                <input type="checkbox" disabled>
+                                <span>Đẩy ảnh sản phẩm trực tiếp lên sàn TMĐT chỉ với 1 click từ giao diện AuraStudio.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. PROPOSED TECH -->
+        <section id="techstack">
+            <h2 class="section-heading">5. Công Nghệ Đề Xuất Thêm</h2>
+            <div class="ve-card">
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Hợp phần mở rộng</th>
+                                <th style="width: 25%;">Công nghệ đề xuất</th>
+                                <th>Mô tả vai trò kỹ thuật chính</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Canvas Editor</strong></td>
+                                <td>Fabric.js / HTML5 Canvas</td>
+                                <td>Xây dựng công cụ vẽ Safe Zone, chèn chữ, kéo thả stickers mượt mà.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Serverless worker pool</strong></td>
+                                <td>AWS Lambda / Knative</td>
+                                <td>Tự động co giãn số lượng worker xử lý ảnh khi có yêu cầu xử lý hàng loạt lớn từ người dùng.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>eCommerce API Client</strong></td>
+                                <td>Shopee/TikTok SDK</td>
+                                <td>Kết nối API đa sàn thương mại điện tử để cập nhật dữ liệu.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Load Mermaid.js -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+
+    <!-- Link to external script file for separation of concerns -->
+    <script src="../plan-dashboard.js"></script>
+</body>
+</html>

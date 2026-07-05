@@ -28,6 +28,11 @@
             --teal-border: rgba(13, 148, 136, 0.15);
             --teal-text: #0f766e;
 
+            --violet: #8b5cf6;
+            --violet-dim: rgba(139, 92, 246, 0.05);
+            --violet-border: rgba(139, 92, 246, 0.15);
+            --violet-text: #6d28d9;
+
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --radius-lg: 1.25rem;
             --radius-md: 0.75rem;
@@ -171,6 +176,10 @@
             background: var(--indigo);
         }
 
+        .project-card.aurastudio::before {
+            background: var(--violet);
+        }
+
         .project-card:hover {
             box-shadow: var(--shadow-hover);
             border-color: var(--border-bright);
@@ -199,6 +208,12 @@
             background: var(--indigo-dim);
             border: 1px solid var(--indigo-border);
             color: var(--indigo-text);
+        }
+
+        .project-card.aurastudio .card-tag {
+            background: var(--violet-dim);
+            border: 1px solid var(--violet-border);
+            color: var(--violet-text);
         }
 
         .project-title {
@@ -263,6 +278,18 @@
             background: #4338ca;
             border-color: #4338ca;
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        .project-card.aurastudio .btn-primary {
+            background: var(--violet);
+            color: var(--surface);
+            border: 1px solid var(--violet);
+        }
+
+        .project-card.aurastudio .btn-primary:hover {
+            background: #6d28d9;
+            border-color: #6d28d9;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
         }
 
         /* SECONDARY ACTION BUTTONS */
@@ -344,6 +371,26 @@
                         🧭 Kế Hoạch Triển Khai
                     </a>
                     <a href="./kingston/task-kingston/prototype/index.html" class="btn-action btn-secondary" style="border-color: var(--indigo-border); background: var(--indigo-dim); color: var(--indigo-text);" target="_blank">
+                        🖥️ Chạy UAT Prototype
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3. AURASTUDIO CARD -->
+            <div class="project-card aurastudio">
+                <span class="card-tag">✨ AI Product Media</span>
+                <h2 class="project-title">AuraStudio</h2>
+                <p class="project-desc">
+                    Hệ thống tự động hóa thiết kế hình ảnh marketing/e-commerce. Sử dụng AI để tách nền, tối ưu hóa đường viền sản phẩm và tự động lồng ghép bóng đổ vật lý chân thực vào các khung mẫu/template được cấu hình sẵn.
+                </p>
+                <div class="card-actions">
+                    <a href="./aurastudio/index.html" class="btn-action btn-primary" target="_blank">
+                        📋 Xem Đặc Tả MVP
+                    </a>
+                    <a href="./aurastudio/mvp/plan-detailed/index.html" class="btn-action btn-secondary" target="_blank">
+                        🧭 Kế Hoạch Triển Khai
+                    </a>
+                    <a href="./aurastudio/prototype/index.html" class="btn-action btn-secondary" style="border-color: var(--violet-border); background: var(--violet-dim); color: var(--violet-text);" target="_blank">
                         🖥️ Chạy UAT Prototype
                     </a>
                 </div>

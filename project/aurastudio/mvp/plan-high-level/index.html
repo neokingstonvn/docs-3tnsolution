@@ -197,7 +197,7 @@ src/
                             <tr>
                                 <td><strong>compositions</strong></td>
                                 <td>Composition</td>
-                                <td>Lưu vết quá trình phối cảnh sản phẩm, loại bóng đổ và tệp ảnh render cuối cùng.</td>
+                                <td>Lưu vết quá trình phối cảnh sản phẩm, thông số co giãn, dịch chuyển và tệp ảnh render cuối cùng.</td>
                             </tr>
                             <tr>
                                 <td><strong>processing_queues</strong></td>
@@ -263,21 +263,21 @@ CREATE TABLE users (
                     <span class="timeline-dot"></span>
                     <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                            <h3 style="font-size: 15px; font-weight: 700;">Phase 2 — AI Background Removal Engine</h3>
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 2 — Clipdrop AI Integration</h3>
                             <span class="badge badge--blue">Phân Kỳ 2</span>
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
                                 <input type="checkbox" disabled>
-                                <span>Tích hợp REST API tách nền bên thứ ba (Remove.bg / Photoroom API).</span>
+                                <span>Tích hợp Clipdrop API tách nền và lưu trữ tệp PNG tạm thời.</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
                                 <input type="checkbox" disabled>
-                                <span>Xây dựng bộ lọc làm mịn đường biên tiếp xúc (Edge Smoothing).</span>
+                                <span>Xây dựng hàm xử lý tự động cắt lề trong suốt (Trim transparent margins).</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
                                 <input type="checkbox" disabled>
-                                <span>Cơ chế tải lên và lưu trữ ảnh thô vào cache server.</span>
+                                <span>Cơ chế tải lên và lưu trữ ảnh thô của sản phẩm.</span>
                             </label>
                         </div>
                     </div>
@@ -311,21 +311,21 @@ CREATE TABLE users (
                     <span class="timeline-dot"></span>
                     <div class="ve-card" style="margin-left: 16px; margin-bottom: 0;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                            <h3 style="font-size: 15px; font-weight: 700;">Phase 4 — Batch Composition & Custom Metadata</h3>
+                            <h3 style="font-size: 15px; font-weight: 700;">Phase 4 — AI Harmonization & Masked Composition</h3>
                             <span class="badge badge--blue">Phân Kỳ 4</span>
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
                                 <input type="checkbox" disabled>
-                                <span>Thuật toán co giãn, phối cảnh sản phẩm thô hàng loạt vào Hình Mẫu.</span>
+                                <span>Thuật toán lồng ghép ảnh vào Safe Zone (kèm hỗ trợ tinh chỉnh thủ công dự phòng).</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
                                 <input type="checkbox" disabled>
-                                <span>Cơ chế ghép cặp sản phẩm với hình mẫu và cho phép chỉnh sửa thông tin kỹ thuật.</span>
+                                <span>Tích hợp Clipdrop API để AI tự vẽ bóng đổ và hòa hợp ánh sáng viền.</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);">
                                 <input type="checkbox" disabled>
-                                <span>Tự động tạo bóng đổ vật lý (Drop Shadow) dưới đáy sản phẩm.</span>
+                                <span>Xây dựng cơ chế mặt nạ (Masked Composition) bảo toàn chi tiết gốc của sản phẩm 100%.</span>
                             </label>
                         </div>
                     </div>

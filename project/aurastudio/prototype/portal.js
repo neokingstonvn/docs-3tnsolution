@@ -51,6 +51,7 @@ function switchTab(tabId) {
     } else if (tabId === 'studio') {
         breadcrumbTitle.textContent = "AI Studio Workspace";
         populateMerchantTemplateSelect();
+        populateMerchantProductSelect();
     } else if (tabId === 'gallery') {
         breadcrumbTitle.textContent = "Thư Viện Ảnh Lịch Sử";
         renderGallery();
@@ -251,10 +252,11 @@ function populateMerchantTemplateSelect() {
 // Load layouts inside the chosen template group
 function loadTemplateLayoutsForMerchant() {
     const groupId = document.getElementById('select-merchant-template').value;
+    const productId = document.getElementById('select-merchant-product').value;
     const layoutsSec = document.getElementById('merchant-layouts-section');
     const layoutsGrid = document.getElementById('merchant-layouts-grid');
     
-    if (!groupId) {
+    if (!groupId || !productId) {
         layoutsSec.style.display = 'none';
         return;
     }
@@ -319,42 +321,21 @@ function loadTemplateLayoutsForMerchant() {
                     <h3 style="font-size:1.05rem; font-weight:700; color:var(--accent);">Cấu Hình Cho Bối Cảnh</h3>
                 </div>
 
-                <!-- Custom Product SKU Select Dropdown -->
+                <!-- Product SKU Display (From Filter) -->
+                <div style="font-weight:700; font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; margin-top:2px;">Sản phẩm thiết lập:</div>
                 <div class="form-row" style="margin-bottom:0.75rem;">
-                    <div class="form-group" style="grid-column: span 2; position: relative;">
-                        <label>1. Chọn Sản Phẩm (Theo Mã SKU)</label>
-                        <div class="custom-select-wrapper">
-                            <div class="custom-select-trigger" id="custom-prod-trigger-${layout.id}" onclick="toggleProductDropdown('${layout.id}')">
-                                <div id="custom-prod-display-${layout.id}" style="font-weight:700;">
-                                    <span style="color:var(--text-dim); font-size:0.8rem;">-- Click chọn sản phẩm --</span>
-                                </div>
-                                <span class="arrow-indicator">▼</span>
-                            </div>
-                            <div class="custom-select-options-panel" id="custom-prod-options-${layout.id}" style="display:none; max-height:160px;">
-                                <!-- SKU list populated via JS -->
-                            </div>
-                        </div>
-                        <input type="hidden" id="selected-prod-id-${layout.id}" value="">
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--text); display:flex; align-items:center; gap:6px;">
+                        <span class="status-badge badge-info" id="card-sku-badge-${layout.id}">SKU</span>
                     </div>
                 </div>
 
-                <!-- Custom Product Image Selector (Only shows when product chosen) -->
-                <div class="form-row" id="image-select-group-${layout.id}" style="display:none; margin-bottom:0.75rem;">
-                    <div class="form-group" style="grid-column: span 2; position: relative;">
-                        <label>2. Chọn Ảnh Góc Chụp Đã Tách Nền</label>
-                        <div class="custom-select-wrapper">
-                            <div class="custom-select-trigger" id="custom-img-trigger-${layout.id}" onclick="toggleImageDropdown('${layout.id}')">
-                                <div id="custom-img-display-${layout.id}" style="display:flex; align-items:center; gap:8px;">
-                                    <span style="color:var(--text-dim); font-size:0.8rem;">-- Chọn ảnh góc chụp đã tách --</span>
-                                </div>
-                                <span class="arrow-indicator">▼</span>
-                            </div>
-                            <div class="custom-select-options-panel" id="custom-img-options-${layout.id}" style="display:none; max-height:180px;">
-                                <!-- Product angles images populated via JS -->
-                            </div>
-                        </div>
-                        <input type="hidden" id="pair-select-${layout.id}" value="">
-                    </div>
+                <!-- Custom Product Image Selector inside Card (Scoped to Product SKU) -->
+                <div class="form-group" style="margin-bottom:0.75rem;">
+                    <label for="pair-select-${layout.id}" style="font-weight:700;">Góc Chụp Đã Tách Nền (Theo SKU)</label>
+                    <select id="pair-select-${layout.id}" onchange="selectAngleForCard('${layout.id}')" style="width:100%; border-color:var(--accent); font-weight:700;">
+                        <option value="">-- Chọn góc chụp --</option>
+                        <!-- Populated via JS -->
+                    </select>
                 </div>
 
                 <div style="font-weight:700; font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; margin-top:2px;">Thông Số Kỹ Thuật (Có Quyền Sửa):</div>
@@ -384,17 +365,9 @@ function loadTemplateLayoutsForMerchant() {
                 <div style="font-weight:700; font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; margin-top:4px;">Chỉnh Sửa Layout & Bóng Đổ:</div>
 
                 <div class="form-row">
-                    <div class="form-group">
+                    <div class="form-group" style="flex: 1;">
                         <label for="scale-${layout.id}">Co giãn (Scale)</label>
                         <input type="range" id="scale-${layout.id}" min="0.5" max="2.0" step="0.05" value="1.0" oninput="updateLayoutPreview('${layout.id}')">
-                    </div>
-                    <div class="form-group">
-                        <label for="shadow-select-${layout.id}">Bóng đổ</label>
-                        <select id="shadow-select-${layout.id}" onchange="updateLayoutPreview('${layout.id}')">
-                            <option value="Soft">Soft Shadow</option>
-                            <option value="Floor">Floor Shadow</option>
-                            <option value="None">Không có bóng</option>
-                        </select>
                     </div>
                 </div>
 
@@ -420,8 +393,31 @@ function loadTemplateLayoutsForMerchant() {
         
         layoutsGrid.appendChild(card);
         
-        // Sync coordinates & default styles
-        updateLayoutPreview(layout.id);
+        // Populate display fields & trigger preview
+        setTimeout(() => {
+            const prod = dbFindById('products', productId);
+            const skuBadge = document.getElementById(`card-sku-badge-${layout.id}`);
+            if (skuBadge) skuBadge.textContent = prod ? prod.product_code : '';
+            
+            const selectEl = document.getElementById(`pair-select-${layout.id}`);
+            if (selectEl) {
+                const imgs = dbFindAll('product_images').filter(img => img.product_id === productId && img.status === 'Completed');
+                selectEl.innerHTML = '<option value="">-- Chọn góc chụp --</option>';
+                imgs.forEach(img => {
+                    const opt = document.createElement('option');
+                    opt.value = img.id;
+                    opt.textContent = img.name;
+                    selectEl.appendChild(opt);
+                });
+                
+                // Auto select first angle if available
+                if (imgs.length > 0) {
+                    selectEl.value = imgs[0].id;
+                    selectAngleForCard(layout.id);
+                }
+            }
+            updateLayoutPreview(layout.id);
+        }, 10);
     });
 }
 
@@ -601,14 +597,13 @@ function updateLayoutPreview(layoutId) {
     const scaleInput = document.getElementById(`scale-${layoutId}`);
     const xInput = document.getElementById(`offset-x-${layoutId}`);
     const yInput = document.getElementById(`offset-y-${layoutId}`);
-    const shadowSelect = document.getElementById(`shadow-select-${layoutId}`);
     
     if (!scaleInput) return;
 
     const scale = parseFloat(scaleInput.value);
     const offsetX = parseInt(xInput.value);
     const offsetY = parseInt(yInput.value);
-    const shadowType = shadowSelect.value;
+    const shadowType = 'Soft';
 
     const productLayer = document.getElementById(`product-layer-${layoutId}`);
     const shadowLayer = document.getElementById(`shadow-${layoutId}`);
@@ -731,12 +726,12 @@ function showLayoutRenderResult(layoutId, product, layout) {
     const scaleVal = parseFloat(document.getElementById(`scale-${layoutId}`).value);
     const offsetX = parseInt(document.getElementById(`offset-x-${layoutId}`).value);
     const offsetY = parseInt(document.getElementById(`offset-y-${layoutId}`).value);
-    const shadowType = document.getElementById(`shadow-select-${layoutId}`).value;
+    const shadowType = 'Auto';
 
     // Save Composition
     const newComp = {
         merchant_id: currentUserId,
-        product_image_id: "PROD_IMG_1",
+        product_image_id: product.id,
         template_layout_id: layoutId,
         scale_factor: scaleVal,
         offset_x: offsetX,
@@ -751,6 +746,30 @@ function showLayoutRenderResult(layoutId, product, layout) {
     };
 
     dbCreate('compositions', newComp);
+
+    // Auto-save to product library under SKU with datetime naming rule
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    const formattedDate = `${yyyy}${mm}${dd}_${hh}${min}${ss}`;
+    
+    const productData = dbFindById('products', product.product_id);
+    const sku = productData ? productData.product_code : 'SKU';
+    const layoutName = layout.title.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '');
+    const fileName = `${sku}_${layoutName}_${formattedDate}.png`;
+
+    const newProductImage = {
+        product_id: product.product_id,
+        name: fileName,
+        raw_url: product.raw_url,
+        processed_url: finalImgUrl,
+        status: 'Completed'
+    };
+    dbCreate('product_images', newProductImage);
 
     // Init Before After slider for this layout
     initSingleLayoutSlider(layoutId);
@@ -823,7 +842,6 @@ function resetSingleLayout(layoutId) {
     document.getElementById(`scale-${layoutId}`).value = '1';
     document.getElementById(`offset-x-${layoutId}`).value = '0';
     document.getElementById(`offset-y-${layoutId}`).value = '0';
-    document.getElementById(`shadow-select-${layoutId}`).value = 'Soft';
     
     updateLayoutPreview(layoutId);
 }
@@ -1186,4 +1204,60 @@ function renderLogsTable() {
         `;
         tbody.appendChild(tr);
     });
+}
+
+// Global Filter Helper Functions for Merchant AI Studio Workspace
+function populateMerchantProductSelect() {
+    const select = document.getElementById('select-merchant-product');
+    if (!select) return;
+
+    select.innerHTML = '<option value="">-- Chọn Sản phẩm (SKU) --</option>';
+    const products = dbFindAll('products');
+    
+    products.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = `${p.product_code} - ${p.product_name}`;
+        select.appendChild(opt);
+    });
+
+    const layoutsSec = document.getElementById('merchant-layouts-section');
+    if (layoutsSec) layoutsSec.style.display = 'none';
+}
+
+function handleGlobalFilterChange() {
+    const templateId = document.getElementById('select-merchant-template').value;
+    const productId = document.getElementById('select-merchant-product').value;
+    
+    const layoutsSec = document.getElementById('merchant-layouts-section');
+    
+    if (!templateId || !productId) {
+        if (layoutsSec) layoutsSec.style.display = 'none';
+        return;
+    }
+
+    loadTemplateLayoutsForMerchant();
+}
+
+// Triggered when merchant selects an angle on a card
+function selectAngleForCard(layoutId) {
+    const angleId = document.getElementById(`pair-select-${layoutId}`).value;
+    const productLayer = document.getElementById(`product-layer-${layoutId}`);
+    const renderBtn = document.getElementById(`btn-render-${layoutId}`);
+    
+    if (!angleId) {
+        if (productLayer) productLayer.style.display = 'none';
+        if (renderBtn) renderBtn.disabled = true;
+        return;
+    }
+
+    const img = dbFindById('product_images', angleId);
+    if (img && productLayer) {
+        productLayer.src = img.processed_url;
+        productLayer.style.display = 'block';
+    }
+    if (renderBtn) {
+        renderBtn.disabled = !img;
+    }
+    updateLayoutPreview(layoutId);
 }

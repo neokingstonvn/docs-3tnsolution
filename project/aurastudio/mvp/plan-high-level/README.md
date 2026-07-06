@@ -59,7 +59,7 @@ Chi tiết các bảng dữ liệu cốt lõi phục vụ MVP (DDL SQL được 
 ## 4. Lộ Trình Phân Kỳ Phát Triển (Phases - Không ghi ngày cụ thể)
 
 *   **Phase 1 — Khởi Tạo Dự Án & Thiết Lập Nền Tảng:** Khởi tạo khung dự án Clean Architecture, cấu hình PostgreSQL database và viết các APIs cơ bản cho User/Auth.
-*   **Phase 2 — AI Background Removal Engine:** Tích hợp REST API tách nền bên thứ ba (Remove.bg / Photoroom API), xử lý làm mịn đường viền (Edge Smoothing) và lưu trữ tệp PNG tạm thời.
+*   **Phase 2 — AI Background Removal Engine:** Tích hợp Clipdrop API để tự động tách nền, vẽ bóng đổ vật lý và hòa hợp ánh sáng bối cảnh (AI Harmonization).
 *   **Phase 3 — Template Group & Layout Engine:** Xây dựng quản lý Template nhóm và các Hình Mẫu con (Layouts) cùng cấu hình vùng an toàn Safe Zone & thông số kỹ thuật (Title, Description, Type).
 *   **Phase 4 — Batch Composition & Metadata Customization Engine:** Xây dựng luồng phối cảnh co giãn hàng loạt cho folder ảnh, ghép cặp sản phẩm vào hình mẫu, và tùy biến lưu thông số kỹ thuật hình mẫu đã chỉnh sửa.
 *   **Phase 5 — Giao Diện UAT Portal Hợp Nhất & RBAC:** Ghép các APIs vào giao diện Portal duy nhất hỗ trợ chuyển đổi phân quyền RBAC và xếp hàng đợi xử lý.

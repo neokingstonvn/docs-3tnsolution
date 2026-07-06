@@ -11,9 +11,9 @@ Kế hoạch triển khai dự kiến diễn ra từ ngày **06/07/2026** đến
 | Tuần Triển Khai | Khoảng Thời Gian | Các Nhiệm Vụ Cốt Lõi |
 | :--- | :--- | :--- |
 | **Tuần 1** | 06/07/2026 – 12/07/2026 | Khởi tạo cấu trúc Clean Architecture backend (NestJS), thiết lập PostgreSQL và viết các APIs tài khoản người dùng/xác thực. |
-| **Tuần 2** | 13/07/2026 – 19/07/2026 | Tích hợp REST API tách nền bên thứ ba (Remove.bg / Photoroom API), viết bộ lọc làm mịn biên (Edge Smoothing) và lưu trữ tệp PNG tạm thời. |
+| **Tuần 2** | 13/07/2026 – 19/07/2026 | Tích hợp Clipdrop API tách nền và lưu trữ tệp PNG tạm thời. Thiết kế hàm xử lý cắt lề trong suốt (Trim transparent margins). |
 | **Tuần 3** | 20/07/2026 – 26/07/2026 | Phát triển API quản lý Template nhóm và Hình Mẫu con (Layouts), cho phép Admin cấu hình vùng Safe Zone và nhập thông số kỹ thuật mặc định. |
-| **Tuần 4** | 27/07/2026 – 02/08/2026 | Xây dựng API và giao diện ghép cặp ảnh sản phẩm thô với Hình Mẫu, cho phép tùy chỉnh metadata và render bóng đổ vật lý dưới đáy sản phẩm. |
+| **Tuần 4** | 27/07/2026 – 02/08/2026 | Phát triển API lồng ghép ảnh vào Safe Zone, gọi Clipdrop API để AI vẽ bóng đổ & hòa hợp ánh sáng, đè mặt nạ và tự động lưu ảnh phối cảnh thành phẩm vào thư viện ảnh SKU theo quy tắc đặt tên có thời gian. |
 | **Tuần 5** | 03/08/2026 – 09/08/2026 | Phát triển cơ chế tải Folder hình sản phẩm hàng loạt, điều phối hàng đợi Redis FIFO Queue, hiển thị tiến trình loading và so sánh Slider Trước/Sau. |
 | **Tuần 6** | 10/08/2026 – 16/08/2026 | Kiểm thử UAT tổng thể, tối ưu hóa tốc độ tách nền dưới 60s, sửa lỗi bảo mật và đóng gói sản phẩm Staging/Production. |
 
@@ -40,9 +40,10 @@ sequenceDiagram
     Queue->>Worker: Dispatch Job (composition_id)
     Worker->>DB: UPDATE compositions & queues (status='Processing')
     Worker->>Worker: Pull raw image & Template metadata
-    Worker->>Worker: AI Background Removal & Smooth edges
-    Worker->>Worker: Calculate scale & center into safe zone
-    Worker->>Worker: Render drop shadow & composite layers
+    Worker->>Worker: Call Clipdrop API to remove background
+    Worker->>Worker: Trim transparent margins & place into safe zone
+    Worker->>Worker: Call Clipdrop API for harmonization & shadow
+    Worker->>Worker: Composite original product on top using mask
     Worker->>Worker: Save final image to S3
     Worker->>DB: UPDATE compositions (status='Completed', url=final_url)
     Worker->>DB: UPDATE processing_queues (status='Finished')

@@ -177,16 +177,26 @@
                 <!-- TAB 1: AI STUDIO WORKSPACE (Batch Render) -->
                 <div id="tab-studio" class="tab-content" style="display:none;">
                     
-                    <!-- BƯỚC 1: CHỌN TEMPLATE -->
+                    <!-- BƯỚC 1: BỘ LỌC THIẾT KẾ -->
                     <div class="glass-card">
-                        <h2>1. Chọn Template Thiết Kế</h2>
-                        <p class="card-desc">Lựa chọn mẫu Template chủ đề chứa các bối cảnh hình mẫu thiết kế.</p>
+                        <h2>1. Thiết lập Bộ lọc Thiết kế</h2>
+                        <p class="card-desc">Lựa chọn Template bối cảnh và Sản phẩm (SKU) để bắt đầu cấu hình thiết kế.</p>
                         
-                        <div class="form-group" style="max-width: 400px;">
-                            <select id="select-merchant-template" onchange="loadTemplateLayoutsForMerchant()" style="width:100%; font-weight:700; border-color:var(--accent);">
-                                <option value="">-- Chọn Template --</option>
-                                <!-- Groups populated dynamically -->
-                            </select>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                            <div class="form-group">
+                                <label for="select-merchant-template" style="font-weight:700;">Template Nhóm</label>
+                                <select id="select-merchant-template" onchange="handleGlobalFilterChange()" style="width:100%; font-weight:700; border-color:var(--accent);">
+                                    <option value="">-- Chọn Template --</option>
+                                    <!-- Groups populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="select-merchant-product" style="font-weight:700;">Sản phẩm (SKU)</label>
+                                <select id="select-merchant-product" onchange="handleGlobalFilterChange()" style="width:100%; font-weight:700; border-color:var(--accent);">
+                                    <option value="">-- Chọn Sản phẩm (SKU) --</option>
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
                         </div>
                     </div>
 

@@ -55,6 +55,12 @@
                     <h1>AuraStudio</h1>
                     <p>Hệ thống tự động hóa quy trình thiết kế hình ảnh marketing/e-commerce bằng AI. Tách nền sản phẩm thông minh, tự động lồng ghép bóng đổ vật lý thực tế dưới đáy sản phẩm và ghép hoàn thiện vào các vị trí an toàn (Safe Zone) được cấu hình sẵn trên template.</p>
                 </div>
+                
+                <div class="glass-card" style="margin-top: 1.5rem; text-align: center;">
+                    <h2 style="text-align: left; margin-bottom: 1rem;">🗺️ Sơ Đồ Quy Trình Hoạt Động Hệ Thống</h2>
+                    <img src="./aurastudio_workflow_sketch.png" alt="Sơ đồ quy trình hoạt động AuraStudio" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--border);">
+                    <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.75rem; text-align: left;">Sơ đồ phác thảo quy trình xử lý 3 bước tự động từ ảnh sản phẩm thô đến kết xuất thành phẩm AI và tự động lưu kho theo SKU sản phẩm.</p>
+                </div>
             </section>
 
             <!-- SECTION 2: SCOPE -->
@@ -94,7 +100,7 @@
                                 <tr>
                                     <td><strong>Tự động Phối Cảnh & Đổ bóng</strong></td>
                                     <td style="text-align: center;"><span class="status-badge badge-green">MVP (✅)</span></td>
-                                    <td>Tự động co giãn phù hợp Safe Zone và render bóng đổ vật lý (Drop Shadow) dưới chân sản phẩm. Merchant được tùy chỉnh 2 chế độ bóng (mềm/sâu) và độ mờ.</td>
+                                     <td>Tự động co giãn phù hợp Safe Zone và render bóng đổ vật lý (Drop Shadow) tự nhiên dưới chân sản phẩm thông qua Clipdrop AI. Không cần tùy chỉnh thủ công loại bóng.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Tiến trình & Hàng Đợi AI</strong></td>
@@ -167,7 +173,7 @@
                                         <ul style="padding-left: 1.25rem;">
                                             <li>Tải lên ảnh sản phẩm thô (Raw image) dạng PNG, JPG, JPEG, WEBP.</li>
                                             <li>Lựa chọn mẫu template từ thư viện sẵn có của hệ thống.</li>
-                                            <li>Điều chỉnh nhẹ vị trí (x, y) sản phẩm trong vùng an toàn và tùy chỉnh bóng đổ vật lý (Drop Shadow).</li>
+                                             <li>Tinh chỉnh vị trí (x, y, scale) sản phẩm trong vùng an toàn, bóng đổ vật lý được AI tự động tạo lập tự nhiên.</li>
                                             <li>Xem trước kết quả so sánh trước/sau và tải ảnh hoàn thiện chất lượng gốc về máy.</li>
                                         </ul>
                                     </td>
@@ -194,12 +200,12 @@
                         </div>
 
                         <div class="module-group">
-                            <div class="module-header">📦 Module 2: AI Tách Nền & Tối Ưu Đường Viền (Background Removal)</div>
-                            <div class="module-desc">Tự động nhận diện và cô lập chủ thể sản phẩm khỏi nền cũ thông qua tích hợp API bên thứ ba.</div>
+                            <div class="module-header">📦 Module 2: AI Tách Nền & Hòa Hợp Bối Cảnh (Clipdrop API)</div>
+                            <div class="module-desc">Tự động nhận diện chủ thể sản phẩm để tách nền, vẽ bóng đổ vật lý và hòa hợp ánh sáng viền đồng bộ với bối cảnh của Template thông qua Clipdrop API.</div>
                             <ul class="rules-list">
-                                <li><strong>Business Rules:</strong> <b>Giải pháp Tách nền chính thức (MVP):</b> Tích hợp qua API bên thứ ba (Remove.bg / Photoroom API) để đạt độ chính xác 99% mà không tốn chi phí hạ tầng GPU. Nhận diện tự động hoàn toàn không cần khoanh vùng chủ thể. Làm mịn biên (Edge Smoothing) chống răng cưa.</li>
-                                <li><strong>System Features:</strong> Tách nền ảnh thô qua REST API, làm mượt biên và lưu trữ thành phẩm trong suốt hoàn thiện.</li>
-                                <li><strong>User Features:</strong> Giao diện hiển thị trạng thái xử lý chi tiết (VD: "Tách nền AI..." -> "API OK" màu xanh hiển thị thành phẩm trong suốt).</li>
+                                <li><strong>Business Rules:</strong> <b>Giải pháp Tách nền & Hòa hợp (MVP):</b> Tích hợp Clipdrop API để đạt độ chính xác cao và tối ưu chi phí (chỉ ~0.01 USD/ảnh). Áp dụng kỹ thuật mặt nạ (Masked Composition) chồng ảnh sản phẩm gốc chất lượng cao lên trên cùng để bảo toàn 100% chi tiết logo/chữ viết bao bì, AI chỉ hòa hợp ánh sáng viền và vẽ bóng ở bối cảnh xung quanh.</li>
+                                <li><strong>System Features:</strong> Tách nền ảnh thô, tính toán Safe Zone, gọi API hòa hợp bối cảnh, áp dụng Masked Composition và lưu trữ thành phẩm trong suốt hoàn thiện.</li>
+                                <li><strong>User Features:</strong> Giao diện hiển thị trạng thái xử lý chi tiết (VD: "Tách nền AI..." -> "Hòa hợp bối cảnh..." -> "Đóng gói thành phẩm").</li>
                             </ul>
                         </div>
 
@@ -214,12 +220,12 @@
                         </div>
 
                         <div class="module-group">
-                            <div class="module-header">📦 Module 4: Phối Cảnh & Chỉnh Sửa Metadata theo Mã SKU</div>
-                            <div class="module-desc">Giao diện phối cảnh ánh xạ ảnh sản phẩm vào hình mẫu thông qua bộ chọn tuần tự hai bước (SKU sản phẩm -> góc chụp), cho phép Merchant chỉnh sửa lại tiêu đề, mô tả và loại hình mẫu trước khi render.</div>
+                            <div class="module-header">📦 Module 4: Phối Cảnh, Tự Động Lưu Kho Theo SKU & Chỉnh Sửa Metadata</div>
+                            <div class="module-desc">Giao diện phối cảnh bối cảnh bọc trong bộ lọc toàn cục (Template Nhóm -> SKU sản phẩm), tự động đồng bộ sản phẩm xuống các bối cảnh bên dưới và giới hạn góc chọn góc chụp trực tiếp trên từng thẻ mẫu. Hỗ trợ phối cảnh 1-click tự động lưu về thư viện ảnh của SKU sản phẩm với quy tắc tên tệp chuẩn thời gian.</div>
                             <ul class="rules-list">
-                                <li><strong>Business Rules:</strong> Chọn phối cảnh bằng bộ chọn tuần tự: chọn Mã sản phẩm trước, sau đó chọn cụ thể ảnh góc chụp đã tách nền tương ứng. Các chỉnh sửa thông số kỹ thuật (Title, Description, Type) của hình mẫu được lưu riêng vào kết quả phối cảnh (Compositions).</li>
-                                <li><strong>System Features:</strong> Tính toán tỷ lệ scale tối ưu cho sản phẩm vào vùng an toàn của mẫu. Render bóng đổ vật lý và lưu trữ kết quả cấu hình tùy biến.</li>
-                                <li><strong>User Features (Merchant):</strong> Lưới thiết lập hình mẫu: Mỗi thẻ mẫu hiển thị ảnh nền, bộ chọn SKU sản phẩm (Bước 1), bộ chọn ảnh góc chụp đã tách nền (Bước 2), form sửa Title, Description, Type và nút Render phối cảnh riêng lẻ.</li>
+                                <li><strong>Business Rules:</strong> <b>Quy trình bộ lọc toàn cục & góc chụp riêng lẻ:</b> Chọn Template nhóm và SKU sản phẩm ở đầu trang để kích hoạt hiển thị. Bộ chọn ảnh góc chụp đã tách nằm trực tiếp trên từng thẻ mẫu để Merchant linh hoạt lựa chọn khớp với góc phối cảnh. Render xong tự động lưu tệp về thư viện sản phẩm với định dạng `[SKU]_[LAYOUT_NAME]_[YYYYMMDD]_[HHMMSS].png`.</li>
+                                <li><strong>System Features:</strong> Đọc dữ liệu bộ lọc toàn cục. Lọc danh sách góc chụp của SKU áp dụng cho dropdown trong từng thẻ. Gọi API hòa hợp Clipdrop và đè mặt nạ sản phẩm. Tự động tạo bản ghi ảnh sản phẩm mới với tên tệp chuẩn hóa.</li>
+                                <li><strong>User Features (Merchant):</strong> Bộ lọc cố định phía trên (Template Nhóm, SKU). Lưới bối cảnh bên dưới hiển thị ảnh nền bối cảnh, tên SKU, bộ chọn góc chụp sản phẩm, form chỉnh sửa Title/Description/Type, nút Render và nút Tinh Chỉnh (Scale/Offset X,Y) dự phòng.</li>
                             </ul>
                         </div>
 
